@@ -1,88 +1,290 @@
 ---
-title: "Clinical Trial Power Analysis With One Or More Run-In Observations, X04"
-author: "R.G. Thomas"
+title: "Clinical Trial Power Analysis with Run-In Observations"
+author: "Ronald G. Thomas"
 date: "`r Sys.Date()`"
-fontsize: 11pt
-geometry: "left=3cm,right=3in,top=2cm,bottom=2cm"
 output:
   pdf_document:
+    latex_engine: xelatex
     toc: true
     number_sections: true
-    highlight: tango
-    keep_tex: true 
-    includes:
-      in_header: "~/shr/preamble.tex"
+    keep_tex: true
+bibliography: references.bib
 header-includes:
-   - \rhead{Lab report}
-   - \fancyfoot[L]{\currfilename} %put current file in footer
-   - \setlength{\headheight}{13.59999pt}
-latex_engine: xelatex
+  - \usepackage{amsmath}
+  - \usepackage{amsfonts}
+  - \usepackage{amssymb}
+abstract: |
+  This document examines methods for incorporating run-in period observations
+  into the design and analysis of clinical trials where the primary outcome
+  is a rate of change. The run-in period, during which all participants are
+  observed prior to randomization, provides baseline rate information that
+  can substantially increase statistical power when properly leveraged. We
+  review the methodological foundations established by Frost, Kenward, and
+  Fox (2008), recent developments in two-period linear mixed effects models,
+  and contemporary approaches including constrained longitudinal data analysis.
+  Applications focus on Alzheimer's disease trials using neuroimaging
+  biomarkers, though the methodology extends to any longitudinal trial design.
 ---
 
-```{r  include=FALSE, echo=F}
-# clear env: objects and packages
-
-rm(list = ls())
-
-options(
-  knitr.kable.NA = "", dplyr.summarise.inform = FALSE,
-  dplyr.print_max = 1e9, knitr.table.format = "latex"
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 6,
+  fig.height = 4
 )
-library(pacman)
-p_load(skimr, janitor, kableExtra, tidyverse, knitr, lubridate, readxl)
-opts_chunk$set(
-  warning = F, message = F, echo = F, fig.width = 3.2,
-  fig.height = 3, results = "asis", dev = "pdf",
-  opts_chunk$set(cache.path = "cache/")
-)
-source("~/shr/zz.tools.R")
-options(scipen = 1, digits = 2)
-a <- 1
 ```
-# Notes
 
-The first part of this project is to read the Frost paper "cover-to-cover".
-Notes of import will be reproduced here...
-@frostOptimizingDesignClinical2008
+# Historical Development of Run-In Designs
 
-Second part is to record all useful calculations in the black "Longitudinal"
-notebook. 
+## Origins and Rationale
 
-Third is to use mathematica to compute the variance of the fixed parameters. 
+The run-in period has been a design element in clinical trials for decades,
+serving multiple purposes that have evolved over time [@packerWhyHasRunIn2017].
+Traditionally, run-in periods were used to:
 
-The paper by Wang et al targets the same problem we are interested in. 
-@wangTwoPeriodLinear2019. The key question is how best to model the run-in
-information to get maximum advantage. What if the time course profile is not
-linear? should we model the slope or the variance? 
+1. **Identify compliant participants** - Excluding those unlikely to adhere to
+   the treatment protocol
+2. **Wash out prior treatments** - Ensuring a clean baseline state
+3. **Establish baseline stability** - Confirming participants meet entry
+   criteria over time rather than at a single point
+4. **Enrich for responders** - In some designs, selecting participants who
+   respond to active treatment during a single-blind run-in
 
-2022-10-20
-made sure the key pubs from the folder are contained in Zotero container
+However, a distinct and methodologically important use of run-in periods has
+emerged: **estimating individual baseline rates of change** that can be used
+as covariates or incorporated directly into the analysis model to increase
+statistical efficiency.
 
+## The Frost-Kenward-Fox Framework
 
-2022-10-20
-setting up mathematica. 
-start by working on frost3.1.1
-Math file names frost311.m
-> wolframscript -f frost311.m
+The seminal work by @frostOptimizingDesignClinical2008 established the
+theoretical foundation for using run-in observations to increase power in
+trials where the outcome is a rate. Their key insight was that when
+between-subject variability in rates is large relative to measurement error,
+pre-randomization observations provide valuable information about each
+participant's underlying trajectory.
 
-test = \cite{frostAnalysisRepeatedDirect2004}
-\cite{frisonLinearlyDivergentTreatment1997}
+Consider a trial with total follow-up time $T$ that can be divided into a
+run-in period of length $T_1$ (all participants off-treatment) and a
+randomized period of length $T_2 = T - T_1$ (half on active treatment).
+The fundamental question is: what allocation of time between $T_1$ and $T_2$
+maximizes power for detecting a treatment effect on the rate of change?
 
-# Introduction
+@frostOptimizingDesignClinical2008 showed that the optimal design depends on
+the ratio of true between-subject variability in rates to measurement error.
+When this ratio is large, substantial gains (up to 30-40% reduction in
+required sample size) can be achieved by including a run-in period.
 
-(Start with an Extended intro regarding run-in information in clinical trials.
-Pros and Cons.  Not restricted to AD trials. )
+## Applications in Neuroimaging
 
-# Methods
+The methodology found immediate application in Alzheimer's disease trials
+using neuroimaging outcomes, where:
 
-# Results
-# Code 
+- The outcome (brain atrophy rate) is inherently a rate of change
+- Between-subject variability in atrophy rates is substantial
+- Measurement error from MRI is relatively well-characterized
+- Pre-randomization imaging is ethically straightforward
 
-<!-- your comment 
-```{r, attr.source='.numberLines', ref.label=knitr::all_labels(),echo=TRUE,eval=FALSE}
-```
--->
+@frostAnalysisRepeatedDirect2004 extended the framework to handle "direct"
+measures of change---outcomes that are themselves differences (such as
+boundary shift integrals in imaging)---which have distinct correlation
+structures requiring specialized analysis models.
 
-\bibliography{x04.bib}
-\bibliographystyle{plain}
-\nocite{*}
+# Contemporary Methodological Developments
+
+## Two-Period Linear Mixed Effects Models
+
+@wangTwoPeriodLinear2019 proposed a significant advancement: two-period
+linear mixed effects models that simultaneously model the run-in data and
+post-randomization data. Rather than using run-in observations merely as
+covariates, their approach incorporates them directly into the response
+vector with appropriate correlation structures.
+
+The two-period model offers several advantages:
+
+1. **Increased power**: Up to 15% power gain compared to traditional
+   approaches using run-in data as covariates
+
+2. **Flexibility in randomization ratios**: The model enables unequal
+   randomization (e.g., 2:1 active:placebo) without power loss, because
+   run-in observations effectively serve as additional placebo data
+
+3. **Proper handling of correlation**: The model explicitly accounts for
+   within-subject correlation between run-in and post-randomization periods
+
+The model specification involves:
+$$
+Y_{ij} = \beta_0 + \beta_1 t_{ij} + \beta_2 I(t_{ij} > 0) \cdot t_{ij} \cdot Z_i + b_{0i} + b_{1i} t_{ij} + \epsilon_{ij}
+$$
+
+where $t_{ij}$ is time from randomization (negative during run-in),
+$Z_i$ is treatment indicator, $b_{0i}$ and $b_{1i}$ are random effects,
+and $\beta_2$ captures the treatment effect on slope.
+
+## Constrained Longitudinal Data Analysis
+
+@luSampleSizeDetermination2009 developed sample size formulas for
+constrained longitudinal data analysis (cLDA), a model proposed by Liang
+and Zeger (2000) that treats baseline as part of the response vector with
+a constraint that baseline means are equal across treatment groups (as
+guaranteed by randomization).
+
+The cLDA approach offers:
+
+- **Correct variance estimation**: Unlike ANCOVA, cLDA correctly estimates
+  the variance of within-group mean changes
+- **Guaranteed coverage probabilities**: The constrained model achieves
+  specified coverage for confidence intervals
+- **Sample size determination**: Explicit formulas for power calculations
+
+Recent extensions include proportional cLDA (PcLDA) by @wangProportionalConstrainedLongitudinal2022,
+which can provide power increases of 20-34% over traditional cLDA by using
+all post-baseline data without requiring linearity assumptions.
+
+## Regulatory Guidance on Covariate Adjustment
+
+The value of baseline adjustment for increasing power has been recognized
+by regulatory agencies. The EMA's "Guideline on Adjustment for Baseline
+Covariates in Clinical Trials" (effective 2015) and FDA's guidance on
+"Adjusting for Covariates in Randomized Clinical Trials" (2019, finalized
+2023) provide frameworks for pre-specifying covariate adjustments.
+
+Key regulatory principles include:
+
+1. Covariates should be selected based on prognostic value, not observed
+   imbalances
+2. Pre-specification in the protocol or statistical analysis plan is required
+3. Variables measured after randomization should not be used as covariates
+4. Adjustment for prognostic baseline characteristics can substantially
+   increase power
+
+@kempfAdjustmentBaselineCharacteristics2022 review regulatory perspectives
+and demonstrate that covariate adjustment can increase power from 80% to
+over 92% for many outcomes.
+
+# Software Implementations
+
+## The longpower R Package
+
+@iddiPowerSampleSize2022 developed the **longpower** R package providing
+sample size calculations for longitudinal data, including:
+
+- `power.mmrm()`: Sample size for mixed models for repeated measures
+- `edland.linear.power()`: Formulas from Edland et al. for random slopes
+- `hu.mackey.thomas.linear.power()`: Extensions for missing data patterns
+
+The package is accompanied by a Shiny application
+(https://atrihub.shinyapps.io/power/) that interfaces with ADNI data for
+pilot parameter estimation.
+
+## Stata's slopepower Command
+
+@nashPowerSamplesizeCalculations2021 developed the `slopepower` command
+for Stata, which implements the Frost-Kenward-Fox methodology for trials
+comparing slopes. The command:
+
+1. Estimates variance parameters from pilot data using linear mixed models
+2. Combines these with user specifications about treatment effect and design
+3. Produces sample size or power estimates for various run-in configurations
+
+# Applications to Alzheimer's Disease Trials
+
+## Neuroimaging Outcomes
+
+Brain atrophy rates measured by MRI have become important secondary outcomes
+in Alzheimer's disease trials. @schottReducedSampleSizes2010 demonstrated
+that adjusting for baseline characteristics can reduce sample sizes by up
+to 30% for atrophy outcomes.
+
+Key considerations for imaging trials include:
+
+- **CSF biomarkers**: A$\beta_{1-42}$ and tau contribute to atrophy rate
+  variability and can serve as adjustment covariates
+- **APOE genotype**: Affects both baseline atrophy and rate of change
+- **Disease severity**: More impaired patients show more rapid progression
+
+@youngStrategyReduceSample2021 showed that combining enrichment strategies
+with baseline adjustment can achieve substantial sample size reductions
+for amyloid PET imaging endpoints.
+
+## Cognitive Outcomes
+
+For cognitive outcomes such as ADAS-Cog or CDR-SB, run-in designs are less
+common but the principles apply. @kennedyUsingBaselineCognitive2015 examined
+using baseline MMSE for trial enrichment but found that most variability
+comes from baseline scores rather than rates of decline.
+
+Recent AI-guided approaches to patient stratification have shown promise
+for identifying slow versus rapid progressors at baseline, potentially
+enabling more efficient trial designs without traditional run-in periods.
+
+# Methodological Considerations
+
+## When Run-In Designs Are Most Beneficial
+
+The benefit of run-in designs depends on:
+
+1. **Ratio of between-subject rate variability to measurement error**: High
+   ratios favor longer run-in periods
+2. **Cost of observations**: When each observation is expensive (e.g., PET
+   imaging), fewer total observations favor shorter run-in
+3. **Natural history data availability**: If reliable external data exist,
+   baseline rates can be predicted without a run-in
+4. **Dropout patterns**: Dropout during run-in reduces the effective sample
+   for the randomized phase
+
+## Model Selection
+
+The choice between MMRM, cLDA, two-period LME, and other approaches depends
+on:
+
+- **Linearity of progression**: LME requires linear progression; MMRM and
+  cLDA are more flexible
+- **Missing data patterns**: MMRM handles intermittent missing data; some
+  approaches assume monotone dropout
+- **Treatment effect timing**: MMRM focuses on end-of-study; LME and PcLDA
+  use all post-baseline data
+
+@wangProportionalConstrainedLongitudinal2022 provide detailed comparisons
+showing PcLDA advantages when linearity does not hold.
+
+## Validity Concerns
+
+@bergerDirectEffectValidity2003 raised concerns about run-in selection
+potentially affecting validity by differentially representing subpopulations.
+When run-in data are used only for baseline rate estimation (not for
+selection), these concerns are largely mitigated. However, if participants
+are excluded based on run-in observations, careful consideration of the
+target population is warranted.
+
+# Discussion
+
+The methodological framework for incorporating run-in observations into
+clinical trial design and analysis has matured substantially since the
+foundational work of Frost, Kenward, and Fox. Contemporary developments
+including two-period LME models and proportional cLDA offer meaningful
+power advantages while maintaining regulatory acceptability.
+
+Key recommendations for practice include:
+
+1. **Pre-specify the analysis model**: Whether using run-in data as covariates
+   or incorporating them into a two-period model, the approach should be
+   specified in the statistical analysis plan
+
+2. **Estimate variance components from pilot data**: The `longpower` package
+   and `slopepower` command facilitate this using historical data
+
+3. **Consider the design holistically**: Run-in length, total study duration,
+   number and timing of observations, and randomization ratio should be
+   jointly optimized
+
+4. **Account for dropout**: Sample size calculations should incorporate
+   realistic dropout assumptions for both the run-in and randomized periods
+
+Future developments may include adaptive designs that modify randomization
+based on run-in observations, and machine learning approaches for baseline
+risk stratification that complement or replace traditional run-in designs.
+
+# References
