@@ -1,0 +1,17 @@
+Package: runinpower
+Title: Clinical Trial Power Analysis with Run-In Observations
+Version: 0.0.0.9000
+Authors@R:
+    person("Ronald G.", "Thomas", email = "rthomas@ucsd.edu", role = c("aut", "cre"))
+Description: Power analysis methodology for clinical trials with one or more
+    run-in observations. Focuses on optimal use of baseline rate information
+    in longitudinal designs, particularly for Alzheimer's disease trials where
+    the outcome is a rate of change.
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
+Imports:
+    renv,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
