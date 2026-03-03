@@ -13,7 +13,7 @@ output:
     keep_tex: true
 bibliography: references.bib
 header-includes:
-  - \usepackage{amsmath,amsfonts,amssymb,bm}
+  - \usepackage{amsmath,amsfonts,amssymb}
   - \usepackage{booktabs}
   - \usepackage{float}
   - \DeclareMathOperator{\Var}{Var}
@@ -228,11 +228,11 @@ $R = \sigma^2(\mathbf{I}_p + \mathbf{1}_p \mathbf{1}_p')$.
 The generalized least squares estimator of the fixed effects
 is
 \begin{equation}
-  \hat{\bm{\beta}} = (X' \Sigma^{-1} X)^{-1} X' \Sigma^{-1}
+  \hat{\boldsymbol{\beta}} = (X' \Sigma^{-1} X)^{-1} X' \Sigma^{-1}
   \mathbf{c}
   \label{eq:gls}
 \end{equation}
-with $\Var(\hat{\bm{\beta}}) = (X' \Sigma^{-1} X)^{-1}$,
+with $\Var(\hat{\boldsymbol{\beta}}) = (X' \Sigma^{-1} X)^{-1}$,
 where $X$ is the fixed effects design matrix and $\mathbf{c}$
 is the stacked change-score vector. Our target is
 $\Var(\hat{\gamma})$, the variance of the treatment effect
@@ -286,47 +286,43 @@ Define
 \end{equation}
 so that $(G^{-1} + Z'R^{-1}Z)^{-1} = b / \eta_p$.
 
-## Case 1: One run-in, one followup ($r=1$, $k=1$, $f=0$)
+## Case 1: Standard design, no run-in ($r=0$, $k=2$, $f=0$)
 
 This case reproduces the result in
 @frostOptimizingDesignClinical2008, Section 3.1.1, and
 serves as verification for our framework.
 
-With $p = 2$ change scores $(c_{i,-1},\, c_{i,1})$ relative
-to the randomization visit at $j = 0$, the observation times
-are $(-t,\, 0,\, t)$. The fixed effects design matrix for a
-single participant is
+With $r=0$ and $k=2$, there are $p = 2$ change scores
+$(c_{i,1},\, c_{i,2})$ at post-randomization times $(t,\,
+2t)$. Since there is no run-in, the model has two fixed
+effects: the placebo slope $\beta$ and the treatment effect
+$\gamma$. The design matrices are:
 $$
-  X_i^{(\text{trt})} = \begin{pmatrix}
-    -t & 0 \\ 0 & t
+  X_i^{(\text{trt})} = t\begin{pmatrix}
+    1 & 1 \\ 2 & 2
   \end{pmatrix}, \qquad
-  X_i^{(\text{plc})} = \begin{pmatrix}
-    -t & 0 \\ 0 & t
-  \end{pmatrix}
-$$
-where the columns correspond to the run-in slope $\delta$ and
-the post-randomization slope $\beta + \gamma g_i$. For the
-treatment group, we separate $\beta$ and $\gamma$:
-$$
-  X_i^{(\text{trt})} = \begin{pmatrix}
-    -t & 0 & 0 \\ 0 & t & t
-  \end{pmatrix}, \qquad
-  X_i^{(\text{plc})} = \begin{pmatrix}
-    -t & 0 & 0 \\ 0 & t & 0
+  X_i^{(\text{plc})} = t\begin{pmatrix}
+    1 & 0 \\ 2 & 0
   \end{pmatrix}
 $$
 
 The residual covariance is
 $R = a \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$
 with $R^{-1} = \frac{1}{3a}
-\begin{pmatrix} 2 & -1 \\ -1 & 2 \end{pmatrix}$
-and the random effects design is $Z = (t,\, t)'$.
+\begin{pmatrix} 2 & -1 \\ -1 & 2 \end{pmatrix}$,
+and the random effects design is $Z = t(1,\, 2)'$.
 
-Applying the Woodbury identity with $p = 2$, the Frost et al.
-substitutions $c = 2a + bt^2$, $d = a + 2bt^2$ yield
+Applying the Woodbury identity with $p = 2$:
+\begin{equation}
+  Z'R^{-1}Z = \frac{t^2}{3a}(1,\,2)
+    \begin{pmatrix}2&-1\\-1&2\end{pmatrix}
+    \begin{pmatrix}1\\2\end{pmatrix}
+  = \frac{t^2}{3a}(1,\,2)(0,\,3)' = \frac{6t^2}{3a}
+  = \frac{2t^2}{a}
+\end{equation}
 \begin{equation}
   (G^{-1} + Z'R^{-1}Z)^{-1}
-  = \frac{ab}{a + 2bt^2} = \frac{ab}{d}
+  = \frac{ab}{a + 2bt^2}
 \end{equation}
 
 After summing over one treatment and one placebo participant,
@@ -338,27 +334,28 @@ the information matrix is
 \end{equation}
 and its inverse is
 \begin{equation}
-  \Var(\hat{\bm{\beta}})
+  \Var(\hat{\boldsymbol{\beta}})
   = \frac{a + 2bt^2}{2t^2}
     \begin{pmatrix} 1 & -1 \\ -1 & 2 \end{pmatrix}
   \label{eq:var_frost}
 \end{equation}
 
 The variance of the treatment effect estimator (per
-participant pair) is
+participant pair) is the $(2,2)$ element:
 \begin{equation}
   \boxed{
-    \Var(\hat{\gamma})
+    \Var(\hat{\gamma})\big|_{r=0,k=2}
     = \frac{a + 2bt^2}{t^2}
     = \frac{\sigma^2 + 2\sigma_b^2 t^2}{t^2}
   }
-  \label{eq:var_r1k1}
+  \label{eq:var_r0k2}
 \end{equation}
 
-This agrees with Frost et al. (2008), equation following
-their Section 3.1.1. For $m$ participants per group:
+This agrees with Frost et al. (2008), Section 3.1.1. For
+$m$ participants per group:
 $\Var(\hat{\gamma}) = (\sigma^2 + 2\sigma_b^2 t^2) /
-(m t^2)$.
+(m t^2)$. This serves as the baseline against which the
+run-in designs are compared.
 
 
 ## Case 2: Two run-in observations ($r=2$, $k=1$, $f=0$)
@@ -564,17 +561,19 @@ pair is:
   \label{eq:var_r2k1}
 \end{equation}
 
-Compared to the $r=1$ case \eqref{eq:var_r1k1}, the
+Compared to the standard design \eqref{eq:var_r0k2} (which
+has one more post-randomization visit but no run-in), the
 ratio is
 $$
-  \frac{\Var(\hat{\gamma})|_{r=2}}
-       {\Var(\hat{\gamma})|_{r=1}}
+  \frac{\Var(\hat{\gamma})|_{r=2,k=1}}
+       {\Var(\hat{\gamma})|_{r=0,k=2}}
   = \frac{2(a + 5bt^2)}{3(a + 2bt^2)}
 $$
 
 This ratio is less than 1 whenever $bt^2 > a$, i.e., when
-$\sigma_b^2 t^2 > \sigma^2$. The second run-in observation
-provides additional power precisely when the between-subject
+$\sigma_b^2 t^2 > \sigma^2$. The run-in design with two
+pre-randomization observations provides greater power than
+the standard design precisely when the between-subject
 slope variability (on the scale of the observation interval)
 exceeds the residual variance.
 
@@ -693,9 +692,9 @@ $Q_{rk} = S_r S_k - D_r^2 S_k/(S_r(p+1)-D_r^2) \cdot
 is a design-dependent factor, and $m$ is the number of
 participants per group.
 
-The formula reduces to \eqref{eq:var_r1k1} when $r=k=1$
-(giving $p=2$, $S_r=S_k=1$, $D_r=D_k=1$) and to
-\eqref{eq:var_r2k1} when $r=2$, $k=1$.
+The formula reduces to \eqref{eq:var_r2k1} when $r=2$, $k=1$,
+and when $r=0$ the model simplifies to two parameters with
+variance given by \eqref{eq:var_r0k2}.
 
 Rather than present the fully simplified closed form (which
 is algebraically complex for general $r$ and $k$), we
@@ -862,9 +861,12 @@ var_gamma_matrix <- function(r, k, f, sigma2, sigma_b2,
   Xt <- des$X_trt
   Xp <- des$X_plc
   XRX <- t(Xt) %*% Ri %*% Xt + t(Xp) %*% Ri %*% Xp
-  XRZ <- t(Xt) %*% Ri %*% Z + t(Xp) %*% Ri %*% Z
 
-  XSiX <- XRX - XRZ %*% H %*% t(XRZ)
+  XtRZ <- t(Xt) %*% Ri %*% Z
+  XpRZ <- t(Xp) %*% Ri %*% Z
+  W <- XtRZ %*% H %*% t(XtRZ) + XpRZ %*% H %*% t(XpRZ)
+
+  XSiX <- XRX - W
   V <- solve(XSiX)
   nc <- des$ncol_X
   V[nc, nc]
@@ -1055,6 +1057,10 @@ t_ad <- 1.0
 delta_ad <- 0.25
 
 configs <- expand.grid(r = 0:4, k = 1:3, f = 0:2)
+configs <- configs[
+  ifelse(configs$r == 0, configs$k + configs$f,
+         configs$r + configs$k + configs$f) >= 3,
+]
 configs$n <- mapply(
   function(r, k, f) {
     sample_size(r, k, f, sigma2_ad, sigma_b2_ad,
