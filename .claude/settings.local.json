@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip3 list:*)",
+      "mcp__zotero__zotero_semantic_search"
+    ]
+  }
+}
