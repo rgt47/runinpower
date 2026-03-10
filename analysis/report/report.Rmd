@@ -12,6 +12,7 @@ output:
     number_sections: true
     keep_tex: true
 bibliography: references.bib
+link-citations: true
 header-includes:
   - \usepackage{amsmath,amsfonts,amssymb}
   - \usepackage{booktabs}
