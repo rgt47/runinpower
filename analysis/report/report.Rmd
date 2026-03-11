@@ -4,7 +4,7 @@ title: |
   with Run-In and Common Close Observations
 author: "Ronald G. Thomas"
 affiliation: "University of California, San Diego"
-date: "`r Sys.Date()`"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
 fontsize: 11pt
 geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
 output:
@@ -13,7 +13,9 @@ output:
     toc: true
     number_sections: true
     keep_tex: true
+    highlight: tango
 bibliography: references.bib
+csl: statistics-in-medicine.csl
 link-citations: true
 header-includes:
   - \usepackage{amsmath,amsfonts,amssymb}
