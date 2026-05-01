@@ -1,0 +1,23 @@
+\contentsline {section}{\numberline {1}General linear mixed model}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Outcome model}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Marginal distribution}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Simplified model (random slope only)}{2}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Variance of the treatment effect with intercepts}{2}{section.2}%
+\contentsline {section}{\numberline {3}Change-score parameterization}{3}{section.3}%
+\contentsline {section}{\numberline {4}Normalized time and the algorithmic recipe}{3}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Time normalization}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Seven-step algorithm}{4}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Woodbury identity for the raw-outcome model}{4}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Setup}{4}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Information matrix}{4}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Frost 3.1.1 in the change-score parameterization}{5}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Design matrices}{5}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Intermediate computations}{5}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Woodbury correction}{6}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Information matrix and variance}{6}{subsection.6.4}%
+\contentsline {section}{\numberline {7}AR(1) covariance sums}{6}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Closed-form derivation}{6}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Verification for small $n$}{7}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Alternative form}{7}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Stratified variance under unequal visit patterns}{7}{section.8}%
+\contentsline {section}{\numberline {9}Appendix: Frost 3.1.1 via direct inversion}{8}{section.9}%

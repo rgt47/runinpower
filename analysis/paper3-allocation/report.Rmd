@@ -1,0 +1,674 @@
+---
+title: |
+  Optimal Allocation of Observations across Run-In,
+  Treatment, and Common Close Phases in Longitudinal
+  Clinical Trials
+author: "Ronald G. Thomas"
+affiliation: "University of California, San Diego"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+fontsize: 11pt
+geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    number_sections: true
+    keep_tex: true
+    highlight: tango
+bibliography: references.bib
+link-citations: true
+header-includes:
+  - \usepackage{amsmath,amsfonts,amssymb}
+  - \usepackage{booktabs}
+  - \usepackage{float}
+  - \DeclareMathOperator{\Var}{Var}
+  - \DeclareMathOperator{\Cov}{Cov}
+  - \DeclareMathOperator{\Corr}{Corr}
+abstract: |
+  Given a fixed total number of observations
+  $J = J_0 + J_1 + J_2$ and a fixed trial duration, how
+  should visits be allocated across run-in ($J_0$),
+  treatment ($J_1$), and common close ($J_2$) phases to
+  minimize the variance of the treatment effect
+  estimator? We formulate this as a discrete
+  optimization problem over the Woodbury-based
+  variance formula from Thomas (2026) and
+  characterize the solution as a function of the
+  signal-to-noise ratio $\sigma_b / \sigma$. We show
+  that the optimal allocation depends primarily on
+  this ratio and that the common close phase is
+  beneficial only when the ratio exceeds a threshold
+  that depends on $J_1$. We further extend to
+  non-equally-spaced designs, where the timing of
+  observations within each phase is also optimized.
+  We also consider replicated endpoint observations:
+  closely spaced measurements at the end of the
+  treatment period that average out measurement error
+  on the final assessment, analogous to the run-in
+  averaging mechanism but applied at the post-treatment
+  end. The pattern-mixture approach of Frost et al.
+  (2008) is incorporated to account for dropout.
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 6,
+  fig.height = 4,
+  fig.pos = "H"
+)
+library(runinpower)
+```
+
+# Introduction
+
+The relative efficiency surface in Paper 1 (Figure 1)
+demonstrates diminishing returns from additional
+run-in observations: the first run-in observation
+provides the largest variance reduction, while
+subsequent observations contribute progressively less.
+Similarly, common close observations improve efficiency
+but at a rate that depends on the number of treatment
+observations $J_1$.
+
+These observations raise a design question that Paper 1
+does not address: given operational constraints on the
+total number of visits or total trial duration, what is
+the optimal distribution of observations across the
+three phases?
+
+@winkens2005 calculated optimal time-point positions
+for linearly divergent treatment effects under compound
+symmetry, but did not consider the run-in setting.
+@yi2002 derived sample sizes for trends across repeated
+measurements under missing data.
+@frison1992 showed that having more than one
+pre-treatment measurement is beneficial for designs
+analyzed via ANCOVA. @overall1994 provided sample size
+formulas for repeated measurement designs.
+@galbraith2002 developed general guidelines for the
+design of clinical trials with longitudinal outcomes.
+The slopepower command [@nash2021] and the longpower
+R package [@iddi2022] implement power calculations
+for slope-comparison trials but do not optimize the
+allocation of observations across phases.
+
+
+# Problem formulation
+
+## Fixed total visits
+
+Given $J$ total observations (excluding baseline),
+choose $(J_0^*, J_1^*, J_2^*)$ to minimize
+$\Var_1(\hat\gamma)$ subject to $J_0 + J_1 + J_2 = J$,
+$J_0 \ge 0$, $J_1 \ge 1$, $J_2 \ge 0$.
+
+The objective function is
+$V(J_0, J_1, J_2) = [(X'\Sigma^{-1}X)^{-1}]_{\gamma\gamma}$
+computed via the Woodbury identity from Paper 1.
+
+## Fixed total duration
+
+Alternatively, fix the trial duration
+$T = (J_0 + J_1 + J_2) \cdot t$ and minimize
+$\Var_1(\hat\gamma)$ subject to
+$J_0 + J_1 + J_2 = T/t$, or more generally allow
+non-equally-spaced observations within each phase
+and minimize over the observation times as well.
+
+
+# Diminishing returns from run-in observations
+
+## Marginal value of the $J_0$-th run-in observation
+
+Define the marginal variance reduction from adding
+the $J_0$-th run-in observation:
+\begin{equation}
+  \Delta V_{J_0} = V(J_0 - 1, J_1, J_2) - V(J_0, J_1, J_2)
+\end{equation}
+
+```{r marginal_value}
+a <- 1.0
+b <- 1.0
+tt <- 1.0
+k_fixed <- 2
+
+marginal <- data.frame(r = 1:8)
+marginal$delta_v <- sapply(marginal$r, function(r) {
+  var_gamma_matrix(r - 1, k_fixed, 0, a, b, tt) -
+    var_gamma_matrix(r, k_fixed, 0, a, b, tt)
+})
+
+knitr::kable(
+  marginal,
+  col.names = c('$J_0$', '$\\Delta V_{J_0}$'),
+  caption = paste0(
+    'Marginal variance reduction from the $J_0$-th ',
+    'run-in observation ($J_1=', k_fixed,
+    '$, $J_2=0$, $\\sigma^2 = ', a,
+    '$, $\\sigma_b^2 = ', b, '$).'),
+  booktabs = TRUE,
+  escape = FALSE,
+  digits = 4
+)
+```
+
+## The $J_0=1$ anomaly
+
+An important non-monotonicity is visible in the table:
+$\Delta V_1 < \Delta V_2$ for moderate
+$\sigma_b / \sigma$. The first run-in observation is
+less valuable than the second. This occurs because
+adding a single run-in observation forces the model from
+2 parameters ($\beta, \gamma$) to 3 parameters
+($\delta, \beta, \gamma$), consuming a degree of
+freedom. The second run-in observation does not increase
+the parameter count and provides pure information gain.
+
+This effect is analogous to @frison1992's finding that
+a single pre-treatment measurement used as an ANCOVA
+covariate can reduce power when the pre-post correlation
+is low. The practical implication is clear: **a trial
+designer should plan either zero or at least two run-in
+observations, not one.**
+
+
+## Correlation structure governs diminishing returns
+
+The correlation between the $J_0$-th run-in change
+score and the treatment-period change scores
+determines the information gain. Under compound
+symmetry:
+\begin{equation}
+  \Corr(C_{-J_0}, C_l) = \frac{\sigma_b^2 t^2}
+    {2\sigma^2 + \sigma_b^2 t^2}
+\end{equation}
+which is constant in $J_0$. The diminishing returns
+(for $J_0 \ge 2$) arise from the information matrix
+structure, not from declining correlation. Under AR(1)
+[@winkens2007], the correlation does decline with
+temporal distance, producing faster diminishing
+returns from distant run-in observations.
+
+
+# Optimal allocation for fixed $J$
+
+```{r optimal_grid}
+p_values <- 3:8
+tt <- 1.0
+
+params <- list(
+  low  = list(sigma2 = 1.0, sigma_b2 = 0.1,
+    label = 'Low ($\\sigma_b/\\sigma=0.32$)'),
+  med  = list(sigma2 = 1.0, sigma_b2 = 1.0,
+    label = 'Med ($\\sigma_b/\\sigma=1.0$)'),
+  high = list(sigma2 = 1.0, sigma_b2 = 5.0,
+    label = 'High ($\\sigma_b/\\sigma=2.24$)'),
+  ad   = list(sigma2 = 0.0025, sigma_b2 = 0.9745,
+    label = 'AD ($\\sigma_b/\\sigma=19.7$)')
+)
+
+opt_table <- do.call(rbind, lapply(p_values, function(p) {
+  row <- data.frame(p = p)
+  for (nm in names(params)) {
+    pp <- params[[nm]]
+    opt <- optimal_allocation(p, pp$sigma2,
+                              pp$sigma_b2, tt)
+    row[[paste0(nm, '_alloc')]] <- sprintf(
+      '(%d,%d,%d)', opt$r, opt$k, opt$f)
+    row[[paste0(nm, '_var')]] <- round(opt$variance, 4)
+  }
+  row
+}))
+
+knitr::kable(
+  opt_table[, c('p', 'low_alloc', 'med_alloc',
+                'high_alloc', 'ad_alloc')],
+  col.names = c('$J$',
+    params$low$label,
+    params$med$label,
+    params$high$label,
+    params$ad$label),
+  caption = paste0(
+    'Optimal allocation $(J_0^*, J_1^*, J_2^*)$ for fixed ',
+    'total observations $J$, by signal-to-noise ratio.'),
+  booktabs = TRUE,
+  escape = FALSE
+)
+```
+
+
+# When is the common close phase beneficial?
+
+The common close phase contributes information about
+the random slope $b_i$ without contributing to the
+treatment comparison directly. It is beneficial when
+the additional slope information sufficiently reduces
+the variance of $\hat\gamma$.
+
+```{r common_close_threshold}
+ratio_grid <- seq(0.1, 5, by = 0.1)
+k_values <- 1:4
+r_fixed <- 2
+a <- 1.0
+
+cc_table <- data.frame(ratio = ratio_grid)
+for (kk in k_values) {
+  cc_table[[paste0('k', kk)]] <- sapply(ratio_grid,
+    function(ratio) {
+      b <- ratio^2 * a
+      common_close_beneficial(r_fixed, kk, a, b, tt)
+    })
+}
+
+thresholds <- sapply(k_values, function(kk) {
+  col <- cc_table[[paste0('k', kk)]]
+  idx <- which(col)[1]
+  if (is.na(idx)) Inf else ratio_grid[idx]
+})
+
+cat('Minimum sigma_b/sigma for common close benefit:\n')
+for (i in seq_along(k_values)) {
+  cat(sprintf('  k=%d: sigma_b/sigma >= %.1f\n',
+              k_values[i], thresholds[i]))
+}
+```
+
+## Threshold as a function of $J_1$
+
+<!-- TODO: derive or compute numerically the -->
+<!-- threshold sigma_b/sigma above which J_2 > 0 is -->
+<!-- optimal -->
+
+
+# Non-equally-spaced designs
+
+## General time points
+
+From the notebook derivations, the variance for the
+conventional design with general time points
+$t_1, t_2$ (under normalization $\sum t_i^2 = 1$,
+$\sum t_i = 0$) is:
+\begin{equation}
+  \Var(\hat\gamma) = \frac{3\sigma^2}{1 - t_1 t_2}
+    + 2\sigma_b^2
+\end{equation}
+
+This is minimized when $t_1 t_2$ is minimized (most
+negative), i.e., when the two time points are
+maximally separated. This reproduces the known result
+that observations at the extremes of the follow-up
+period are optimal for slope estimation.
+
+## Optimization over observation times within phases
+
+<!-- TODO: extend to the general (J_0, J_1, J_2) case -->
+<!-- where observation times within each phase are -->
+<!-- also free parameters. This connects to -->
+<!-- Winkens et al 2005 on optimal time-point -->
+<!-- positioning. -->
+
+
+# Replicated endpoint observations
+
+## Motivation
+
+The run-in mechanism averages multiple pre-randomization
+observations to reduce the contribution of measurement
+error $\sigma^2$ to the estimated baseline slope
+[@frost2008; @frison1992]. @goulet2019 showed that
+replicated measures increase power but with diminishing
+returns past 20-50 replications. The same logic applies
+at the end of the treatment period:
+if the final scheduled visit is replaced by (or augmented
+with) two or three closely-spaced measurements, all
+under the same treatment condition, the measurement
+error on the endpoint assessment is reduced by
+averaging.
+
+Concretely, if the last visit at time $J_1 t$ is replicated
+$n_{\text{rep}}$ times over a short interval (days to
+weeks, negligible relative to $t$), the effective
+residual variance for the averaged endpoint becomes
+$\sigma^2 / n_{\text{rep}}$ while the random slope
+contribution $\sigma_b^2 t^2$ is essentially unchanged.
+Similarly, the baseline visit at $j = 0$ can be
+replicated to reduce $\sigma^2$ in the change-score
+covariance.
+
+This is distinct from the common close design (Section
+4): common close observations are at \emph{new} time
+points after treatment stops, providing information
+about the off-treatment slope. Replicated endpoints are
+at the \emph{same} time point as the last treatment
+visit, providing only measurement-error reduction.
+
+## Variance formula with replication
+
+The residual covariance matrix $R$ is modified so that
+the diagonal element corresponding to a replicated
+visit uses $\sigma^2 / n_{\text{rep}}$ instead of
+$\sigma^2$, and the off-diagonal elements reflecting
+the shared baseline error use
+$\sigma^2 / n_{\text{rep,pre}}$. The Woodbury
+computation proceeds identically.
+
+```{r replication_table}
+a <- 1.0
+tt <- 1.0
+rep_values <- c(1, 2, 3, 5)
+
+ratio_levels <- c(0.5, 1.0, 2.0, 5.0)
+
+rep_table <- expand.grid(
+  n_rep = rep_values,
+  ratio = ratio_levels
+)
+
+rep_table$v <- mapply(function(n_rep, ratio) {
+  b <- ratio^2 * a
+  var_gamma_replicated(0, 2, 0, a, b, tt,
+                        n_rep_post = n_rep)
+}, rep_table$n_rep, rep_table$ratio)
+
+rep_table$v_base <- mapply(function(n_rep, ratio) {
+  b <- ratio^2 * a
+  var_gamma_replicated(0, 2, 0, a, b, tt,
+                        n_rep_post = 1)
+}, rep_table$n_rep, rep_table$ratio)
+
+rep_table$reduction <- 1 - rep_table$v / rep_table$v_base
+
+tab <- reshape(
+  rep_table[, c('n_rep', 'ratio', 'reduction')],
+  idvar = 'n_rep', timevar = 'ratio',
+  direction = 'wide'
+)
+names(tab) <- c('$n_{\\text{rep}}$',
+  paste0('$\\sigma_b/\\sigma=', ratio_levels, '$'))
+
+knitr::kable(
+  tab,
+  caption = paste0(
+    'Fractional variance reduction from replicating ',
+    'the final endpoint ($J_0=0$, $J_1=2$, $J_2=0$).'),
+  booktabs = TRUE,
+  escape = FALSE,
+  digits = 3,
+  row.names = FALSE
+)
+```
+
+The table confirms that endpoint replication is most
+beneficial when measurement error dominates
+($\sigma_b / \sigma$ small). When between-subject slope
+variability is large ($\sigma_b / \sigma > 2$), the
+gain from replication is modest because the variance
+is dominated by $\sigma_b^2 t^2$, which replication
+cannot reduce.
+
+
+## Replication vs additional run-in observations
+
+A natural question is whether a fixed budget of
+additional measurements should be spent on run-in
+observations (at distinct time points, separated by
+$t$) or on endpoint replicates (closely spaced,
+measurement-error reduction only).
+
+```{r rep_vs_runin, fig.cap="Variance as a function of additional measurements allocated either to run-in (new time points) or endpoint replication (same time point). Baseline: $J_0=0$, $J_1=2$, $\\sigma^2=1$, $\\sigma_b^2=1$."}
+a <- 1.0
+b <- 1.0
+tt <- 1.0
+extra <- 1:4
+
+v_base <- var_gamma_matrix(0, 2, 0, a, b, tt)
+
+v_runin <- sapply(extra, function(e) {
+  var_gamma_matrix(e, 2, 0, a, b, tt)
+})
+
+v_rep <- sapply(extra, function(e) {
+  var_gamma_replicated(0, 2, 0, a, b, tt,
+                        n_rep_post = 1 + e)
+})
+
+v_both <- sapply(extra, function(e) {
+  if (e == 1) {
+    var_gamma_replicated(0, 2, 0, a, b, tt,
+                          n_rep_post = 2)
+  } else {
+    n_ri <- floor(e / 2)
+    n_rp <- e - n_ri + 1
+    var_gamma_replicated(n_ri, 2, 0, a, b, tt,
+                          n_rep_post = n_rp)
+  }
+})
+
+plot(extra, v_runin, type = 'b', pch = 16,
+     ylim = range(c(v_runin, v_rep, v_both, v_base)),
+     xlab = 'Additional measurements',
+     ylab = expression(Var(hat(gamma))),
+     main = expression(
+       paste(sigma[b] / sigma, ' = 1')))
+lines(extra, v_rep, type = 'b', pch = 17,
+      col = 'red')
+lines(extra, v_both, type = 'b', pch = 15,
+      col = 'blue', lty = 2)
+abline(h = v_base, lty = 3, col = 'gray')
+legend('topright',
+       legend = c('Run-in (new time points)',
+                  'Endpoint replicates',
+                  'Split (run-in + replicates)',
+                  'Baseline (J_0=0, J_1=2)'),
+       col = c('black', 'red', 'blue', 'gray'),
+       pch = c(16, 17, 15, NA),
+       lty = c(1, 1, 2, 3), bty = 'n')
+```
+
+When $\sigma_b / \sigma \ge 1$, run-in observations at
+new time points outperform endpoint replicates because
+they provide information about the individual slope
+$b_i$, not just measurement-error reduction. When
+$\sigma_b / \sigma < 1$, endpoint replication can be
+competitive because measurement error is the dominant
+source of variance.
+
+
+## Combined replication at both ends
+
+Replicating both the baseline and endpoint visits
+provides symmetric measurement-error reduction.
+
+```{r both_ends}
+configs <- expand.grid(
+  n_pre = c(1, 2, 3),
+  n_post = c(1, 2, 3)
+)
+
+configs$v <- mapply(function(np, npo) {
+  var_gamma_replicated(0, 2, 0, 1.0, 1.0, 1.0,
+                        n_rep_post = npo,
+                        n_rep_pre = np)
+}, configs$n_pre, configs$n_post)
+
+tab2 <- reshape(
+  configs,
+  idvar = 'n_pre', timevar = 'n_post',
+  direction = 'wide'
+)
+names(tab2) <- c('$n_{\\text{pre}}$',
+  '$n_{\\text{post}}=1$',
+  '$n_{\\text{post}}=2$',
+  '$n_{\\text{post}}=3$')
+
+knitr::kable(
+  tab2,
+  caption = paste0(
+    'Per-pair variance with baseline and endpoint ',
+    'replication ($J_0=0$, $J_1=2$, $\\sigma^2=1$, ',
+    '$\\sigma_b^2=1$).'),
+  booktabs = TRUE,
+  escape = FALSE,
+  digits = 4,
+  row.names = FALSE
+)
+```
+
+
+# Incorporating dropout
+
+## Pattern-mixture approach
+
+Following @frost2008 (Section 2.3), dropout
+is handled via a pattern-mixture model
+[@dawson1993; @lu2008]. Participants
+are stratified by their observed visit pattern, and
+the overall variance is a weighted average:
+\begin{equation}
+  N = \frac{1}{\sum_{s} p_s / N_s}
+\end{equation}
+where $p_s$ is the proportion with pattern $s$ and
+$N_s$ is the sample size that would be needed if all
+participants had pattern $s$. This approximation
+treats each stratum independently. @hu2021 derive
+exact variance formulas under monotone dropout for
+the three-component random coefficient regression
+model ($\sigma^2, \sigma_a^2, \sigma_b^2$),
+accounting for the effect of dropout on the
+estimability of the random slope variance. Their
+approach is more rigorous than the pattern-mixture
+approximation used here, which is conservative when
+dropout is informative about the random slope.
+
+```{r dropout}
+sigma2_ad <- 0.0025
+sigma_b2_ad <- 0.9745
+tt <- 1.0
+delta_ad <- 0.25
+
+#' Pattern-mixture sample size (Frost Eq. 9)
+#'
+#' @param proportions Numeric vector of stratum
+#'   proportions (must sum to 1).
+#' @param n_strata Numeric vector of per-stratum
+#'   sample sizes (same length as proportions).
+#' @return Numeric: overall required sample size.
+pattern_mixture_n <- function(proportions, n_strata) {
+  stopifnot(abs(sum(proportions) - 1) < 1e-10)
+  stopifnot(length(proportions) == length(n_strata))
+  1 / sum(proportions / n_strata)
+}
+
+annual_dropout <- c(0, 0.10, 0.20, 0.30)
+r_opt <- 2
+k_opt <- 2
+f_opt <- 1
+
+n_full <- sample_size(r_opt, k_opt, f_opt,
+                      sigma2_ad, sigma_b2_ad,
+                      tt, delta_ad)
+
+dropout_table <- data.frame(rate = annual_dropout)
+dropout_table$n_no_dropout <- n_full
+dropout_table$n_with_dropout <- sapply(
+  annual_dropout, function(d) {
+    if (d == 0) return(n_full)
+    p_complete <- (1 - d)^(k_opt + f_opt)
+    p_partial <- 1 - p_complete
+    n_partial <- sample_size(r_opt, k_opt, 0,
+                             sigma2_ad, sigma_b2_ad,
+                             tt, delta_ad)
+    ceiling(pattern_mixture_n(
+      c(p_complete, p_partial),
+      c(n_full, n_partial)
+    ))
+  })
+
+knitr::kable(
+  dropout_table,
+  col.names = c('Annual dropout',
+                '$N$ (no dropout)',
+                '$N$ (with dropout)'),
+  caption = paste0(
+    'Sample size adjusted for dropout via ',
+    'pattern-mixture ($J_0=', r_opt, '$, $J_1=', k_opt,
+    '$, $J_2=', f_opt, '$, MIRIAD parameters).'),
+  booktabs = TRUE,
+  escape = FALSE
+)
+```
+
+
+# Numerical examples
+
+## AD neuroimaging trial
+
+Using MIRIAD parameters ($\sigma^2 = 0.0025$,
+$\sigma_b^2 = 0.9745$, $t = 1$ year), compare the
+optimal allocation for $J = 4, 5, 6$ total
+observations with and without dropout.
+
+```{r ad_optimal, fig.cap="Variance across all allocations for $J=5$ total observations using MIRIAD parameters. Each point is one $(J_0, J_1, J_2)$ configuration."}
+sigma2_ad <- 0.0025
+sigma_b2_ad <- 0.9745
+delta_ad <- 0.25
+
+p_ad <- 5
+configs_ad <- expand.grid(
+  r = 0:(p_ad - 1),
+  k = 1:p_ad,
+  f = 0:(p_ad - 1)
+)
+configs_ad <- configs_ad[configs_ad$r + configs_ad$k +
+                           configs_ad$f == p_ad, ]
+
+configs_ad$variance <- sapply(seq_len(nrow(configs_ad)),
+  function(i) {
+    var_gamma_matrix(
+      configs_ad$r[i], configs_ad$k[i],
+      configs_ad$f[i],
+      sigma2_ad, sigma_b2_ad, tt)
+  })
+
+configs_ad$label <- sprintf('(%d,%d,%d)',
+  configs_ad$r, configs_ad$k, configs_ad$f)
+
+configs_ad <- configs_ad[order(configs_ad$variance), ]
+
+configs_ad$n <- sapply(configs_ad$variance,
+  function(v) {
+    za <- qnorm(0.975)
+    zb <- qnorm(0.90)
+    ceiling((za + zb)^2 * v / delta_ad^2)
+  })
+
+knitr::kable(
+  head(configs_ad[, c('label', 'variance', 'n')], 10),
+  col.names = c('$(J_0, J_1, J_2)$',
+                '$\\Var_1(\\hat\\gamma)$',
+                '$N$ per group'),
+  caption = paste0(
+    'Top 10 allocations for $J=', p_ad,
+    '$ observations (MIRIAD parameters, ',
+    '$\\Delta=', delta_ad, '$, 90\\% power).'),
+  booktabs = TRUE,
+  escape = FALSE,
+  digits = 6,
+  row.names = FALSE
+)
+```
+
+
+# Discussion
+
+<!-- TODO: practical recommendations for trial -->
+<!-- designers. Key message: for most parameter -->
+<!-- configurations, allocating 1-2 run-in -->
+<!-- observations and 0-1 common close observations -->
+<!-- is near-optimal, with the remaining budget -->
+<!-- devoted to the treatment period. -->
+
+# References

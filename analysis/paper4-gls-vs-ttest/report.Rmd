@@ -1,0 +1,762 @@
+---
+title: |
+  GLS versus Averaged Change-Score Estimators for
+  Clinical Trials with Run-In Observations
+author: "Ronald G. Thomas"
+affiliation: "University of California, San Diego"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+fontsize: 11pt
+geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    number_sections: true
+    keep_tex: true
+    highlight: tango
+bibliography: references.bib
+link-citations: true
+header-includes:
+  - \usepackage{amsmath,amsfonts,amssymb}
+  - \usepackage{booktabs}
+  - \usepackage{float}
+  - \DeclareMathOperator{\Var}{Var}
+  - \DeclareMathOperator{\Cov}{Cov}
+  - \DeclareMathOperator{\E}{E}
+abstract: |
+  Three approaches exist for incorporating run-in
+  observations into the analysis of longitudinal
+  clinical trials. The GLS estimator under the linear
+  mixed model uses the full covariance structure to
+  extract maximum information from all observations.
+  The ANCOVA estimator regresses post-randomization
+  means on the run-in mean as a covariate, requiring
+  no specification of the random effects covariance.
+  The averaged change-score estimator computes a
+  simple difference of phase means and applies a
+  $t$-test, requiring no variance component estimation
+  at all. We derive the relative efficiency of these
+  three approaches as a function of the trial design
+  $(J_0, J_1, J_2)$ and the variance parameters
+  $(\sigma^2, \sigma_b^2)$. Under correct model
+  specification, GLS $\le$ ANCOVA $\le$ averaged in
+  variance. Under misspecification of $G$ or $R$, the
+  simpler estimators can outperform GLS. We provide
+  conditions under which ANCOVA loses less than 5\%
+  efficiency relative to GLS and investigate
+  robustness via simulation.
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 6,
+  fig.height = 4,
+  fig.pos = "H"
+)
+library(runinpower)
+```
+
+# Introduction
+
+The GLS estimator $\hat\gamma_{\text{GLS}} =
+(X'\Sigma^{-1}X)^{-1}X'\Sigma^{-1}\mathbf{c}$ is the
+minimum-variance unbiased estimator when $\Sigma$ is
+known. In practice, $\Sigma$ must be estimated, and
+the efficiency of the feasible GLS depends on the
+accuracy of this estimation. With small sample sizes
+or short follow-up, variance component estimates can
+be unstable, potentially eroding the theoretical
+advantage of GLS.
+
+The averaged change-score approach sidesteps variance
+component estimation entirely. For a trial with $J_0$
+run-in and $J_2$ common close observations, the
+estimator is:
+\begin{equation}
+  \hat\gamma_{\text{avg}} = \bar{d}_1 - \bar{d}_0
+\end{equation}
+where
+\begin{equation}
+  d_{ik} = \frac{1}{J_{2,i} + 1}
+    \sum_{\ell=0}^{J_{2,i}} Y_{i,q+\ell,k}
+    - \frac{1}{J_{0,i} + 1}
+    \sum_{\ell=0}^{J_{0,i}} Y_{i,\ell,k}
+\end{equation}
+is the difference of post- and pre-randomization
+means for participant $i$.
+
+The debate between change-score and ANCOVA analyses has
+a long history [@senn2006; @vanbreukelen2006;
+@crager1987]. @yang2001 provided a formal efficiency
+comparison for pretest-posttest designs. @liu2009 and
+@lu2010 compared baseline-as-covariate against
+baseline-as-response (constrained longitudinal data
+analysis). @tsiatis2008 developed a semiparametric
+framework for covariate adjustment. @mallinckrodt2021
+showed that MMRM requires time-by-covariate interactions
+to guarantee power gains over ANCOVA. @brogan1980
+established the foundational comparison of pretest-posttest
+designs. @coffman2016 addressed conditioning on baseline
+in longitudinal RCTs. @wang2019 proposed the two-period
+approach for run-in trials.
+
+We note that the averaged change-score estimator
+studied here is distinct from (and less efficient than)
+the constrained longitudinal data analysis (cLDA)
+estimator of @liang2000 and @lu2010, which includes
+baseline in the response vector with a common-mean
+constraint. The cLDA estimator uses the full covariance
+structure without requiring specification of the random
+effects distribution $G$, placing it between the
+averaged estimator and GLS in the efficiency ordering.
+@funatogawa2020 extended the cLDA framework to pre-
+and post-treatment measurements with equal baseline
+assumptions. A full comparison including cLDA is beyond
+the scope of this paper but represents a natural
+extension.
+
+The `longpower` R package [@iddi2022] provides the
+CRAN reference implementation of power calculations for
+the GLS / REML-based slope-comparison estimator,
+covering the Liu-Liang [@liuliang1997], Diggle
+[@diggle2002], and Edland [@ard2011] formulations.
+These routines correspond to the $\hat\gamma_{\text{GLS}}$
+estimator studied here under correct specification and
+constitute the Paper 1 baseline extended by run-in and
+common close observations. However, `longpower` does not
+cover the ANCOVA-on-run-in-mean estimator or the
+averaged change-score $t$-test, nor does it characterize
+the efficiency loss from misspecification of $G$ or $R$.
+The comparison developed here therefore complements
+`longpower` by (i) ordering the three candidate
+estimators under correct specification and (ii)
+quantifying when the simpler estimators outperform GLS
+under misspecified covariance.
+
+
+# Three estimators
+
+## GLS under the mixed model
+
+From @frost2008, the per-pair variance is the
+$(\gamma, \gamma)$ element of
+$(X'\Sigma^{-1}X)^{-1}$ with $\Sigma = R + ZGZ'$
+[@laird1982; @verbeke2000], computed via the Woodbury
+identity.
+
+For the Frost conventional design ($J_0 = 0$, $J_1 = 2$):
+\begin{equation}
+  \hat\gamma_{\text{GLS}} = \frac{1}{2t}
+    [(C_{22} + C_{21}) - (C_{12} + C_{11})]
+\end{equation}
+with $\Var(\hat\gamma_{\text{GLS}}) =
+(\sigma^2 + 2\sigma_b^2 t^2)/t^2$.
+
+## Averaged change score ($t$-test)
+
+The averaged change-score estimator ignores the
+within-subject correlation structure and treats
+$d_{ik}$ as independent observations:
+\begin{equation}
+  \Var(\hat\gamma_{\text{avg}})
+  = \frac{2}{m}\Var(d_{ik})
+\end{equation}
+
+The variance $\Var(d_{ik})$ depends on the correlation
+structure but does not require its estimation.
+
+```{r avg_variance, echo=TRUE}
+a <- 1.0
+b <- 1.0
+tt <- 1.0
+
+v_gls <- var_gamma_matrix(2, 2, 0, a, b, tt)
+v_avg <- var_gamma_avg(2, 2, 0, a, b, tt)
+re <- re_avg_vs_gls(2, 2, 0, a, b, tt)
+
+cat(sprintf('J_0=2, J_1=2: GLS=%.4f, Avg=%.4f, RE=%.4f\n',
+            v_gls, v_avg, re))
+```
+
+
+## ANCOVA with run-in mean as covariate
+
+The ANCOVA approach uses the averaged run-in rate as a
+baseline covariate without specifying $\sigma_b^2$:
+\begin{equation}
+  \bar{Y}_{i,\text{post}} = \alpha + \gamma g_i
+    + \phi \bar{Y}_{i,\text{pre}} + \varepsilon_i
+\end{equation}
+
+The variance of $\hat\gamma$ under this model is
+\begin{equation}
+  \Var(\hat\gamma_{\text{ANC}})
+  = \frac{2}{m}\,\Var(\bar{Y}_{\text{post}})
+    \,(1 - \rho_{\text{pre,post}}^2)
+\end{equation}
+where $\rho_{\text{pre,post}}$ is the marginal
+correlation between the run-in and post-randomization
+means. When $J_0 = 0$ there is no covariate and ANCOVA
+reduces to the averaged estimator. When
+$\rho_{\text{pre,post}}$ is large (i.e., when
+$\sigma_b^2$ dominates $\sigma^2$), the $(1-\rho^2)$
+factor produces substantial variance reduction.
+
+The key advantage over GLS is that $\phi$ is estimated
+from the data rather than derived from assumed variance
+components [@senn2006; @borm2007]. The key advantage
+over the averaged estimator is that it exploits the
+predictive value of the run-in observations
+[@vanbreukelen2006; @vickers2001].
+
+```{r ancova_demo, echo=TRUE}
+v_gls <- var_gamma_matrix(2, 2, 0, a, b, tt)
+v_anc <- var_gamma_ancova(2, 2, 0, a, b, tt)
+v_avg <- var_gamma_avg(2, 2, 0, a, b, tt)
+
+cat(sprintf('J_0=2, J_1=2 (sigma_b/sigma = 1):\n'))
+cat(sprintf('  GLS:    %.4f\n', v_gls))
+cat(sprintf('  ANCOVA: %.4f\n', v_anc))
+cat(sprintf('  Avg:    %.4f\n', v_avg))
+cat(sprintf('  RE(GLS/ANC): %.3f\n', v_gls / v_anc))
+cat(sprintf('  RE(ANC/Avg): %.3f\n', v_anc / v_avg))
+```
+
+
+## SUR (seemingly unrelated regression)
+
+The SUR approach treats the run-in and treatment
+periods as separate regression equations linked by
+correlated errors:
+\begin{align}
+  Y_1 &= X_2 \begin{pmatrix}
+    \beta_{11} \\ \beta_{12}
+  \end{pmatrix} + e_1
+  & &\text{(both groups)} \\
+  Y_2 &= X_1 \alpha_2 + e_2
+  & &\text{(baseline)}
+\end{align}
+
+The deviation-from-mean parameterization gives
+$\beta_1 = (\delta_1 + \delta_2)/2$ and
+$\beta_2 = (\delta_2 - \delta_1)/2$, where
+$\delta_j$ are the group-specific rates.
+
+<!-- TODO: derive the SUR variance and compare -->
+<!-- to GLS and averaged change-score -->
+
+
+## BLUP as theoretical benchmark
+
+The three estimators above are linear functions of the
+observed change scores and can be compared to a common
+benchmark: the best linear unbiased predictor (BLUP) of the
+individual random slopes. Under the random-slopes model with
+marginal covariance $V_i = R_i + Z_i G Z_i'$, the BLUP of the
+subject-specific random slope $b_i$ given the data is
+\begin{equation}
+  \hat b_i
+  = G Z_i' V_i^{-1}
+    \bigl(y_i - X_i \hat{\boldsymbol{\beta}}\bigr)
+  \label{eq:blup}
+\end{equation}
+where $\hat{\boldsymbol{\beta}}$ is the GLS estimator of the
+fixed effects [@henderson1975; @robinson1991].
+
+The group-specific slope estimators derived from the fixed
+effects share the same variance as
+$(\hat{\boldsymbol{\beta}})_\gamma$, and the GLS estimator
+$\hat\gamma_{\text{GLS}}$ minimizes the variance among all
+linear unbiased estimators of $\gamma$ when $V_i$ is correctly
+specified. The averaged and ANCOVA estimators are specific
+linear approximations to this benchmark:
+
+- **Averaged change-score** replaces $V_i^{-1}$ with an
+  unweighted sum; this is optimal only when $V_i \propto I$,
+  which fails for any non-zero random-slope variance.
+- **ANCOVA** collapses the run-in visits into a single
+  scalar covariate (the run-in mean) rather than weighting
+  them by $V_i^{-1}$; the resulting efficiency loss vanishes
+  as $J_0 \to \infty$ since the run-in mean becomes a
+  sufficient statistic for the subject-specific intercept
+  plus average slope.
+
+Under model misspecification (Section 4), these
+approximations can outperform the nominally optimal GLS
+because they depend on fewer variance components.
+
+# Relative efficiency under correct specification
+
+## Analytical comparison
+
+The relative efficiency of the averaged estimator
+to GLS is:
+\begin{equation}
+  \text{RE}_{\text{avg}} =
+    \frac{\Var(\hat\gamma_{\text{GLS}})}
+         {\Var(\hat\gamma_{\text{avg}})}
+    \le 1
+\end{equation}
+with equality when the averaged estimator happens
+to coincide with GLS (which occurs in special cases).
+
+```{r re_table}
+configs <- expand.grid(
+  r = c(0, 1, 2, 4),
+  k = c(1, 2, 3),
+  f = c(0, 1)
+)
+configs <- configs[configs$r + configs$k +
+                     configs$f >= 2, ]
+
+ratio_levels <- c(0.5, 1.0, 2.0, 5.0, 20.0)
+a <- 1.0
+
+for (ratio in ratio_levels) {
+  b <- ratio^2 * a
+  configs[[paste0('avg_', ratio)]] <- mapply(
+    function(r, k, f)
+      re_avg_vs_gls(r, k, f, a, b, tt),
+    configs$r, configs$k, configs$f
+  )
+  configs[[paste0('anc_', ratio)]] <- mapply(
+    function(r, k, f)
+      re_ancova_vs_gls(r, k, f, a, b, tt),
+    configs$r, configs$k, configs$f
+  )
+}
+
+configs$label <- sprintf('(%d,%d,%d)',
+  configs$r, configs$k, configs$f)
+
+avg_cols <- paste0('avg_', ratio_levels)
+anc_cols <- paste0('anc_', ratio_levels)
+
+display_avg <- configs[, c('label', avg_cols)]
+names(display_avg) <- c('$(J_0,J_1,J_2)$',
+  paste0('$', ratio_levels, '$'))
+
+knitr::kable(
+  display_avg,
+  caption = paste0(
+    'RE of averaged change-score vs GLS ',
+    '($\\Var_{\\text{GLS}} / ',
+    '\\Var_{\\text{avg}}$) by ',
+    '$\\sigma_b/\\sigma$.'),
+  booktabs = TRUE,
+  escape = FALSE,
+  digits = 3,
+  row.names = FALSE
+)
+
+display_anc <- configs[, c('label', anc_cols)]
+names(display_anc) <- c('$(J_0,J_1,J_2)$',
+  paste0('$', ratio_levels, '$'))
+
+knitr::kable(
+  display_anc,
+  caption = paste0(
+    'RE of ANCOVA vs GLS ',
+    '($\\Var_{\\text{GLS}} / ',
+    '\\Var_{\\text{ANC}}$) by ',
+    '$\\sigma_b/\\sigma$.'),
+  booktabs = TRUE,
+  escape = FALSE,
+  digits = 3,
+  row.names = FALSE
+)
+```
+
+## When does the gap exceed 5%?
+
+<!-- TODO: characterize the parameter space where -->
+<!-- RE_avg < 0.95, i.e., where the simpler -->
+<!-- approach loses more than 5% efficiency -->
+
+
+# Robustness to misspecification
+
+## Misspecified $G$
+
+When $\sigma_b^2$ is misestimated (e.g., too large
+or too small), the feasible GLS is no longer optimal.
+The averaged change-score estimator is unaffected.
+
+```{r misspec_G, fig.cap="Effect of misspecifying $\\sigma_b^2$ on GLS variance. True $\\sigma_b^2 = 1$. The GLS estimator uses an assumed value on the x-axis. The averaged estimator (horizontal line) is unaffected."}
+b_true <- 1.0
+a <- 1.0
+r <- 2
+k <- 2
+f <- 0
+
+b_assumed <- seq(0.01, 5, by = 0.05)
+
+var_misspec_gls <- function(r, k, f, sigma2,
+                            sigma_b2_true,
+                            sigma_b2_assumed,
+                            t_interval) {
+  p <- r + k + f
+  R <- build_R_matrix(p, sigma2)
+  des <- build_design(r, k, f, t_interval)
+  Z <- des$Z
+  nc <- des$ncol_X
+
+  Sigma_true <- R + Z %*% matrix(sigma_b2_true) %*% t(Z)
+
+  Ri <- solve(R)
+  G_a <- matrix(sigma_b2_assumed)
+  H_a <- solve(solve(G_a) + t(Z) %*% Ri %*% Z)
+  Xt <- des$X_trt
+  Xp <- des$X_plc
+  XRX <- t(Xt) %*% Ri %*% Xt + t(Xp) %*% Ri %*% Xp
+  XtRZ <- t(Xt) %*% Ri %*% Z
+  XpRZ <- t(Xp) %*% Ri %*% Z
+  W_a <- XtRZ %*% H_a %*% t(XtRZ) +
+         XpRZ %*% H_a %*% t(XpRZ)
+  XSiX_a <- XRX - W_a
+  XSiX_a_inv <- solve(XSiX_a)
+
+  Sigma_a_inv <- Ri - Ri %*% Z %*% H_a %*% t(Z) %*% Ri
+
+  bread <- XSiX_a_inv
+  meat_trt <- t(Xt) %*% Sigma_a_inv %*%
+    Sigma_true %*% Sigma_a_inv %*% Xt
+  meat_plc <- t(Xp) %*% Sigma_a_inv %*%
+    Sigma_true %*% Sigma_a_inv %*% Xp
+  meat <- meat_trt + meat_plc
+
+  sandwich <- bread %*% meat %*% bread
+  sandwich[nc, nc]
+}
+
+v_misspec <- sapply(b_assumed, function(ba) {
+  var_misspec_gls(r, k, f, a, b_true, ba, tt)
+})
+
+v_avg <- var_gamma_avg(r, k, f, a, b_true, tt)
+v_correct <- var_gamma_matrix(r, k, f, a, b_true, tt)
+
+plot(b_assumed, v_misspec, type = 'l', lwd = 2,
+     xlab = expression(paste('Assumed ',
+                             sigma[b]^2)),
+     ylab = expression(Var(hat(gamma))),
+     main = 'Misspecified random slope variance',
+     ylim = c(min(v_correct, v_avg) * 0.9,
+              max(v_misspec) * 1.1))
+abline(h = v_avg, col = 'red', lwd = 2, lty = 2)
+abline(v = b_true, col = 'gray', lty = 3)
+points(b_true, v_correct, pch = 16, cex = 1.5)
+legend('topright',
+       legend = c('Misspecified GLS (sandwich)',
+                  'Averaged change-score',
+                  'Correct GLS'),
+       col = c('black', 'red', 'black'),
+       lty = c(1, 2, NA),
+       pch = c(NA, NA, 16),
+       lwd = c(2, 2, NA),
+       bty = 'n')
+```
+
+## Misspecified $R$
+
+When the residual correlation structure is wrong
+(e.g., compound symmetry assumed but AR(1) is true),
+both the GLS variance formula and the Woodbury
+correction are biased. The averaged estimator is
+again unaffected.
+
+```{r misspec_R, fig.cap="Effect of analyzing under compound symmetry when the true correlation is AR(1). Sandwich variance of GLS (solid) vs averaged change-score (dashed) as a function of $\\rho$."}
+rho_grid <- seq(0, 0.9, by = 0.05)
+r <- 2
+k <- 2
+f <- 0
+a <- 1.0
+b <- 1.0
+
+var_misspec_r <- function(rho) {
+  p <- r + k + f
+  des <- build_design(r, k, f, tt)
+  Z <- des$Z
+  nc <- des$ncol_X
+
+  d_runin <- if (r > 0) seq(-r, -1) else numeric(0)
+  d_trt <- if (k > 0) seq(1, k) else numeric(0)
+  d_all <- c(d_runin, d_trt)
+
+  R_true <- build_R_matrix_ar1(p, a, rho, d_all)
+  Sigma_true <- R_true + Z %*% matrix(b) %*% t(Z)
+
+  R_assumed <- build_R_matrix(p, a)
+  Ri_a <- solve(R_assumed)
+  G <- matrix(b)
+  H_a <- solve(solve(G) + t(Z) %*% Ri_a %*% Z)
+
+  Xt <- des$X_trt
+  Xp <- des$X_plc
+  XRX <- t(Xt) %*% Ri_a %*% Xt +
+         t(Xp) %*% Ri_a %*% Xp
+  XtRZ <- t(Xt) %*% Ri_a %*% Z
+  XpRZ <- t(Xp) %*% Ri_a %*% Z
+  W_a <- XtRZ %*% H_a %*% t(XtRZ) +
+         XpRZ %*% H_a %*% t(XpRZ)
+  XSiX_a <- XRX - W_a
+  XSiX_a_inv <- solve(XSiX_a)
+
+  Sigma_a_inv <- Ri_a - Ri_a %*% Z %*% H_a %*%
+                 t(Z) %*% Ri_a
+
+  meat_trt <- t(Xt) %*% Sigma_a_inv %*%
+    Sigma_true %*% Sigma_a_inv %*% Xt
+  meat_plc <- t(Xp) %*% Sigma_a_inv %*%
+    Sigma_true %*% Sigma_a_inv %*% Xp
+  meat <- meat_trt + meat_plc
+
+  sandwich <- XSiX_a_inv %*% meat %*% XSiX_a_inv
+  sandwich[nc, nc]
+}
+
+v_sandwich <- sapply(rho_grid, var_misspec_r)
+
+des <- build_design(r, k, f, tt)
+n_post <- k + f
+w <- c(rep(-1 / r, r), rep(1 / n_post, k + f))
+v_avg_ar1 <- sapply(rho_grid, function(rho) {
+  p <- r + k + f
+  d_all <- c(seq(-r, -1), seq(1, k))
+  if (rho == 0) {
+    R_true <- build_R_matrix(p, a)
+  } else {
+    R_true <- build_R_matrix_ar1(p, a, rho, d_all)
+  }
+  Z <- des$Z
+  Sigma_true <- R_true + Z %*% matrix(b) %*% t(Z)
+  2 * as.numeric(t(w) %*% Sigma_true %*% w)
+})
+
+plot(rho_grid, v_sandwich, type = 'l', lwd = 2,
+     xlab = expression(rho[true]),
+     ylab = expression(Var(hat(gamma))),
+     main = 'CS assumed, AR(1) true',
+     ylim = range(c(v_sandwich, v_avg_ar1)))
+lines(rho_grid, v_avg_ar1, col = 'red',
+      lwd = 2, lty = 2)
+legend('topleft',
+       legend = c('GLS (CS assumed, sandwich)',
+                  'Averaged change-score'),
+       col = c('black', 'red'),
+       lty = c(1, 2), lwd = 2, bty = 'n')
+```
+
+
+# Simulation study
+
+## Design
+
+To complement the analytical results, we simulate
+trials under the following factorial design:
+
+- $n \in \{30, 50, 100, 200\}$ per group
+- $(J_0, J_1, J_2) \in \{(0,2,0), (2,2,0), (2,2,2)\}$
+- $\sigma_b/\sigma \in \{1, 5, 20\}$
+- True correlation: compound symmetry or AR(1)
+- Analysis: GLS (correctly specified), GLS
+  (misspecified), averaged change-score
+
+For each configuration, 5000 trials are simulated.
+The outcomes are empirical variance, empirical power,
+and coverage of nominal 95\% confidence intervals.
+
+```{r simulation}
+simulate_trial <- function(m, r, k, f, sigma2,
+                           sigma_b2, t_interval,
+                           delta) {
+  p <- r + k + f
+  des <- build_design(r, k, f, t_interval)
+  R <- build_R_matrix(p, sigma2)
+  Z <- des$Z
+  Sigma <- R + Z %*% matrix(sigma_b2) %*% t(Z)
+  L <- chol(Sigma)
+
+  generate_group <- function(n, g) {
+    X <- if (g == 1) des$X_trt else des$X_plc
+    nc <- ncol(X)
+    beta_true <- if (nc == 2) {
+      c(1.0, delta * g)
+    } else {
+      c(1.0, 1.0, delta * g)
+    }
+    mu <- X %*% beta_true
+    replicate(n, as.numeric(mu + t(L) %*% rnorm(p)))
+  }
+
+  Y_trt <- generate_group(m, 1)
+  Y_plc <- generate_group(m, 0)
+  list(Y_trt = Y_trt, Y_plc = Y_plc, des = des)
+}
+
+analyze_gls <- function(trial, sigma2, sigma_b2,
+                        t_interval) {
+  des <- trial$des
+  p <- des$p
+  nc <- des$ncol_X
+  R <- build_R_matrix(p, sigma2)
+  Ri <- solve(R)
+  Z <- des$Z
+  G <- matrix(sigma_b2)
+  H <- solve(solve(G) + t(Z) %*% Ri %*% Z)
+
+  Xt <- des$X_trt
+  Xp <- des$X_plc
+
+  XSi_trt <- t(Xt) %*% (Ri - Ri %*% Z %*% H %*%
+                          t(Z) %*% Ri)
+  XSi_plc <- t(Xp) %*% (Ri - Ri %*% Z %*% H %*%
+                          t(Z) %*% Ri)
+
+  info <- XSi_trt %*% Xt + XSi_plc %*% Xp
+  m <- ncol(trial$Y_trt)
+  info_total <- m * info
+  V <- solve(info_total)
+
+  rhs <- rowSums(apply(trial$Y_trt, 2, function(y) {
+    XSi_trt %*% y
+  })) + rowSums(apply(trial$Y_plc, 2, function(y) {
+    XSi_plc %*% y
+  }))
+
+  beta_hat <- V %*% rhs
+  se <- sqrt(V[nc, nc])
+  gamma_hat <- beta_hat[nc]
+  list(estimate = gamma_hat, se = se,
+       z = gamma_hat / se)
+}
+
+analyze_avg <- function(trial) {
+  des <- trial$des
+  r <- sum(des$X_trt[, 1] != 0)
+  p <- des$p
+  n_post <- p - r
+
+  avg_score <- function(y) {
+    if (r == 0) {
+      mean(y)
+    } else {
+      mean(y[(r + 1):p]) - mean(y[1:r])
+    }
+  }
+
+  d_trt <- apply(trial$Y_trt, 2, avg_score)
+  d_plc <- apply(trial$Y_plc, 2, avg_score)
+  m <- length(d_trt)
+
+  gamma_hat <- mean(d_trt) - mean(d_plc)
+  se <- sqrt(var(d_trt) / m + var(d_plc) / m)
+  list(estimate = gamma_hat, se = se,
+       z = gamma_hat / se)
+}
+
+# Quick validation
+set.seed(42)
+trial <- simulate_trial(100, 2, 2, 0, 1.0, 1.0,
+                        1.0, 0.5)
+res_gls <- analyze_gls(trial, 1.0, 1.0, 1.0)
+res_avg <- analyze_avg(trial)
+cat(sprintf('Single trial (m=100, delta=0.5):\n'))
+cat(sprintf('  GLS: est=%.3f, se=%.3f\n',
+            res_gls$estimate, res_gls$se))
+cat(sprintf('  Avg: est=%.3f, se=%.3f\n',
+            res_avg$estimate, res_avg$se))
+```
+
+
+# Numerical examples
+
+## MIRIAD parameters
+
+```{r miriad_comparison}
+sigma2_ad <- 0.0025
+sigma_b2_ad <- 0.9745
+
+configs <- expand.grid(
+  r = c(0, 1, 2, 4),
+  k = c(1, 2, 3),
+  f = c(0, 1)
+)
+configs <- configs[configs$r + configs$k +
+                     configs$f >= 2, ]
+
+configs$v_gls <- mapply(
+  function(r, k, f)
+    var_gamma_matrix(r, k, f, sigma2_ad,
+                     sigma_b2_ad, 1.0),
+  configs$r, configs$k, configs$f
+)
+
+configs$v_anc <- mapply(
+  function(r, k, f)
+    var_gamma_ancova(r, k, f, sigma2_ad,
+                     sigma_b2_ad, 1.0),
+  configs$r, configs$k, configs$f
+)
+
+configs$v_avg <- mapply(
+  function(r, k, f)
+    var_gamma_avg(r, k, f, sigma2_ad,
+                  sigma_b2_ad, 1.0),
+  configs$r, configs$k, configs$f
+)
+
+configs$label <- sprintf('(%d,%d,%d)',
+  configs$r, configs$k, configs$f)
+
+delta_ad <- 0.25
+za <- qnorm(0.975)
+zb <- qnorm(0.90)
+configs$n_gls <- ceiling(
+  (za + zb)^2 * configs$v_gls / delta_ad^2)
+configs$n_anc <- ceiling(
+  (za + zb)^2 * configs$v_anc / delta_ad^2)
+configs$n_avg <- ceiling(
+  (za + zb)^2 * configs$v_avg / delta_ad^2)
+
+display <- configs[order(configs$v_gls),
+  c('label', 'n_gls', 'n_anc', 'n_avg')]
+
+knitr::kable(
+  head(display, 15),
+  col.names = c('$(J_0,J_1,J_2)$', '$N$ GLS', '$N$ ANC',
+                '$N$ Avg'),
+  caption = paste0(
+    'Sample size per group: GLS, ANCOVA, and ',
+    'averaged estimators (MIRIAD parameters, ',
+    '$\\Delta=', delta_ad, '$, 90\\% power).'),
+  booktabs = TRUE,
+  escape = FALSE,
+  row.names = FALSE
+)
+```
+
+## When to use which estimator
+
+<!-- TODO: decision flowchart or rule based on -->
+<!-- n, sigma_b/sigma, and confidence in the -->
+<!-- correlation structure -->
+
+
+# Discussion
+
+<!-- TODO: practical guidance. Key messages: -->
+<!-- (1) GLS is preferred when the model is -->
+<!--     well-specified and n is moderate-large -->
+<!-- (2) The averaged approach is a safe default -->
+<!--     when variance components are uncertain -->
+<!-- (3) The efficiency gap is small when r and k -->
+<!--     are large (because the averaging already -->
+<!--     captures most of the slope information) -->
+<!-- (4) SUR provides a middle ground but adds -->
+<!--     implementation complexity -->
+
+# References

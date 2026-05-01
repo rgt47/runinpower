@@ -1,0 +1,179 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  11pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3in,top=2cm,bottom=2cm]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{framed,  subfigure, rotating, xcolor, graphicx, titling,
+	geometry, booktabs, placeins, longtable, fancyhdr, currfile, wrapfig,
+	verbatim, fancyvrb, colortbl, multicol, soul, url, caption, float,
+	lipsum, xargs, etoolbox, sidenotes, float, import, xifthen,  hyperref,
+amssymb, amsmath, datenumber, booktabs, array, multirow, wrapfig, float,
+tabularray, pdflscape, tabu, alltt, threeparttable, threeparttablex, makecell,
+stfloats }
+
+\usepackage[export]{adjustbox}
+
+\graphicspath{{figures/}{/Users/zenn/shr/images/}}
+
+\usepackage[textwidth=5cm, colorinlistoftodos,prependcaption,textsize=normalsize]{todonotes}
+\usepackage[normalem]{ulem}
+
+%\newcommand{\incfig}[2][1]{%
+    %\def\svgwidth{#1\columnwidth}
+    %\import{./figures/}{#2.pdf_tex}
+%}
+
+\pagestyle{fancy}
+\pretitle{
+\begin{flushright}
+\includegraphics[width=3cm,valign=c]{sudoku.png}\\
+\end{flushright}
+\begin{flushleft} \LARGE }
+\posttitle{\par\end{flushleft}\vskip 0.5em}
+\predate{\begin{flushleft}\large}
+	\postdate{\par\end{flushleft}}
+	\preauthor{\begin{flushleft}\large}
+	\postauthor{\par\end{flushleft}}
+  % \fancyfoot[R]{\today}
+% \fancyhead[L]{\includegraphics[width=.8cm,valign=c]{sudoku.png}}
+\fancyfoot[L]{\currfilename} %put date in header
+\fancyfoot[R]{\includegraphics[width=.8cm]{sudoku.pdf}}
+\fancyhead[L]{\today} %put current file in footer
+
+\let\oldabstract\abstract
+\let\oldendabstract\endabstract
+\makeatletter
+\renewenvironment{abstract}
+{\renewenvironment{quotation}%
+               {\list{}{\addtolength{\leftmargin}{-3em} % change this value to add or remove length to the the default
+                        \listparindent 1.5em%
+                        \itemindent    \listparindent%
+                        \rightmargin   \leftmargin%
+                        \parsep        \z@ \@plus\p@}%
+                \item\relax}%
+               {\endlist}%
+\oldabstract}
+{\oldendabstract}
+\makeatother
+\rhead{Lab report}
+\fancyfoot[L]{\currfilename} %put current file in footer
+\setlength{\headheight}{13.59999pt}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Clinical Trial Power Analysis With One Or More Run-In Observations, X04},
+  pdfauthor={R.G. Thomas},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Clinical Trial Power Analysis With One Or More Run-In
+Observations, X04}
+\author{R.G. Thomas}
+\date{2023-12-23}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\section{Notes}\label{notes}
+
+The first part of this project is to read the Frost paper
+``cover-to-cover''. Notes of import will be reproduced here\ldots{}
+@frostOptimizingDesignClinical2008
+
+Second part is to record all useful calculations in the black
+``Longitudinal'' notebook.
+
+Third is to use mathematica to compute the variance of the fixed
+parameters.
+
+The paper by Wang et al targets the same problem we are interested in.
+@wangTwoPeriodLinear2019. The key question is how best to model the
+run-in information to get maximum advantage. What if the time course
+profile is not linear? should we model the slope or the variance?
+
+2022-10-20 made sure the key pubs from the folder are contained in
+Zotero container
+
+2022-10-20 setting up mathematica. start by working on frost3.1.1 Math
+file names frost311.m \textgreater{} wolframscript -f frost311.m
+
+test = \cite{frostAnalysisRepeatedDirect2004}
+\cite{frisonLinearlyDivergentTreatment1997}
+
+\section{Introduction}\label{introduction}
+
+(Start with an Extended intro regarding run-in information in clinical
+trials. Pros and Cons. Not restricted to AD trials. )
+
+\section{Methods}\label{methods}
+
+\section{Results}\label{results}
+
+\section{Code}\label{code}
+
+\bibliography{x04.bib}
+\bibliographystyle{plain}
+
+\nocite{*}
+
+\end{document}

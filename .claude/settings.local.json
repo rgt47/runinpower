@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip3 list:*)",
+      "mcp__zotero__zotero_semantic_search",
+      "WebSearch",
+      "mcp__zotero-mcp__search_collections",
+      "mcp__zotero-mcp__create_item",
+      "mcp__zotero-mcp__get_collection_details",
+      "mcp__zotero-mcp__get_collections",
+      "mcp__zotero-mcp__search_library",
+      "Bash(python3 -c ':*)",
+      "mcp__zotero-mcp__get_item_abstract",
+      "Bash(ln -sf ../references.bib __TRACKED_VAR__/references.bib)"
+    ]
+  }
+}

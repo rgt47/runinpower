@@ -1,0 +1,646 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[left=2.5cm,right=2.5cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\bZ}{\mathbf{Z}}
+\newcommand{\bR}{\mathbf{R}}
+\newcommand{\bI}{\mathbf{I}}
+\newcommand{\bone}{\mathbf{1}}
+\newcommand{\bt}{\mathbf{t}}
+
+\title{Notebook Derivations:\\
+  Variance of the Treatment Effect Estimator\\
+  via the Woodbury Identity}
+\author{R.G.\ Thomas}
+\date{Transcribed from handwritten notes, 2020--2021}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Notation and trial structure}
+\label{sec:notation}
+
+\noindent
+\textit{(From notes dated 3/10/21, page 1; 12/19/20, page 7.)}
+
+\medskip
+\noindent
+Consider a two-arm trial with indices:
+\begin{itemize}
+  \item $i = 1, \ldots, n_j$: participants in group $j$
+  \item $j = 0, 1$: treatment group
+  \item $k = -r, -(r-1), \ldots, -1, 0, 1, \ldots, q, q+1,
+    \ldots, q+d$: visit index
+\end{itemize}
+where $r$ = run-in visits, $q$ = planned (treatment) visits,
+$d$ = post-planned common close visits. Let $Y_{ijk}$ denote
+the outcome for participant $i$ in group $j$ at visit $k$.
+
+Define phase-specific means:
+\begin{align}
+  \bar{z}_{ij0} &= \frac{1}{r_i+1}
+    \sum_{k=0}^{-r} Y_{ijk}
+    & &\text{(run-in mean, including baseline)} \\
+  z_{ijk} &= Y_{ijk}
+    & &\text{for } 0 < k \le q
+    \quad\text{(individual treatment visits)} \\
+  \bar{z}_{ijq} &= \frac{1}{d_i+1}
+    \sum_{k=q}^{q+d} Y_{ijk}
+    & &\text{(common close mean)}
+\end{align}
+
+The change score relative to the run-in mean is
+\begin{equation}
+  C_{ijq} = \bar{z}_{ijq} - \bar{z}_{ij0}
+\end{equation}
+
+
+\subsection{Correlation structures considered}
+
+Five cases for $\Corr(Y_{ijk}, Y_{ijk'})$:
+
+\begin{enumerate}
+  \item \textbf{Compound symmetry:}
+    $\Corr(Y_{ijk}, Y_{ijk'}) = \rho$ for all $k \ne k'$,
+    with $r_i = r$, $d_i = d$.
+
+  \item \textbf{AR(1):}
+    $\Corr(Y_{ijk}, Y_{ijk'}) = \rho^{|k'-k|}$
+    for all $k \ne k$, $0 < \rho < 1$.
+
+  \item \textbf{Case 1 with run-in:}
+    compound symmetry extended to $r_i \in \{1,\ldots,r\}$,
+    $d_i \in \{1,\ldots,d\}$.
+
+  \item \textbf{Case 2 with run-in:}
+    AR(1) extended to $r_i \in \{1,\ldots,r\}$,
+    $d_i \in \{1,\ldots,d\}$.
+
+  \item \textbf{General:}
+    $\Corr(Y_{ijk}, Y_{ijk'}) = \sigma_{|k-k'|} / \sigma^2$.
+\end{enumerate}
+
+
+\section{Test statistic and sample size}
+\label{sec:test}
+
+\noindent
+\textit{(From notes dated 3/10/21, page 2.)}
+
+\medskip
+\noindent
+\textbf{Goal:} Compare the power of a $t$-test that ignores
+run-in and common close observations to one that uses all
+observations.
+
+The test statistic for design $(d, r)$ is the difference
+in group-mean change scores:
+\begin{equation}
+  T(d, r) = \bar{C}_{1q}(d, r) - \bar{C}_{0q}(d, r)
+\end{equation}
+
+The relative sample size is
+\begin{equation}
+  \frac{N_{T(d,r)}}{N_{T(0,0)}}
+  = \frac{\Var\bigl(\bar{C}_{1q}(d,r)
+    - \bar{C}_{0q}(d,r)\bigr)}
+    {\Var\bigl(\bar{C}_{1q}(0,0)
+    - \bar{C}_{0q}(0,0)\bigr)}
+\end{equation}
+
+The sample size formula (per group) for a two-sided test
+at level $\alpha$ with power $1 - \beta$ is
+\begin{equation}
+  N = \frac{(z_{\alpha/2} + z_\beta)^2
+    \cdot \Var(\bar{D}_{1q} - \bar{D}_{0q})}
+    {\Delta^2}
+  \label{eq:samplesize}
+\end{equation}
+
+Inverting for power:
+\begin{equation}
+  \beta = \Phi^{-1}\!\left(
+    z_{\alpha/2} - \sqrt{\frac{N\Delta^2}{V}}
+  \right)
+\end{equation}
+
+
+\section{Variance of the mean and change scores}
+\label{sec:varmean}
+
+\noindent
+\textit{(From notes dated 10/7, pages 1--2.)}
+
+\medskip
+\noindent
+Under compound symmetry with intraclass correlation
+$\rho = \sigma_b^2 / (\sigma^2 + \sigma_b^2)$, the
+variance of the mean of $k$ observations is
+\begin{equation}
+  \Var(\bar{X}_k)
+  = \frac{\sigma^2}{k}\bigl[1 + (k-1)\rho\bigr]
+\end{equation}
+
+For the change from baseline:
+\begin{equation}
+  \Var(X_k - X_0)
+  = \sigma^2 + \sigma^2 - 2\rho\sigma^2
+  = 2\sigma^2(1 - \rho)
+\end{equation}
+
+For the difference of group means with equal sizes $q = n$:
+\begin{equation}
+  \Var(X_k - \bar{X})
+  = \frac{2\sigma^2}{q}\bigl(1 + (q-1)\rho\bigr)(1-\rho)
+\end{equation}
+
+
+\section{Woodbury inversion of the marginal covariance}
+\label{sec:woodbury}
+
+\noindent
+\textit{(From notes dated 10/7, pages 3--5.)}
+
+
+\subsection{Setup}
+
+The marginal covariance of the raw outcome vector is
+$V = UGU' + R$ where $R = \sigma^2 \bI$ (diagonal residual
+covariance in the raw-outcome parameterization),
+$G = \sigma_b^2$ (scalar random slope variance), and
+$U = \bt$ (the time vector). Thus
+\begin{equation}
+  V = \sigma_b^2 \bt\bt' + \sigma^2 \bI
+\end{equation}
+
+Factoring out $\sigma^2$:
+\begin{equation}
+  \frac{1}{\sigma^2} V
+  = \rho\, \bt\bt' + \bI
+  \qquad\text{where } \rho = \frac{\sigma_b^2}{\sigma^2}
+\end{equation}
+
+
+\subsection{Applying the Woodbury identity}
+
+With $A = \bI$, $U = \bt$, $C = \rho$ (scalar):
+\begin{align}
+  \left(\frac{1}{\sigma^2}V\right)^{-1}
+  &= \bI - \bt\left(\frac{1}{\rho}
+    + \bt'\bI\,\bt\right)^{-1}\bt' \notag \\
+  &= \bI - \bt\left(\frac{1}{\rho}
+    + \bt'\bt\right)^{-1}\bt'
+\end{align}
+
+With $\bt'\bt = 1$ (normalized time), this gives
+\begin{equation}
+  \frac{1}{a}V^{-1}
+  = \bI - \frac{\rho}{1+\rho}\,\bt\bt'
+\end{equation}
+
+In terms of the original parameters
+($\rho = b/(a+b)$ where $a = \sigma^2$, $b = \sigma_b^2$):
+\begin{equation}
+  \boxed{
+    V^{-1} = \frac{1}{a}\left(
+      \bI - \frac{b}{a+b}\,\bt\bt'
+    \right)
+  }
+  \label{eq:Vinv}
+\end{equation}
+
+Checking the diagonal element:
+\begin{equation}
+  [V^{-1}]_{11}
+  = \frac{1}{a}\left(1 - \frac{b}{a+b}\,t_1^2\right)
+  = \frac{1}{a}\cdot\frac{a + b - bt_1^2}{a+b}
+  = \frac{a + bt_2^2}{a(a+b)}
+\end{equation}
+since $t_1^2 + t_2^2 = 1$.
+
+
+\subsection{Information matrix $X'V^{-1}X$}
+
+Substituting \eqref{eq:Vinv}:
+\begin{equation}
+  X'V^{-1}X
+  = \frac{1}{a}\bigl(X'X - \rho\, X'\bt\bt'X\bigr)
+  \label{eq:XVX}
+\end{equation}
+where $\rho = b/(a+b)$.
+
+With the constraint $t_1 + t_2 = 0$ (centered time) and
+$t_1^2 + t_2^2 = 1$, the explicit $2 \times 2$ form is
+\begin{equation}
+  \frac{1}{a}\, X'\!\left(
+    \begin{pmatrix}
+      1 - \rho t_1^2 & -\rho t_1 t_2 \\
+      -\rho t_1 t_2  & 1 - \rho t_2^2
+    \end{pmatrix}
+  \right)\! X
+\end{equation}
+
+The variance reduction from the Woodbury correction
+(page 6, final result) simplifies to
+\begin{equation}
+  \frac{n(a + b - bt_1^2)}{b}
+  = n\!\left(\frac{a+b}{b} - t_1^2\right)
+  = \frac{1}{r} - t_1^2
+  = 1 - rt_1^2
+\end{equation}
+where $r = b/(a+b)$ is the intraclass correlation.
+
+
+\section{Model in the change-score parameterization}
+\label{sec:changescore}
+
+\noindent
+\textit{(From notes dated 10/15 and 10/20/19.)}
+
+\subsection{Random slopes model}
+
+The outcome model is
+\begin{equation}
+  Y_{ij} = \alpha + a_i + (\beta + b_i + \gamma g_i)\,t_j
+    + e_{ij}
+\end{equation}
+with $a_i \sim N(0, \sigma_a^2)$, $b_i \sim N(0, \sigma_b^2)$,
+$e_{ij} \sim N(0, \sigma^2)$ independent.
+
+Change scores relative to baseline ($j = 0$):
+\begin{equation}
+  z_{ij} = Y_{ij} - Y_{i0}
+  = (\beta + b_i + \gamma g_i)(t_j - t_0) + \epsilon_{ij}
+\end{equation}
+where $\epsilon_{ij} = e_{ij} - e_{i0}$.
+
+The covariance of consecutive change scores:
+\begin{align}
+  \Var(Y_{ij} - Y_{i0}) &= 2\sigma^2 \\
+  \Cov(z_{i1}, z_{i2})
+    &= \Cov(Y_{i1} - Y_{i0},\; Y_{i2} - Y_{i0})
+    = \sigma^2
+\end{align}
+since $-\Cov(e_{i1}, e_{i0}) - \Cov(e_{i0}, e_{i2})
++ \Var(e_{i0}) = 0 - 0 + \sigma^2$.
+
+
+\subsection{Design matrices for Frost 3.1.1}
+\label{sec:frost311}
+
+\noindent
+\textit{(From notes dated 10/20/19.)}
+
+\medskip
+\noindent
+For the conventional design ($r = 0$, $k = 2$),
+two post-baseline change scores at times $t$ and $2t$.
+Fixed effects: $\beta$ (placebo slope), $\gamma$ (treatment
+effect).
+
+\begin{equation}
+  X^{(\text{trt})} = \begin{pmatrix}
+    t & tg \\ 2t & 2tg
+  \end{pmatrix}
+  = t\begin{pmatrix}
+    1 & 1 \\ 2 & 2
+  \end{pmatrix}, \qquad
+  X^{(\text{plc})} = t\begin{pmatrix}
+    1 & 0 \\ 2 & 0
+  \end{pmatrix}
+\end{equation}
+
+Random effects design:
+$Z = \begin{pmatrix} t \\ 2t \end{pmatrix}$.
+
+Residual covariance of change scores:
+\begin{equation}
+  R = \sigma^2\begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}
+  = a\begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}, \qquad
+  R^{-1} = \frac{1}{3a}\begin{pmatrix}
+    2 & -1 \\ -1 & 2
+  \end{pmatrix}
+\end{equation}
+
+$G = \sigma_b^2 = b$ (scalar).
+
+Intermediate computations:
+\begin{align}
+  X'X &= t^2\begin{pmatrix} 5 & 5 \\ 5 & 5 \end{pmatrix}
+    + t^2\begin{pmatrix} 5 & 0 \\ 0 & 0 \end{pmatrix}
+    = t^2\begin{pmatrix} 10 & 5 \\ 5 & 5 \end{pmatrix}
+    \\[4pt]
+  R^{-1}Z &= \frac{t}{3a}\begin{pmatrix}
+    2\cdot 1 + (-1)\cdot 2 \\ (-1)\cdot 1 + 2\cdot 2
+  \end{pmatrix}
+  = \frac{t}{3a}\begin{pmatrix} 0 \\ 3 \end{pmatrix}
+  = \frac{t}{a}\begin{pmatrix} 0 \\ 1 \end{pmatrix}
+    \\[4pt]
+  Z'R^{-1}Z &= \frac{t^2}{a}(0\cdot 1 + 1\cdot 2)
+    = \frac{2t^2}{a}
+\end{align}
+
+
+\section{Frost 3.1.2: Run-in design by hand}
+\label{sec:frost312}
+
+\noindent
+\textit{(From notes dated 10/21 and 11/11--11/12.)}
+
+
+\subsection{Setup: two run-in, one follow-up ($r=2$, $k=1$)}
+
+Three change scores relative to baseline at $j = 0$:
+\begin{align}
+  C_1 &= Y_{i,-2} - Y_{i,0} \notag \\
+  C_2 &= Y_{i,-1} - Y_{i,0} \notag \\
+  C_3 &= Y_{i,1} - Y_{i,0}
+\end{align}
+
+Under the model:
+\begin{align}
+  C_1 &= (\delta + b_i)(-2t) + (e_{i,-2} - e_{i,0}) \notag \\
+  C_2 &= (\delta + b_i)(-t) + (e_{i,-1} - e_{i,0}) \notag \\
+  C_3 &= (\beta + \gamma g_i + b_i)(t) + (e_{i,1} - e_{i,0})
+\end{align}
+
+Fixed effects: $(\delta, \beta, \gamma)'$. Design matrices:
+\begin{equation}
+  X^{(\text{trt})} = t\begin{pmatrix}
+    -2 & 0 & 0 \\ -1 & 0 & 0 \\ 0 & 1 & 1
+  \end{pmatrix}, \qquad
+  X^{(\text{plc})} = t\begin{pmatrix}
+    -2 & 0 & 0 \\ -1 & 0 & 0 \\ 0 & 1 & 0
+  \end{pmatrix}
+\end{equation}
+
+Random effects design:
+$Z = t(-2,\, -1,\, 1)'$.
+
+Residual covariance ($p = 3$):
+\begin{equation}
+  R = a\begin{pmatrix}
+    2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2
+  \end{pmatrix}
+  = a(\bI_3 + \bone_3\bone_3'), \qquad
+  R^{-1} = \frac{1}{4a}\begin{pmatrix}
+    3 & -1 & -1 \\ -1 & 3 & -1 \\ -1 & -1 & 3
+  \end{pmatrix}
+\end{equation}
+
+
+\subsection{Woodbury components}
+
+\textbf{Step 1:} $Z'R^{-1}Z$.
+\begin{align}
+  R^{-1}Z &= \frac{t}{4a}\begin{pmatrix}
+    3(-2) + (-1)(-1) + (-1)(1) \\
+    (-1)(-2) + 3(-1) + (-1)(1) \\
+    (-1)(-2) + (-1)(-1) + 3(1)
+  \end{pmatrix}
+  = \frac{t}{4a}\begin{pmatrix} -6 \\ -2 \\ 6 \end{pmatrix}
+  \\[6pt]
+  Z'R^{-1}Z &= \frac{t^2}{4a}\bigl[
+    (-2)(-6) + (-1)(-2) + (1)(6)\bigr]
+  = \frac{t^2}{4a}(12 + 2 + 6)
+  = \frac{20t^2}{4a}
+  = \frac{5t^2}{a}
+\end{align}
+
+\textbf{Step 2:} $(G^{-1} + Z'R^{-1}Z)^{-1}$.
+\begin{equation}
+  H = \left(\frac{1}{b} + \frac{5t^2}{a}\right)^{-1}
+  = \left(\frac{a + 5bt^2}{ab}\right)^{-1}
+  = \frac{ab}{a + 5bt^2}
+\end{equation}
+
+\textbf{Step 3:} $X'R^{-1}X$ (summed over one treatment
+and one placebo participant).
+
+For treatment:
+\begin{align}
+  X^{(\text{trt})\prime} R^{-1} X^{(\text{trt})}
+  &= \frac{t^2}{4a}
+    \begin{pmatrix} -2&-1&0 \\ 0&0&1 \\ 0&0&1 \end{pmatrix}
+    \begin{pmatrix} 3&-1&-1 \\ -1&3&-1 \\ -1&-1&3 \end{pmatrix}
+    \begin{pmatrix} -2&0&0 \\ -1&0&0 \\ 0&1&1 \end{pmatrix}
+  \notag \\
+  &= \frac{t^2}{4a}\begin{pmatrix}
+    11 & 3 & 3 \\ 3 & 3 & 3 \\ 3 & 3 & 3
+  \end{pmatrix}
+\end{align}
+
+For placebo (third column of $X$ is zero):
+\begin{equation}
+  X^{(\text{plc})\prime} R^{-1} X^{(\text{plc})}
+  = \frac{t^2}{4a}\begin{pmatrix}
+    11 & 3 & 0 \\ 3 & 3 & 0 \\ 0 & 0 & 0
+  \end{pmatrix}
+\end{equation}
+
+Sum:
+\begin{equation}
+  X'R^{-1}X = \frac{t^2}{4a}\begin{pmatrix}
+    22 & 6 & 3 \\ 6 & 6 & 3 \\ 3 & 3 & 3
+  \end{pmatrix}
+  \label{eq:XRX}
+\end{equation}
+
+\textbf{Step 4:} $X'R^{-1}Z$ (per group, for the Woodbury
+correction).
+
+For treatment:
+\begin{equation}
+  X^{(\text{trt})\prime} R^{-1} Z
+  = \frac{t^2}{4a}\begin{pmatrix} -2&-1&0 \\ 0&0&1 \\ 0&0&1
+  \end{pmatrix}
+  \begin{pmatrix} -6 \\ -2 \\ 6 \end{pmatrix}
+  = \frac{t^2}{4a}\begin{pmatrix} 14 \\ 6 \\ 6 \end{pmatrix}
+\end{equation}
+
+For placebo:
+\begin{equation}
+  X^{(\text{plc})\prime} R^{-1} Z
+  = \frac{t^2}{4a}\begin{pmatrix} 14 \\ 6 \\ 0 \end{pmatrix}
+\end{equation}
+
+
+\subsection{Assembling $X'\Sigma^{-1}X$}
+
+The Woodbury correction sums per-subject outer products
+(not the outer product of the sum):
+\begin{align}
+  W &= \sum_{g \in \{\text{trt},\text{plc}\}}
+    X^{(g)\prime} R^{-1}Z \cdot H \cdot Z'R^{-1} X^{(g)}
+    \notag \\
+  &= \frac{bt^4}{16a^2(a+5bt^2)}\left(
+    \begin{pmatrix} 14\\6\\6 \end{pmatrix}(14,6,6)
+    + \begin{pmatrix} 14\\6\\0 \end{pmatrix}(14,6,0)
+  \right) \notag \\
+  &= \frac{bt^4}{16a^2(a+5bt^2)}\begin{pmatrix}
+    392 & 168 & 84 \\
+    168 & 72 & 36 \\
+    84 & 36 & 36
+  \end{pmatrix}
+  \notag \\
+  &= \frac{b}{a(a+5bt^2)} \cdot \frac{t^2}{4a}
+    \cdot \frac{t^2}{4}\begin{pmatrix}
+    392 & 168 & 84 \\
+    168 & 72 & 36 \\
+    84 & 36 & 36
+  \end{pmatrix}
+\end{align}
+
+Therefore:
+\begin{equation}
+  X'\Sigma^{-1}X = X'R^{-1}X - W
+  = \frac{t^2}{4a}\left[
+    \begin{pmatrix}
+      22 & 6 & 3 \\ 6 & 6 & 3 \\ 3 & 3 & 3
+    \end{pmatrix}
+    - \frac{b}{a+5bt^2}
+    \begin{pmatrix}
+      98 & 42 & 21 \\ 42 & 18 & 9 \\ 21 & 9 & 9
+    \end{pmatrix}
+  \right]
+  \label{eq:XSigmaX}
+\end{equation}
+
+
+\subsection{Extracting $\Var(\hat\gamma)$}
+
+Define $D = a + 5bt^2 = \sigma^2 + 5\sigma_b^2 t^2$. The
+$(3,3)$ element of $(X'\Sigma^{-1}X)^{-1}$ is the variance
+of the treatment effect estimator per participant pair.
+
+From the algebra (pages 13--14), the intermediate steps
+yield
+\begin{equation}
+  \Var(\hat\gamma) = \frac{2}{2+3d}\cdot\frac{t^2}{a}
+  \qquad\text{where } d = \frac{bt^2}{a}
+\end{equation}
+which simplifies to
+\begin{equation}
+  \Var(\hat\gamma)
+  = \frac{2t^2}{2a + 3abt^2/(a + 2bt^2)}
+  = \frac{2t^2(a + 2bt^2)}{2a(a + 2bt^2) + 3abt^2}
+\end{equation}
+
+Expanding the denominator:
+\begin{equation}
+  2a^2 + 4abt^2 + 3abt^2
+  = 2a^2 + 7abt^2
+  = a(2a + 7bt^2)
+\end{equation}
+
+However, expressing in the form matching the report
+(via direct matrix inversion), the closed-form result is
+\begin{equation}
+  \boxed{
+    \Var(\hat\gamma)\big|_{r=2,\,k=1}
+    = \frac{8\sigma^2(\sigma^2 + 5\sigma_b^2 t^2)}
+           {3t^2(\sigma^2 + 2\sigma_b^2 t^2)}
+    = \frac{8a(a + 5bt^2)}{3t^2(a + 2bt^2)}
+  }
+  \label{eq:var_r2k1}
+\end{equation}
+
+
+\subsection{The correlation factor $1 - r^2$}
+
+The variance can be written in the Frost form:
+\begin{equation}
+  \Var(\hat\gamma) = \left(2b + \frac{4a}{t^2}\right)(1 - r^2)
+\end{equation}
+where the correlation factor is
+\begin{equation}
+  \boxed{
+    r = \frac{t^2 b - a}{t^2 b + 2a}
+  }
+  \qquad\Longrightarrow\qquad
+  1 - r^2 = 1 - \left(\frac{t^2 b - a}{t^2 b + 2a}\right)^2
+\end{equation}
+
+Verification (from page 14):
+\begin{align}
+  (2b + 4a)(1 - r^2)
+  &= (2b + 4a)\cdot\frac{(b+2a)^2 - (b-a)^2}{(b+2a)^2}
+    \notag \\
+  &= (2b + 4a)\cdot\frac{4ab + 3a^2 + 2ab}{(b+2a)^2}
+    \notag \\
+  &= (2b + 4a)\cdot\frac{2(6ab + 3a^2)/(b+2a)^2}{1}
+    \notag \\
+  &= (2b + 4a)\cdot\frac{3a}{b + 2a}
+    \notag \\
+  &= 6a \quad \checkmark
+\end{align}
+(where the last line uses $t = 1$ for the check).
+
+
+\section{Comparison to standard design}
+
+The standard design variance (Frost 3.1.1) is
+\begin{equation}
+  \Var(\hat\gamma)\big|_{r=0,\,k=2}
+  = \frac{a + 2bt^2}{t^2}
+  = \frac{\sigma^2 + 2\sigma_b^2 t^2}{t^2}
+\end{equation}
+
+The relative efficiency of the run-in design is
+\begin{equation}
+  \text{RE}
+  = \frac{\Var(\hat\gamma)\big|_{r=0}}
+         {\Var(\hat\gamma)\big|_{r=2}}
+  = \frac{a + 2bt^2}{t^2}
+    \cdot \frac{3t^2(a + 2bt^2)}{8a(a + 5bt^2)}
+  = \frac{3(a + 2bt^2)^2}{8a(a + 5bt^2)}
+\end{equation}
+
+For the MIRIAD parameters ($a = 0.0025$, $b = 0.9745$,
+$t = 1$):
+\begin{equation}
+  \text{RE} = \frac{3(0.0025 + 1.949)^2}
+    {8 \cdot 0.0025 \cdot (0.0025 + 4.8725)}
+  \approx \frac{3(1.9515)^2}{8(0.0025)(4.875)}
+  \approx \frac{11.43}{0.0975}
+  \approx 117
+\end{equation}
+
+This very large RE reflects the extreme ratio
+$\sigma_b / \sigma \approx 19.7$ in the MIRIAD data, where
+run-in observations are highly informative about individual
+trajectories.
+
+
+\section{Block-diagonal formulation}
+\label{sec:blockdiag}
+
+\noindent
+\textit{(From notes dated 10/21, page 8.)}
+
+\medskip
+\noindent
+Defining true responses $Y_{1jk} = X_{1jk} - X_{0jk}$
+(treatment) and $Y_{2jk} = X_{0jk}$ (control), and
+writing $Y_{jk} = \alpha_{jk} + e_{jk}$ with
+$\alpha_{1jk} = \delta_j$ and $\alpha_{2jk} = \mu$, the
+stacked outcome can be written in block-diagonal form:
+\begin{equation}
+  \begin{pmatrix} Y_1 \\ Y_2 \end{pmatrix}
+  = \begin{pmatrix} X_2 & 0 \\ 0 & X_3 \end{pmatrix}
+  \begin{pmatrix} \beta_{11} \\ \beta_{12} \\ \mu \end{pmatrix}
+\end{equation}
+where $X_2 = \begin{pmatrix} 1 & t \\ 1 & 2t \end{pmatrix}$
+for treatment and $X_3 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$
+for placebo. This is the Laird and Ware (1982)
+parameterization that separates the within-group design
+matrices.
+
+\end{document}

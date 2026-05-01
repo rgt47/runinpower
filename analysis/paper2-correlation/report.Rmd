@@ -1,0 +1,456 @@
+---
+title: |
+  Power Analysis for Run-In Clinical Trials under
+  AR(1) and General Correlation Structures
+author: "Ronald G. Thomas"
+affiliation: "University of California, San Diego"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+fontsize: 11pt
+geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    number_sections: true
+    keep_tex: true
+    highlight: tango
+bibliography: references.bib
+link-citations: true
+header-includes:
+  - \usepackage{amsmath,amsfonts,amssymb}
+  - \usepackage{booktabs}
+  - \usepackage{float}
+  - \DeclareMathOperator{\Var}{Var}
+  - \DeclareMathOperator{\Cov}{Cov}
+  - \DeclareMathOperator{\Corr}{Corr}
+  - \DeclareMathOperator{\tr}{tr}
+abstract: |
+  Paper 1 (Thomas, 2026) derived closed-form power
+  formulas for longitudinal trials with run-in and
+  common close observations under compound symmetry.
+  The compound symmetry assumption implies that all
+  pairs of change scores are equally correlated,
+  regardless of temporal separation. In practice,
+  observations closer in time are more strongly
+  correlated, and the AR(1) structure
+  $\Corr(Y_{ijk}, Y_{ijk'}) = \rho^{|k-k'|}$ is a
+  natural alternative. We derive the variance of the
+  treatment effect estimator under AR(1) via two
+  routes: (i) the Woodbury identity applied to the
+  AR(1) marginal covariance, and (ii) a moment-based
+  approach using the cross-covariance between run-in
+  and treatment-period means. We characterize when
+  the efficiency gains from run-in designs are robust
+  to the correlation structure and when they depend
+  sensitively on the exchangeability assumption. A
+  taxonomy of five correlation cases is developed,
+  and numerical comparisons use parameters from
+  Alzheimer's disease neuroimaging trials.
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 6,
+  fig.height = 4,
+  fig.pos = "H"
+)
+library(runinpower)
+```
+
+# Introduction
+
+The efficiency of run-in designs depends on the
+correlation structure of the repeated measurements.
+Under compound symmetry, the correlation between any
+two change scores is constant, and the run-in
+observations contribute information about the random
+slope $b_i$ through a simple averaging mechanism. Under
+AR(1), the correlation decays with temporal separation,
+and the information content of run-in observations
+depends on how far they are from the treatment period.
+
+Paper 1 [@frost2008] assumed $R = \sigma^2(I_J +
+\mathbf{1}_J\mathbf{1}_J')$, which arises from the
+change-score parameterization under independent errors.
+@wang2019 extended the run-in framework to two-period
+linear mixed models but retained the compound symmetry
+assumption. This paper extends to AR(1) residual
+correlation, where $\Corr(e_{ij}, e_{ij'}) =
+\rho^{|j-j'|}$ for $0 < \rho < 1$.
+
+@winkens2007 studied optimal designs for autocorrelated
+longitudinal data but did not consider the run-in
+setting. @diggle2002 and @verbeke2000 provide general
+treatments of correlation structures in longitudinal
+models. @chambless1993 addressed the effect of
+intra-individual variation on change-score analyses,
+a concern that is amplified under AR(1) correlation.
+
+The `longpower` R package [@iddi2022] is the CRAN
+reference implementation for longitudinal-trial power
+calculations. Its closed-form routines
+(`edland.linear.power()`, `diggle.linear.power()`)
+assume random intercepts and slopes with independent or
+compound-symmetric residuals, and the more flexible
+`liu.liang.linear.power()` and `lmmpower()` accommodate
+arbitrary working covariances only through simulation or
+a user-supplied fitted `lme` object. No analytic
+AR(1)-residual formula is provided. The closed-form
+AR(1) derivation developed here therefore fills a gap in
+the existing toolkit while remaining consistent with the
+`longpower` formulae when the correlation is replaced by
+its compound-symmetry limit.
+
+
+# Correlation structures for longitudinal trials
+
+## Taxonomy of cases
+
+We consider five correlation structures for the
+raw outcomes $Y_{ijk}$:
+
+1. **Compound symmetry:**
+   $\Corr(Y_{ijk}, Y_{ijk'}) = \rho$ for all
+   $k \ne k'$. This is equivalent to the random
+   intercept model and produces the $R = \sigma^2(I +
+   \mathbf{1}\mathbf{1}')$ structure in change scores.
+
+2. **AR(1):**
+   $\Corr(Y_{ijk}, Y_{ijk'}) = \rho^{|k'-k|}$.
+   Correlation decays geometrically with lag.
+
+3. **Compound symmetry with variable run-in:**
+   Case 1 with $J_{0,i}$ varying across participants.
+
+4. **AR(1) with variable run-in and common close:**
+   Case 2 with $J_{0,i}$ and $J_{2,i}$ varying.
+
+5. **General (unstructured):**
+   $\Corr(Y_{ijk}, Y_{ijk'}) = \sigma_{|k-k'|}/\sigma^2$.
+
+
+## Change-score correlations under each structure
+
+Under the change-from-baseline parameterization
+($C_j = Y_j - Y_0$), the correlation between
+change scores depends on the raw-outcome correlation
+structure.
+
+For the run-in design with $J_0 = 2$, $J_1 = 1$:
+
+**Compound symmetry:**
+\begin{align}
+  \Corr(C_1, C_3) &= \frac{bt^2}{2a + bt^2} \\
+  \Corr(C_1, C_2) &= \frac{-a + bt^2}{2a + bt^2}
+\end{align}
+
+**AR(1):** (to be derived)
+
+<!-- TODO: derive change-score correlations under -->
+<!-- AR(1) for general (J_0, J_1, J_2) -->
+
+
+# Variance under AR(1): GLS approach
+
+## Marginal covariance
+
+Under AR(1) with residual variance $\sigma^2$ and
+autocorrelation $\rho$, the raw-outcome covariance is
+$\Cov(e_{ij}, e_{ij'}) = \sigma^2 \rho^{|j-j'|}$.
+The change-score residual covariance becomes:
+\begin{equation}
+  R_{jl} = \Cov(e_{ij} - e_{i0}, e_{il} - e_{i0})
+  = \sigma^2(\rho^{|j-l|} - \rho^{|j|} - \rho^{|l|} + 1)
+\end{equation}
+for $j, l \ne 0$.
+
+This $R$ no longer has the rank-one-plus-identity
+structure, so the Sherman-Morrison formula does not
+apply. However, the Woodbury identity still reduces
+$\Sigma^{-1}$ to a scalar inversion because $G$ remains
+scalar.
+
+## Woodbury computation
+
+The computation proceeds identically to Paper 1:
+\begin{equation}
+  \Sigma^{-1} = R^{-1} - R^{-1}Z
+    (G^{-1} + Z'R^{-1}Z)^{-1} Z'R^{-1}
+\end{equation}
+with $H = (G^{-1} + Z'R^{-1}Z)^{-1}$ still scalar.
+The difference is that $R^{-1}$ must be computed
+numerically (or via the AR(1) tridiagonal inverse)
+rather than by Sherman-Morrison.
+
+```{r ar1_variance}
+a <- 1.0
+b <- 1.0
+tt <- 1.0
+rho_values <- c(0, 0.3, 0.5, 0.7, 0.9)
+configs <- expand.grid(
+  r = c(0, 2, 4),
+  k = 2,
+  f = 0,
+  rho = rho_values
+)
+
+configs$v_cs <- mapply(
+  function(r, k, f, ...) {
+    var_gamma_matrix(r, k, f, a, b, tt)
+  },
+  configs$r, configs$k, configs$f
+)
+
+configs$v_ar1 <- mapply(
+  function(r, k, f, rho) {
+    var_gamma_ar1(r, k, f, a, b, tt, rho)
+  },
+  configs$r, configs$k, configs$f, configs$rho
+)
+
+configs$ratio <- configs$v_ar1 / configs$v_cs
+
+tab <- reshape(
+  configs[, c('r', 'rho', 'v_ar1')],
+  idvar = 'r', timevar = 'rho',
+  direction = 'wide'
+)
+names(tab) <- c('$J_0$', paste0('$\\rho=', rho_values, '$'))
+
+knitr::kable(
+  tab,
+  caption = paste0(
+    'Per-pair $\\Var(\\hat\\gamma)$ under AR(1) ',
+    'for varying $\\rho$ ($J_1=2$, $J_2=0$, ',
+    '$\\sigma^2=', a, '$, $\\sigma_b^2=', b, '$).'),
+  booktabs = TRUE,
+  escape = FALSE,
+  digits = 4
+)
+```
+
+
+# Variance under AR(1): moment-based approach
+
+## Cross-covariance between phase means
+
+An alternative to the GLS approach computes the
+variance of the pre-post test statistic directly
+from the moments of the phase means. Let
+$\bar{X}_0 = \frac{1}{J_0}\sum_{i=1}^{J_0} Y_{i,\text{run-in}}$
+and
+$\bar{X}_K = \frac{1}{J_1}\sum_{j=1}^{J_1} Y_{j,\text{trt}}$
+denote the run-in and treatment-period means.
+
+Under AR(1) with parameter $c = \rho$, the
+cross-covariance is:
+\begin{equation}
+  \Cov(\bar{X}_0, \bar{X}_K)
+  = \frac{\sigma^2}{J_0 c}\,\rho_1\, c^{K-1}\,
+    \frac{(1 - c^{J_0})(1 - c^{J_1})}{(1 - c)^2}
+\end{equation}
+where $K$ is the gap between the last run-in and
+first treatment observation.
+
+## Variance of the change score
+
+The variance of the pre-post difference is:
+\begin{equation}
+  \Var(X_K - X_0) = \Var(X_K) + \Var(X_0)
+    - 2\Cov(X_K, X_0)
+\end{equation}
+
+The variance of each phase mean involves the sum
+$S_n = \sum_{i=1}^{n-1}(n-i)c^{i-1}$, which has the
+closed form:
+\begin{equation}
+  S_n = \frac{n(1-c) - (1-c^n)}{(1-c)^2}
+\end{equation}
+
+```{r moment_based}
+ar1_cov_phase_means <- function(r, q, K, sigma2, rho) {
+  if (r == 0 || q == 0) return(0)
+  c <- rho
+  sigma2 / (r * q) * rho * c^(K - 1) *
+    (1 - c^r) * (1 - c^q) / (1 - c)^2
+}
+
+ar1_var_mean <- function(n, sigma2, rho) {
+  if (n == 1) return(sigma2)
+  c <- rho
+  S_n <- (n * (1 - c) - (1 - c^n)) / (1 - c)^2
+  sigma2 / n * (1 + 2 * rho / (n * c) * S_n)
+}
+
+ar1_var_change <- function(r, q, K, sigma2, rho) {
+  vx0 <- ar1_var_mean(r, sigma2, rho)
+  vxk <- ar1_var_mean(q, sigma2, rho)
+  cov_xk_x0 <- ar1_cov_phase_means(r, q, K, sigma2,
+                                     rho)
+  vx0 + vxk - 2 * cov_xk_x0
+}
+
+cat('Moment-based vs GLS variance (r=2, k=2, rho=0.5):\n')
+v_moment <- ar1_var_change(2, 2, 1, a, 0.5)
+v_gls <- var_gamma_ar1(2, 2, 0, a, b, tt, 0.5)
+cat(sprintf('  Moment-based (sigma_b=0): %.4f\n',
+            v_moment))
+cat(sprintf('  GLS (sigma_b=%.1f):       %.4f\n',
+            b, v_gls))
+cat('  (Moment-based ignores random slope.)\n')
+```
+
+
+# Relationship between the two approaches
+
+The GLS approach (Section 3) and the moment-based
+approach (Section 4) compute different quantities.
+The GLS variance is the minimum-variance bound under
+the assumed model, while the moment-based variance
+is the variance of the simple averaged change-score
+estimator $\bar{d}_1 - \bar{d}_0$.
+
+When $\sigma_b^2 = 0$ (no random slope), the two
+approaches coincide because the GLS estimator reduces
+to the simple difference of means. When
+$\sigma_b^2 > 0$, the GLS estimator is strictly more
+efficient because it uses the full covariance structure
+$\Sigma = R + ZGZ'$ to weight the observations
+optimally, while the moment-based approach treats all
+observations within a phase equally.
+
+The practical value of the moment-based computation is
+that it provides a conservative (upper) bound on the
+variance under AR(1) without requiring specification
+of $\sigma_b^2$. The ratio of the two variances
+quantifies the efficiency loss from ignoring the
+random slope structure -- this is the relative
+efficiency studied in Paper 4.
+
+
+# Robustness to correlation misspecification
+
+The practical question is whether a trial designed
+under compound symmetry loses substantial efficiency
+when the true correlation is AR(1), and vice versa.
+
+```{r robustness, fig.cap="Ratio of AR(1) to compound symmetry variance as a function of $\\rho$ for three run-in configurations ($J_1=2$, $J_2=0$, $\\sigma^2=1$, $\\sigma_b^2=1$)."}
+rho_grid <- seq(0, 0.95, by = 0.05)
+r_values <- c(0, 2, 4)
+
+plot(NULL, xlim = c(0, 1), ylim = c(0.5, 2),
+     xlab = expression(rho),
+     ylab = expression(V[AR(1)] / V[CS]),
+     main = 'Variance ratio: AR(1) / Compound Symmetry')
+abline(h = 1, lty = 2, col = 'gray')
+
+cols <- c('black', 'blue', 'red')
+for (i in seq_along(r_values)) {
+  r <- r_values[i]
+  v_cs <- var_gamma_matrix(r, 2, 0, a, b, tt)
+  ratios <- sapply(rho_grid, function(rho) {
+    if (rho == 0) return(1)
+    var_gamma_ar1(r, 2, 0, a, b, tt, rho) / v_cs
+  })
+  lines(rho_grid, ratios, col = cols[i], lwd = 2)
+}
+legend('topleft', legend = paste('J_0 =', r_values),
+       col = cols, lwd = 2, bty = 'n')
+```
+
+
+# Stratified variance for unequal visit patterns
+
+When participants have different numbers of run-in
+($J_{0,i}$) or common close ($J_{2,i}$) observations, the
+total variance is a weighted sum across strata:
+\begin{equation}
+  \frac{1}{n^2}\sum_{s=1}^{S} n_s\,
+    \Var(X_K - X_0)\big|_{J_0 = J_{0,s},\, J_2 = J_{2,s}}
+\end{equation}
+
+<!-- TODO: develop stratified computation for -->
+<!-- both CS and AR(1) -->
+
+
+# Numerical examples
+
+## Comparison across correlation structures
+
+```{r comparison}
+sigma2_ad <- 0.0025
+sigma_b2_ad <- 0.9745
+t_ad <- 1.0
+delta_ad <- 0.25
+
+configs_ad <- expand.grid(r = 0:4, k = 2, f = 0)
+configs_ad$n_cs <- sapply(configs_ad$r, function(r) {
+  sample_size(r, 2, 0, sigma2_ad, sigma_b2_ad,
+              t_ad, delta_ad)
+})
+
+rho_ad <- 0.5
+configs_ad$n_ar1 <- sapply(configs_ad$r, function(r) {
+  v1 <- var_gamma_ar1(r, 2, 0, sigma2_ad, sigma_b2_ad,
+                      t_ad, rho_ad)
+  za <- qnorm(0.975)
+  zb <- qnorm(0.90)
+  ceiling((za + zb)^2 * v1 / delta_ad^2)
+})
+
+knitr::kable(
+  configs_ad,
+  col.names = c('$J_0$', '$J_1$', '$J_2$',
+                '$N$ (CS)', '$N$ (AR(1), $\\rho=0.5$)'),
+  caption = paste0(
+    'Sample size per group (MIRIAD parameters, ',
+    '$\\Delta=', delta_ad, '$, 90\\% power) under ',
+    'compound symmetry vs AR(1).'),
+  booktabs = TRUE,
+  escape = FALSE
+)
+```
+
+## Sensitivity to rho
+
+```{r sensitivity, fig.cap="Per-pair variance as a function of $\\rho$ under AR(1) for MIRIAD parameters ($\\sigma^2=0.0025$, $\\sigma_b^2=0.9745$, $J_1=2$, $J_2=0$)."}
+rho_grid <- seq(0, 0.95, by = 0.05)
+r_values <- c(0, 1, 2, 4)
+
+plot(NULL,
+     xlim = c(0, 1),
+     ylim = c(0, var_gamma_ar1(0, 2, 0, sigma2_ad,
+                               sigma_b2_ad, t_ad,
+                               0.01) * 1.2),
+     xlab = expression(rho),
+     ylab = expression(Var(hat(gamma))),
+     main = 'MIRIAD parameters')
+
+cols <- c('black', 'blue', 'red', 'darkgreen')
+for (i in seq_along(r_values)) {
+  r <- r_values[i]
+  vs <- sapply(rho_grid, function(rho) {
+    if (rho == 0) {
+      var_gamma_matrix(r, 2, 0, sigma2_ad,
+                       sigma_b2_ad, t_ad)
+    } else {
+      var_gamma_ar1(r, 2, 0, sigma2_ad,
+                    sigma_b2_ad, t_ad, rho)
+    }
+  })
+  lines(rho_grid, vs, col = cols[i], lwd = 2)
+}
+legend('topright', legend = paste('J_0 =', r_values),
+       col = cols, lwd = 2, bty = 'n')
+```
+
+
+# Discussion
+
+<!-- TODO: summarize when CS assumption is adequate, -->
+<!-- when AR(1) matters, implications for trial design -->
+
+# References
