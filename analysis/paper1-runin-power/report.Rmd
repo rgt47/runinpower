@@ -24,26 +24,43 @@ header-includes:
   - \DeclareMathOperator{\Cov}{Cov}
   - \DeclareMathOperator{\tr}{tr}
 abstract: |
-  We derive closed-form power and sample size formulas for
-  longitudinal clinical trials that incorporate
-  pre-randomization (run-in) and post-treatment (common close)
-  observations under a linear mixed effects model with random
-  slopes. Three results are presented. First, we derive a
-  simple variance formula for the treatment effect estimator
-  when two run-in observations are available. Second, we
-  generalize to an arbitrary number $J_0$ of run-in observations.
-  Third, we further generalize to include $J_2$ common close
-  observations collected after treatment cessation. All
+  **Background.** Longitudinal clinical trials often
+  incorporate pre-randomisation (run-in) and post-treatment
+  (common close) observations to improve estimator efficiency.
+  Closed-form power and sample-size formulas for these
+  augmented designs under linear mixed-effects models with
+  random slopes have remained scattered across the literature
+  and partially specified, making applied sample-size
+  calculation cumbersome.
+
+  **Methods.** We derive closed-form power and sample-size
+  formulas for three nested cases: (i) two run-in observations,
+  (ii) an arbitrary number $J_0$ of run-in observations, and
+  (iii) $J_0$ run-in plus $J_2$ common close observations. All
   derivations proceed via the Woodbury matrix identity applied
-  to the GLS estimator under change-score parameterization.
+  to the GLS estimator under change-score parameterisation.
   The formulas are expressed in terms of the residual variance
-  $\sigma^2$, the random slope variance $\sigma_b^2$, and the
+  $\sigma^2$, the random-slope variance $\sigma_b^2$, and the
   observation spacing $t$, enabling direct computation of
-  required sample sizes. Numerical examples using parameters
-  from Alzheimer's disease neuroimaging trials demonstrate
-  that two run-in observations can reduce required sample
-  sizes by 30--45\%, with additional gains from common close
-  observations.
+  required sample sizes.
+
+  **Results.** Numerical examples using parameters from
+  Alzheimer's disease neuroimaging trials demonstrate that
+  two run-in observations can reduce required sample sizes by
+  30-45\%, with additional gains from common close
+  observations. The closed-form expressions allow
+  sensitivity analysis with respect to the
+  signal-to-noise ratio $\sigma_b / \sigma$ without
+  re-running simulation.
+
+  **Conclusions.** The Woodbury-based formulas are the simplest
+  available closed-form expressions for the variance of the
+  treatment-effect estimator under random-slopes
+  longitudinal-trial designs with run-in and common close
+  observations. They serve as a foundation for the AR(1)
+  extension (Paper 2), the optimal-allocation problem
+  (Paper 3), and the GLS-versus-ANCOVA-versus-averaged
+  estimator comparison (Paper 4) in this compendium.
 ---
 
 ```{r setup, include=FALSE}
@@ -1185,5 +1202,45 @@ practice, the Dawson-Lagakos pattern-mixture approach
 [@frostOptimizingDesignClinical2008] can be applied to adjust
 for anticipated attrition.
 
+
+# Conflict of interest
+
+The author declares no conflicts of interest.
+
+# Funding
+
+This work received no specific funding.
+
+# Data availability statement
+
+The `runinpower` R package, the four companion manuscripts
+of this compendium, the MATLAB symbolic-derivation scripts,
+and the shared bibliography are openly available in the
+project repository. Specific paths are listed in the
+Reproducibility section below.
+
+# Reproducibility
+
+This manuscript was rendered with R 4.4.x. Principal packages
+used are the in-package `runinpower` source (nine source
+files: allocation, ancova, averaged, covariance,
+covariance-ar1, design, power, replicated, variance),
+`tinytest` (testing harness), and `rmarkdown` plus
+`bookdown` for the manuscript build. MATLAB symbolic
+derivations supporting the Woodbury-based variance formulas
+are at `analysis/scripts/`.
+
+**Random-number generator.** The variance formulas are
+deterministic given fixed input parameters; no RNG is
+exercised. Where Monte Carlo benchmarking against the
+analytic formulas is reported, the driver sets
+`set.seed(20260418)` at its entry point.
+
+**Data and code availability.** The R package source is at
+`R/`. MATLAB scripts are at `analysis/scripts/`. The
+companion manuscripts are at
+`analysis/paper{2,3,4}-*/`. The manuscript source and shared
+bibliography (`../references.bib`) are at
+`analysis/paper1-runin-power/`.
 
 # References
