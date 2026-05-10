@@ -2,7 +2,7 @@
 title: |
   Power Analysis for Run-In Clinical Trials under
   AR(1) and General Correlation Structures
-author: "Ronald G. Thomas"
+author: "Ronald G. Thomas, Ph.D."
 affiliation: "University of California, San Diego"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 fontsize: 11pt

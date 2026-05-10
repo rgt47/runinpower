@@ -2,7 +2,7 @@
 title: |
   GLS versus Averaged Change-Score Estimators for
   Clinical Trials with Run-In Observations
-author: "Ronald G. Thomas"
+author: "Ronald G. Thomas, Ph.D."
 affiliation: "University of California, San Diego"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 fontsize: 11pt
