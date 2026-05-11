@@ -2,7 +2,7 @@
 title: |
   Power Analysis for Run-In Clinical Trials under
   AR(1) and General Correlation Structures
-author: "Ronald G. Thomas, Ph.D."
+author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
 affiliation: "University of California, San Diego"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 fontsize: 11pt
@@ -504,3 +504,17 @@ bibliography (`../references.bib`) are at
 `analysis/paper2-correlation/`.
 
 # References
+
+
+::: {#refs}
+:::
+
+```{r footer, echo=FALSE, results='asis'}
+src <- sub("^/Users/zenn/Dropbox/prj/", "~/prj/",
+           knitr::current_input(dir = TRUE))
+cat(sprintf(
+  "\n\\vfill\n\n---\n\n*Rendered on %s.*  \n*Source: `%s`*\n",
+  format(Sys.time(), "%Y-%m-%d at %H:%M %Z"),
+  src
+))
+```
