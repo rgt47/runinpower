@@ -31,38 +31,37 @@ jobs:
           echo "Building computational environment..."
           docker build -t compendium-env .
 
-      - name: Restore R packages
+      - name: Restore packages and render all manuscripts
         run: |
-          echo "Restoring R package environment..."
-          docker run --rm -e CI=true -v ${{ github.workspace }}:/project -w /project \
-            compendium-env Rscript -e 'renv::restore()'
-
-      - name: Render all manuscripts
-        run: |
-          set +e
-          failed=()
-          rendered=0
-          while IFS= read -r -d '' rmd; do
-            echo "::group::Rendering $rmd"
-            if docker run --rm -e CI=true -v ${{ github.workspace }}:/project -w /project \
-              compendium-env Rscript -e "rmarkdown::render('$rmd')"; then
-              echo "  rendered OK"
-              rendered=$((rendered + 1))
-            else
-              echo "  FAILED"
-              failed+=("$rmd")
-            fi
-            echo "::endgroup::"
-          done < <(find analysis \( -name 'report.Rmd' -o -name 'paper.Rmd' \) -print0)
-
-          echo
-          echo "=== render summary ==="
-          echo "rendered: $rendered"
-          echo "failed:   ${#failed[@]}"
-          if [ "${#failed[@]}" -gt 0 ]; then
-            printf '  %s\n' "${failed[@]}"
-            exit 1
-          fi
+          docker run --rm -e CI=true \
+            -v ${{ github.workspace }}:/project \
+            -w /project compendium-env \
+            Rscript -e '
+              renv::restore()
+              rmds <- list.files(
+                "analysis", pattern = "^(report|paper).*\\.Rmd$",
+                recursive = TRUE, full.names = TRUE
+              )
+              cat("Found", length(rmds), "manuscripts to render\n\n")
+              failed <- character()
+              for (rmd in rmds) {
+                cat("=== Rendering:", rmd, "===\n")
+                tryCatch(
+                  rmarkdown::render(rmd),
+                  error = function(e) {
+                    cat("FAILED:", conditionMessage(e), "\n")
+                    failed <<- c(failed, rmd)
+                  }
+                )
+              }
+              cat("\n=== summary ===\n")
+              cat("rendered:", length(rmds) - length(failed), "\n")
+              cat("failed:  ", length(failed), "\n")
+              if (length(failed) > 0) {
+                for (f in failed) cat("  ", f, "\n")
+                quit(status = 1)
+              }
+            '
 
       - name: Upload rendered PDFs
         if: always()
