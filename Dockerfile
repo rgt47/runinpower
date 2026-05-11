@@ -46,6 +46,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         build-essential \
         pkg-config \
         jq \
+        curl \
         libcurl4-openssl-dev \
         libssl-dev \
         libxml2-dev \

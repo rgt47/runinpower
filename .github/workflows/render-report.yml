@@ -1,0 +1,75 @@
+name: Render Reports
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'analysis/**'
+      - 'R/**'
+      - 'renv.lock'
+      - 'Dockerfile'
+      - '.github/workflows/render-report.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'analysis/**'
+      - 'R/**'
+      - 'renv.lock'
+      - 'Dockerfile'
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          echo "Building computational environment..."
+          docker build -t compendium-env .
+
+      - name: Restore R packages
+        run: |
+          echo "Restoring R package environment..."
+          docker run --rm -v ${{ github.workspace }}:/project -w /project \
+            compendium-env Rscript -e 'renv::restore()'
+
+      - name: Render all manuscripts
+        run: |
+          set +e
+          failed=()
+          rendered=0
+          while IFS= read -r -d '' rmd; do
+            echo "::group::Rendering $rmd"
+            if docker run --rm -v ${{ github.workspace }}:/project -w /project \
+              compendium-env Rscript -e "rmarkdown::render('$rmd')"; then
+              echo "  rendered OK"
+              rendered=$((rendered + 1))
+            else
+              echo "  FAILED"
+              failed+=("$rmd")
+            fi
+            echo "::endgroup::"
+          done < <(find analysis \( -name 'report.Rmd' -o -name 'paper.Rmd' \) -print0)
+
+          echo
+          echo "=== render summary ==="
+          echo "rendered: $rendered"
+          echo "failed:   ${#failed[@]}"
+          if [ "${#failed[@]}" -gt 0 ]; then
+            printf '  %s\n' "${failed[@]}"
+            exit 1
+          fi
+
+      - name: Upload rendered PDFs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendered-manuscripts
+          path: |
+            analysis/**/*.pdf
+          retention-days: 30
+          if-no-files-found: warn
