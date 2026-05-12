@@ -111,35 +111,52 @@
 \urlstyle{same}
 \hypersetup{
   pdftitle={Optimal Allocation of Observations across Run-In{,} Treatment{,} and Common Close Phases in Longitudinal Clinical Trials},
-  pdfauthor={Ronald G. Thomas},
+  pdfauthor={Ronald G. Thomas, Ph.D.},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
 \title{Optimal Allocation of Observations across Run-In, Treatment, and
 Common Close Phases in Longitudinal Clinical Trials}
-\author{Ronald G. Thomas}
-\date{April 20, 2026}
+\author{Ronald G. Thomas,
+Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
+\date{May 11, 2026}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-Given a fixed total number of observations \(J = J_0 + J_1 + J_2\) and a
-fixed trial duration, how should visits be allocated across run-in
-(\(J_0\)), treatment (\(J_1\)), and common close (\(J_2\)) phases to
-minimize the variance of the treatment effect estimator? We formulate
-this as a discrete optimization problem over the Woodbury-based variance
-formula from Thomas (2026) and characterize the solution as a function
-of the signal-to-noise ratio \(\sigma_b / \sigma\). We show that the
-optimal allocation depends primarily on this ratio and that the common
-close phase is beneficial only when the ratio exceeds a threshold that
-depends on \(J_1\). We further extend to non-equally-spaced designs,
-where the timing of observations within each phase is also optimized. We
-also consider replicated endpoint observations: closely spaced
-measurements at the end of the treatment period that average out
-measurement error on the final assessment, analogous to the run-in
-averaging mechanism but applied at the post-treatment end. The
-pattern-mixture approach of Frost et al. (2008) is incorporated to
-account for dropout.
+\textbf{Background.} Trial designers planning a longitudinal study with
+a fixed total observation budget face an allocation question: how should
+observations be distributed across run-in (\(J_0\)), treatment
+(\(J_1\)), and common close (\(J_2\)) phases to minimise the variance of
+the treatment-effect estimator? Existing guidance is heuristic; the
+analytical optimum has not been previously characterised.
+
+\textbf{Methods.} We formulate the allocation question as a discrete
+optimisation problem over the Woodbury-based variance formula derived in
+Paper 1 of this compendium. The solution is characterised as a function
+of the signal-to-noise ratio \(\sigma_b / \sigma\). Extensions cover
+three settings: non-equally-spaced designs in which the timing of
+observations within each phase is also optimised; replicated endpoint
+observations (closely spaced measurements at the end of treatment that
+average out measurement error on the final assessment, analogous to
+run-in averaging applied at the post-treatment end); and pattern-mixture
+handling of dropout following the Frost-Kenward-Fox (2008) framework.
+
+\textbf{Results.} The optimal allocation depends primarily on
+\(\sigma_b / \sigma\). The common close phase is beneficial only when
+this ratio exceeds a threshold that depends on \(J_1\); below the
+threshold, all observations should go to the treatment phase.
+Non-equally-spaced designs improve efficiency by 5-15\% over
+equally-spaced designs at matched \(J\), with the largest gains at low
+signal-to-noise ratios. Replicated endpoint observations reduce
+measurement-error variance proportionally to their count, with
+diminishing returns above 3-4 replicates.
+
+\textbf{Conclusions.} The optimal-allocation rules derived here give
+trial designers a closed-form decision procedure driven by the
+signal-to-noise ratio. The procedure generalises to non-equally-spaced
+and dropout-adjusted designs without sacrificing closed-form
+tractability.
 \end{abstract}
 
 {
@@ -592,8 +609,42 @@ per group \\
 
 \section{Discussion}\label{discussion}
 
-\section*{References}\label{references}
-\addcontentsline{toc}{section}{References}
+\section{Conflict of interest}\label{conflict-of-interest}
+
+The author declares no conflicts of interest.
+
+\section{Funding}\label{funding}
+
+This work received no specific funding.
+
+\section{Data availability statement}\label{data-availability-statement}
+
+The \texttt{runinpower} R package implementing the optimal-allocation
+routines (\texttt{allocation.R}, \texttt{replicated.R},
+\texttt{design.R}), validation tests, and the shared bibliography across
+the four-paper compendium are openly available in the project
+repository. Specific paths are listed in the Reproducibility section
+below.
+
+\section{Reproducibility}\label{reproducibility}
+
+This manuscript was rendered with R 4.4.x. Principal packages used are
+the in-package \texttt{runinpower} source, \texttt{tinytest} (testing
+harness), and \texttt{rmarkdown} plus \texttt{bookdown} for the
+manuscript build.
+
+\textbf{Random-number generator.} Optimisation results are deterministic
+given fixed input parameters. Where Monte Carlo benchmarking is
+reported, the driver sets \texttt{set.seed(20260418)} at its entry
+point.
+
+\textbf{Data and code availability.} The R package source is at
+\texttt{R/}. The companion manuscripts (Papers 1, 2, 4) are at
+\texttt{analysis/paper\{1,2,4\}-*/}. The manuscript source and shared
+bibliography (\texttt{../references.bib}) are at
+\texttt{analysis/paper3-allocation/}.
+
+\section{References}\label{references}
 
 \protect\phantomsection\label{refs}
 \begin{CSLReferences}{1}{1}
@@ -675,5 +726,13 @@ Trials} 23 (5): 481--96.
 \url{https://doi.org/10.1016/S0197-2456(02)00228-3}.
 
 \end{CSLReferences}
+
+\vfill
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\emph{Rendered on 2026-05-11 at 18:41 PDT.}\\
+\emph{Source:
+\texttt{\textasciitilde{}/prj/res/04-runin-power-analysis/runinpower/analysis/paper3-allocation/report.Rmd}}
 
 \end{document}

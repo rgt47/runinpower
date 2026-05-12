@@ -151,34 +151,57 @@
 \urlstyle{same}
 \hypersetup{
   pdftitle={GLS versus Averaged Change-Score Estimators for Clinical Trials with Run-In Observations},
-  pdfauthor={Ronald G. Thomas},
+  pdfauthor={Ronald G. Thomas, Ph.D.},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
 \title{GLS versus Averaged Change-Score Estimators for Clinical Trials
 with Run-In Observations}
-\author{Ronald G. Thomas}
-\date{April 20, 2026}
+\author{Ronald G. Thomas,
+Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
+\date{May 11, 2026}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-Three approaches exist for incorporating run-in observations into the
-analysis of longitudinal clinical trials. The GLS estimator under the
-linear mixed model uses the full covariance structure to extract maximum
-information from all observations. The ANCOVA estimator regresses
-post-randomization means on the run-in mean as a covariate, requiring no
-specification of the random effects covariance. The averaged
-change-score estimator computes a simple difference of phase means and
-applies a \(t\)-test, requiring no variance component estimation at all.
-We derive the relative efficiency of these three approaches as a
-function of the trial design \((J_0, J_1, J_2)\) and the variance
-parameters \((\sigma^2, \sigma_b^2)\). Under correct model
-specification, GLS \(\le\) ANCOVA \(\le\) averaged in variance. Under
-misspecification of \(G\) or \(R\), the simpler estimators can
-outperform GLS. We provide conditions under which ANCOVA loses less than
-5\% efficiency relative to GLS and investigate robustness via
-simulation.
+\textbf{Background.} Three estimators of the treatment effect in
+longitudinal trials with run-in observations are in routine use: the GLS
+estimator under the linear mixed model, which exploits the full
+covariance structure to extract maximum information from all
+observations; the ANCOVA estimator, which regresses post-randomisation
+means on the run-in mean as a covariate without specifying the
+random-effects covariance; and the averaged change-score estimator,
+which computes a simple difference of phase means and applies a
+\(t\)-test, requiring no variance-component estimation. The relative
+efficiency of these estimators under correct and misspecified models has
+not been comprehensively characterised.
+
+\textbf{Methods.} We derive the relative efficiency of the three
+estimators as a function of the trial design \((J_0, J_1, J_2)\) and the
+variance parameters \((\sigma^2, \sigma_b^2)\). The derivation proceeds
+via the Woodbury-based variance formulas of Paper 1 in this compendium,
+plus closed-form expressions for the ANCOVA and averaged-change-score
+variances under the same random-slopes model. We complement the analytic
+comparison with a Monte Carlo simulation that probes robustness to
+misspecification of the within-subject covariance (\(R\)) and the
+random-effects covariance (\(G\)).
+
+\textbf{Results.} Under correct specification, GLS \(\le\) ANCOVA
+\(\le\) averaged in variance. The efficiency loss from ANCOVA relative
+to GLS is below 5\% across a broad regime of (\(J_0, J_1, J_2\)) and
+signal-to-noise ratios; conditions characterising this regime are
+derived. Under misspecification of \(G\) or \(R\), the simpler
+estimators can outperform GLS: when the variance components are
+mis-stated, GLS amplifies the misspecification through its inverse-
+covariance weighting, while ANCOVA and averaged remain comparatively
+robust.
+
+\textbf{Conclusions.} GLS is the optimal estimator under correct model
+specification but does not dominate the simpler alternatives in the
+practical regime of mild misspecification. ANCOVA is the recommended
+default when the variance components are known only approximately;
+averaged change-score remains useful as a robust benchmark and a
+teaching tool.
 \end{abstract}
 
 {
@@ -664,8 +687,43 @@ estimator}\label{when-to-use-which-estimator}
 
 \section{Discussion}\label{discussion}
 
-\section*{References}\label{references}
-\addcontentsline{toc}{section}{References}
+\section{Conflict of interest}\label{conflict-of-interest}
+
+The author declares no conflicts of interest.
+
+\section{Funding}\label{funding}
+
+This work received no specific funding.
+
+\section{Data availability statement}\label{data-availability-statement}
+
+The \texttt{runinpower} R package implementing the GLS, ANCOVA, and
+averaged-change-score estimators (\texttt{ancova.R},
+\texttt{averaged.R}), the simulation drivers, and the shared
+bibliography across the four-paper compendium are openly available in
+the project repository. Specific paths are listed in the Reproducibility
+section below.
+
+\section{Reproducibility}\label{reproducibility}
+
+This manuscript was rendered with R 4.4.x. Principal packages used are
+the in-package \texttt{runinpower} source, \texttt{nlme} (the GLS fitter
+for the simulation comparator), \texttt{tinytest} (testing harness), and
+\texttt{rmarkdown} plus \texttt{bookdown} for the manuscript build.
+
+\textbf{Random-number generator.} The Monte Carlo simulation comparing
+the three estimators sets \texttt{set.seed(20260418)} at its entry
+point. Per-replicate seeds derive from the master seed by
+\texttt{+\ rep\_idx}.
+
+\textbf{Data and code availability.} The R package source is at
+\texttt{R/}. Simulation drivers are at \texttt{analysis/scripts/}. The
+companion manuscripts (Papers 1, 2, 3) are at
+\texttt{analysis/paper\{1,2,3\}-*/}. The manuscript source and shared
+bibliography (\texttt{../references.bib}) are at
+\texttt{analysis/paper4-gls-vs-ttest/}.
+
+\section{References}\label{references}
 
 \protect\phantomsection\label{refs}
 \begin{CSLReferences}{1}{1}
@@ -812,5 +870,13 @@ Estimators for a Treatment Effect in a Pretest-Posttest Trial.''}
 \url{https://doi.org/10.1198/000313001753272466}.
 
 \end{CSLReferences}
+
+\vfill
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\emph{Rendered on 2026-05-11 at 18:41 PDT.}\\
+\emph{Source:
+\texttt{\textasciitilde{}/prj/res/04-runin-power-analysis/runinpower/analysis/paper4-gls-vs-ttest/report.Rmd}}
 
 \end{document}

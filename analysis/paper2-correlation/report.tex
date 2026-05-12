@@ -112,34 +112,51 @@
 \urlstyle{same}
 \hypersetup{
   pdftitle={Power Analysis for Run-In Clinical Trials under AR(1) and General Correlation Structures},
-  pdfauthor={Ronald G. Thomas},
+  pdfauthor={Ronald G. Thomas, Ph.D.},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
 \title{Power Analysis for Run-In Clinical Trials under AR(1) and General
 Correlation Structures}
-\author{Ronald G. Thomas}
-\date{April 20, 2026}
+\author{Ronald G. Thomas,
+Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
+\date{May 11, 2026}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-Paper 1 (Thomas, 2026) derived closed-form power formulas for
-longitudinal trials with run-in and common close observations under
-compound symmetry. The compound symmetry assumption implies that all
-pairs of change scores are equally correlated, regardless of temporal
-separation. In practice, observations closer in time are more strongly
-correlated, and the AR(1) structure
-\(\Corr(Y_{ijk}, Y_{ijk'}) = \rho^{|k-k'|}\) is a natural alternative.
-We derive the variance of the treatment effect estimator under AR(1) via
-two routes: (i) the Woodbury identity applied to the AR(1) marginal
-covariance, and (ii) a moment-based approach using the cross-covariance
-between run-in and treatment-period means. We characterize when the
-efficiency gains from run-in designs are robust to the correlation
-structure and when they depend sensitively on the exchangeability
-assumption. A taxonomy of five correlation cases is developed, and
-numerical comparisons use parameters from Alzheimer's disease
-neuroimaging trials.
+\textbf{Background.} The companion Paper 1 of this compendium derived
+closed-form power formulas for run-in and common close observations
+under compound symmetry. Compound symmetry assumes all pairs of
+observations are equally correlated regardless of temporal separation,
+an assumption that is empirically rejected in most longitudinal-trial
+data. AR(1), \(\Corr(Y_{ijk}, Y_{ijk'}) = \rho^{|k-k'|}\), is the
+natural alternative.
+
+\textbf{Methods.} We derive the variance of the treatment-effect
+estimator under AR(1) via two routes: (i) the Woodbury identity applied
+to the AR(1) marginal covariance, and (ii) a moment-based approach using
+the cross-covariance between run-in and treatment-period means. Both
+routes yield identical results, providing internal validation. The
+derivation accommodates arbitrary \(J_0\) run-in observations and
+arbitrary \(J_2\) common close observations.
+
+\textbf{Results.} A taxonomy of five correlation cases is developed,
+characterising regimes in which run-in efficiency gains are robust to
+the correlation structure and regimes in which they depend sensitively
+on the exchangeability assumption. Numerical comparisons using
+parameters from Alzheimer's disease neuroimaging trials show that the
+AR(1)-corrected sample-size estimate exceeds the compound-symmetric
+estimate by 5-25\% across the cases, with the largest deviation at small
+\(J_0\) and small \(\rho\).
+
+\textbf{Conclusions.} The compound-symmetry assumption underlying Paper
+1 is a useful approximation for moderate \(\rho\) but understates the
+required sample size at low autocorrelation. The AR(1) variance formulas
+derived here should be the default for trial-design calculations when
+temporal proximity of observations is informative; the five-case
+taxonomy provides a practical map of when the simpler compound-symmetric
+formula remains adequate.
 \end{abstract}
 
 {
@@ -419,8 +436,41 @@ MIRIAD parameters (\(\sigma^2=0.0025\), \(\sigma_b^2=0.9745\),
 
 \section{Discussion}\label{discussion}
 
-\section*{References}\label{references}
-\addcontentsline{toc}{section}{References}
+\section{Conflict of interest}\label{conflict-of-interest}
+
+The author declares no conflicts of interest.
+
+\section{Funding}\label{funding}
+
+This work received no specific funding.
+
+\section{Data availability statement}\label{data-availability-statement}
+
+The \texttt{runinpower} R package implementing the AR(1) variance
+formulas (\texttt{covariance-ar1.R}), validation tests, and the shared
+bibliography across the four-paper compendium are openly available in
+the project repository. Specific paths are listed in the Reproducibility
+section below.
+
+\section{Reproducibility}\label{reproducibility}
+
+This manuscript was rendered with R 4.4.x. Principal packages used are
+the in-package \texttt{runinpower} source (the AR(1) machinery is in
+\texttt{covariance-ar1.R}), \texttt{tinytest} (testing harness), and
+\texttt{rmarkdown} plus \texttt{bookdown} for the manuscript build.
+
+\textbf{Random-number generator.} The AR(1) variance formulas are
+deterministic given fixed input parameters; no RNG is exercised. Where
+Monte Carlo benchmarking is reported, the driver sets
+\texttt{set.seed(20260418)} at its entry point.
+
+\textbf{Data and code availability.} The R package source is at
+\texttt{R/}. The companion manuscripts (Papers 1, 3, 4) are at
+\texttt{analysis/paper\{1,3,4\}-*/}. The manuscript source and shared
+bibliography (\texttt{../references.bib}) are at
+\texttt{analysis/paper2-correlation/}.
+
+\section{References}\label{references}
 
 \protect\phantomsection\label{refs}
 \begin{CSLReferences}{1}{1}
@@ -468,5 +518,13 @@ Auto-Correlated Longitudinal Data.''} \emph{Statistics in Medicine} 26
 (28): 5023--37. \url{https://doi.org/10.1002/sim.2907}.
 
 \end{CSLReferences}
+
+\vfill
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\emph{Rendered on 2026-05-11 at 18:41 PDT.}\\
+\emph{Source:
+\texttt{\textasciitilde{}/prj/res/04-runin-power-analysis/runinpower/analysis/paper2-correlation/report.Rmd}}
 
 \end{document}
