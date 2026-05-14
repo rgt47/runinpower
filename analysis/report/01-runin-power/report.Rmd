@@ -1239,9 +1239,9 @@ analytic formulas is reported, the driver sets
 **Data and code availability.** The R package source is at
 `R/`. MATLAB scripts are at `analysis/scripts/`. The
 companion manuscripts are at
-`analysis/paper{2,3,4}-*/`. The manuscript source and shared
+`analysis/report/{02,03,04}-*/`. The manuscript source and shared
 bibliography (`../references.bib`) are at
-`analysis/paper1-runin-power/`.
+`analysis/report/01-runin-power/`.
 
 # References
 
