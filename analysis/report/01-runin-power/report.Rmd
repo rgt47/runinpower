@@ -3,26 +3,8 @@ title: |
   Power Analysis for Longitudinal Clinical Trials
   with Run-In and Common Close Observations
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
-affiliation: "University of California, San Diego"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
-fontsize: 11pt
-geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
-output:
-  pdf_document:
-    latex_engine: xelatex
-    toc: true
-    number_sections: true
-    keep_tex: true
-    highlight: tango
-bibliography: references.bib
-link-citations: true
-header-includes:
-  - \usepackage{amsmath,amsfonts,amssymb}
-  - \usepackage{booktabs}
-  - \usepackage{float}
-  - \DeclareMathOperator{\Var}{Var}
-  - \DeclareMathOperator{\Cov}{Cov}
-  - \DeclareMathOperator{\tr}{tr}
+affiliation: "University of California, San Diego"
 abstract: |
   **Background.** Longitudinal clinical trials often
   incorporate pre-randomisation (run-in) and post-treatment
@@ -61,6 +43,28 @@ abstract: |
   extension (Paper 2), the optimal-allocation problem
   (Paper 3), and the GLS-versus-ANCOVA-versus-averaged
   estimator comparison (Paper 4) in this compendium.
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    number_sections: true
+    keep_tex: true
+    highlight: tango
+fontsize: 11pt
+geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+bibliography: references.bib
+csl: statistics-in-medicine.csl
+link-citations: true
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{lineno}
+  - \linenumbers
+  - \usepackage{booktabs}
+  - \usepackage{float}
+  - \DeclareMathOperator{\Var}{Var}
+  - \DeclareMathOperator{\Cov}{Cov}
+  - \DeclareMathOperator{\tr}{tr}
 ---
 
 ```{r setup, include=FALSE}

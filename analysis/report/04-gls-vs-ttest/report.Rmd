@@ -3,26 +3,8 @@ title: |
   GLS versus Averaged Change-Score Estimators for
   Clinical Trials with Run-In Observations
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
-affiliation: "University of California, San Diego"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
-fontsize: 11pt
-geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
-output:
-  pdf_document:
-    latex_engine: xelatex
-    toc: true
-    number_sections: true
-    keep_tex: true
-    highlight: tango
-bibliography: references.bib
-link-citations: true
-header-includes:
-  - \usepackage{amsmath,amsfonts,amssymb}
-  - \usepackage{booktabs}
-  - \usepackage{float}
-  - \DeclareMathOperator{\Var}{Var}
-  - \DeclareMathOperator{\Cov}{Cov}
-  - \DeclareMathOperator{\E}{E}
+affiliation: "University of California, San Diego"
 abstract: |
   **Background.** Three estimators of the treatment effect in
   longitudinal trials with run-in observations are in routine
@@ -68,6 +50,28 @@ abstract: |
   the variance components are known only approximately;
   averaged change-score remains useful as a robust
   benchmark and a teaching tool.
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    number_sections: true
+    keep_tex: true
+    highlight: tango
+fontsize: 11pt
+geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+bibliography: references.bib
+csl: statistics-in-medicine.csl
+link-citations: true
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{lineno}
+  - \linenumbers
+  - \usepackage{booktabs}
+  - \usepackage{float}
+  - \DeclareMathOperator{\Var}{Var}
+  - \DeclareMathOperator{\Cov}{Cov}
+  - \DeclareMathOperator{\E}{E}
 ---
 
 ```{r setup, include=FALSE}

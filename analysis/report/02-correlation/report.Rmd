@@ -3,27 +3,8 @@ title: |
   Power Analysis for Run-In Clinical Trials under
   AR(1) and General Correlation Structures
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
-affiliation: "University of California, San Diego"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
-fontsize: 11pt
-geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
-output:
-  pdf_document:
-    latex_engine: xelatex
-    toc: true
-    number_sections: true
-    keep_tex: true
-    highlight: tango
-bibliography: references.bib
-link-citations: true
-header-includes:
-  - \usepackage{amsmath,amsfonts,amssymb}
-  - \usepackage{booktabs}
-  - \usepackage{float}
-  - \DeclareMathOperator{\Var}{Var}
-  - \DeclareMathOperator{\Cov}{Cov}
-  - \DeclareMathOperator{\Corr}{Corr}
-  - \DeclareMathOperator{\tr}{tr}
+affiliation: "University of California, San Diego"
 abstract: |
   **Background.** The companion Paper 1 of this compendium
   derived closed-form power formulas for run-in and common
@@ -61,6 +42,29 @@ abstract: |
   proximity of observations is informative; the five-case
   taxonomy provides a practical map of when the simpler
   compound-symmetric formula remains adequate.
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    number_sections: true
+    keep_tex: true
+    highlight: tango
+fontsize: 11pt
+geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+bibliography: references.bib
+csl: statistics-in-medicine.csl
+link-citations: true
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{lineno}
+  - \linenumbers
+  - \usepackage{booktabs}
+  - \usepackage{float}
+  - \DeclareMathOperator{\Var}{Var}
+  - \DeclareMathOperator{\Cov}{Cov}
+  - \DeclareMathOperator{\Corr}{Corr}
+  - \DeclareMathOperator{\tr}{tr}
 ---
 
 ```{r setup, include=FALSE}

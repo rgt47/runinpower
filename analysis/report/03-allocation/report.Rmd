@@ -4,26 +4,8 @@ title: |
   Treatment, and Common Close Phases in Longitudinal
   Clinical Trials
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
-affiliation: "University of California, San Diego"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
-fontsize: 11pt
-geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
-output:
-  pdf_document:
-    latex_engine: xelatex
-    toc: true
-    number_sections: true
-    keep_tex: true
-    highlight: tango
-bibliography: references.bib
-link-citations: true
-header-includes:
-  - \usepackage{amsmath,amsfonts,amssymb}
-  - \usepackage{booktabs}
-  - \usepackage{float}
-  - \DeclareMathOperator{\Var}{Var}
-  - \DeclareMathOperator{\Cov}{Cov}
-  - \DeclareMathOperator{\Corr}{Corr}
+affiliation: "University of California, San Diego"
 abstract: |
   **Background.** Trial designers planning a longitudinal
   study with a fixed total observation budget face an
@@ -63,6 +45,28 @@ abstract: |
   driven by the signal-to-noise ratio. The procedure
   generalises to non-equally-spaced and dropout-adjusted
   designs without sacrificing closed-form tractability.
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    number_sections: true
+    keep_tex: true
+    highlight: tango
+fontsize: 11pt
+geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+bibliography: references.bib
+csl: statistics-in-medicine.csl
+link-citations: true
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{lineno}
+  - \linenumbers
+  - \usepackage{booktabs}
+  - \usepackage{float}
+  - \DeclareMathOperator{\Var}{Var}
+  - \DeclareMathOperator{\Cov}{Cov}
+  - \DeclareMathOperator{\Corr}{Corr}
 ---
 
 ```{r setup, include=FALSE}
