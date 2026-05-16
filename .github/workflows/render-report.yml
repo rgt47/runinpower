@@ -39,20 +39,22 @@ jobs:
             Rscript -e '
               renv::restore()
               rmds <- list.files(
-                "analysis", pattern = "^(report|paper).*\\.Rmd$",
+                "analysis", pattern = "^report[.]Rmd$",
                 recursive = TRUE, full.names = TRUE
               )
               cat("Found", length(rmds), "manuscripts to render\n\n")
               failed <- character()
               for (rmd in rmds) {
                 cat("=== Rendering:", rmd, "===\n")
+                old_wd <- setwd(dirname(rmd))
                 tryCatch(
-                  rmarkdown::render(rmd),
+                  rmarkdown::render(basename(rmd)),
                   error = function(e) {
                     cat("FAILED:", conditionMessage(e), "\n")
                     failed <<- c(failed, rmd)
                   }
                 )
+                setwd(old_wd)
               }
               cat("\n=== summary ===\n")
               cat("rendered:", length(rmds) - length(failed), "\n")
