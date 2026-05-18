@@ -67,6 +67,8 @@ header-includes:
   - \DeclareMathOperator{\Var}{Var}
   - \DeclareMathOperator{\Cov}{Cov}
   - \DeclareMathOperator{\Corr}{Corr}
+  - \usepackage{setspace}
+  - \setstretch{1.1}
 ---
 
 ```{r setup, include=FALSE}
