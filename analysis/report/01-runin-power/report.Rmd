@@ -123,8 +123,7 @@ follow-up, providing variance, power, and sample size
 expressions illustrated with data from the Alzheimer's Disease
 Neuroimaging Initiative. These formulae apply to designs with
 $J_0 = 0$ run-in observations and an arbitrary post-randomization
-visit schedule, and serve as the baseline case that the present
-paper extends.
+visit schedule, and serve as the baseline case that we extend here.
 
 The CRAN reference implementation of the $J_0=0$ formulae is
 the `longpower` package [@iddi2022], which provides the
@@ -155,7 +154,7 @@ but the contribution of the common close to statistical
 efficiency within the GLS framework has not been formally
 characterized.
 
-This paper presents three results. First, we derive a simple
+We present three results. First, we derive a simple
 closed-form variance formula for the treatment effect
 estimator when exactly two run-in observations precede
 randomization (Section 3.2). Second, we generalize this

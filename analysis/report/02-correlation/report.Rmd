@@ -98,7 +98,7 @@ Paper 1 [@frost2008] assumed $R = \sigma^2(I_J +
 change-score parameterization under independent errors.
 @wang2019 extended the run-in framework to two-period
 linear mixed models but retained the compound symmetry
-assumption. This paper extends to AR(1) residual
+assumption. We extend here to AR(1) residual
 correlation, where $\Corr(e_{ij}, e_{ij'}) =
 \rho^{|j-j'|}$ for $0 < \rho < 1$.
 
@@ -348,8 +348,8 @@ that it provides a conservative (upper) bound on the
 variance under AR(1) without requiring specification
 of $\sigma_b^2$. The ratio of the two variances
 quantifies the efficiency loss from ignoring the
-random slope structure -- this is the relative
-efficiency studied in Paper 4.
+random slope structure (this is the relative
+efficiency studied in Paper 4).
 
 
 # Robustness to correlation misspecification
