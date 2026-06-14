@@ -49,6 +49,8 @@ output:
     number_sections: true
     keep_tex: true
     highlight: tango
+    includes:
+      in_header: claudecode.tex
 fontsize: 11pt
 geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
 bibliography: references.bib
@@ -403,7 +405,9 @@ total variance is a weighted sum across strata:
 ## Comparison across correlation structures
 
 ```{r comparison}
-sigma2_ad <- 0.0025
+# MIRIAD within-visit residual = between-visit (0.3338) +
+# between-scan measurement error (0.0025); see Paper 1.
+sigma2_ad <- 0.3338 + 0.0025
 sigma_b2_ad <- 0.9745
 t_ad <- 1.0
 delta_ad <- 0.25
@@ -438,7 +442,7 @@ knitr::kable(
 
 ## Sensitivity to rho
 
-```{r sensitivity, fig.cap="Per-pair variance as a function of $\\rho$ under AR(1) for MIRIAD parameters ($\\sigma^2=0.0025$, $\\sigma_b^2=0.9745$, $J_1=2$, $J_2=0$)."}
+```{r sensitivity, fig.cap="Per-pair variance as a function of $\\rho$ under AR(1) for MIRIAD parameters ($\\sigma^2=0.3363$, $\\sigma_b^2=0.9745$, $J_1=2$, $J_2=0$)."}
 rho_grid <- seq(0, 0.95, by = 0.05)
 r_values <- c(0, 1, 2, 4)
 

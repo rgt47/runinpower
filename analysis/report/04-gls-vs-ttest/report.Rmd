@@ -57,6 +57,8 @@ output:
     number_sections: true
     keep_tex: true
     highlight: tango
+    includes:
+      in_header: claudecode.tex
 fontsize: 11pt
 geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
 bibliography: references.bib
@@ -707,7 +709,9 @@ cat(sprintf('  Avg: est=%.3f, se=%.3f\n',
 ## MIRIAD parameters
 
 ```{r miriad_comparison}
-sigma2_ad <- 0.0025
+# MIRIAD within-visit residual = between-visit (0.3338) +
+# between-scan measurement error (0.0025); see Paper 1.
+sigma2_ad <- 0.3338 + 0.0025
 sigma_b2_ad <- 0.9745
 
 configs <- expand.grid(

@@ -52,6 +52,8 @@ output:
     number_sections: true
     keep_tex: true
     highlight: tango
+    includes:
+      in_header: claudecode.tex
 fontsize: 11pt
 geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
 bibliography: references.bib
@@ -228,8 +230,8 @@ params <- list(
     label = 'Med ($\\sigma_b/\\sigma=1.0$)'),
   high = list(sigma2 = 1.0, sigma_b2 = 5.0,
     label = 'High ($\\sigma_b/\\sigma=2.24$)'),
-  ad   = list(sigma2 = 0.0025, sigma_b2 = 0.9745,
-    label = 'AD ($\\sigma_b/\\sigma=19.7$)')
+  ad   = list(sigma2 = 0.3338 + 0.0025, sigma_b2 = 0.9745,
+    label = 'AD ($\\sigma_b/\\sigma=1.70$)')
 )
 
 opt_table <- do.call(rbind, lapply(p_values, function(p) {
@@ -566,7 +568,9 @@ approximation used here, which is conservative when
 dropout is informative about the random slope.
 
 ```{r dropout}
-sigma2_ad <- 0.0025
+# MIRIAD within-visit residual = between-visit (0.3338) +
+# between-scan measurement error (0.0025); see Paper 1.
+sigma2_ad <- 0.3338 + 0.0025
 sigma_b2_ad <- 0.9745
 tt <- 1.0
 delta_ad <- 0.25
@@ -628,13 +632,15 @@ knitr::kable(
 
 ## AD neuroimaging trial
 
-Using MIRIAD parameters ($\sigma^2 = 0.0025$,
+Using MIRIAD parameters ($\sigma^2 = 0.3363$,
 $\sigma_b^2 = 0.9745$, $t = 1$ year), compare the
 optimal allocation for $J = 4, 5, 6$ total
 observations with and without dropout.
 
 ```{r ad_optimal, fig.cap="Variance across all allocations for $J=5$ total observations using MIRIAD parameters. Each point is one $(J_0, J_1, J_2)$ configuration."}
-sigma2_ad <- 0.0025
+# MIRIAD within-visit residual = between-visit (0.3338) +
+# between-scan measurement error (0.0025); see Paper 1.
+sigma2_ad <- 0.3338 + 0.0025
 sigma_b2_ad <- 0.9745
 delta_ad <- 0.25
 

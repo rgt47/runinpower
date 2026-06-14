@@ -50,6 +50,8 @@ output:
     number_sections: true
     keep_tex: true
     highlight: tango
+    includes:
+      in_header: claudecode.tex
 fontsize: 11pt
 geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
 bibliography: references.bib
@@ -83,6 +85,20 @@ knitr::opts_chunk$set(
 
 # Introduction
 
+\begin{bullets}
+\textbf{Beyond its traditional roles, the run-in period has a distinct methodological value in rate-of-change trials: estimating individual baseline trajectories to raise power.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Conventional run-in uses include identifying compliant participants and washing out prior treatments.
+\item When the outcome is a rate of change, run-in observations estimate each participant's baseline trajectory.
+\item Incorporating those trajectories into the analysis model substantially increases statistical power.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The run-in period has served multiple purposes in clinical trial
 design, from identifying compliant participants to washing out
 prior treatments [@packerWhyHasRunIn2017]. A distinct and
@@ -90,7 +106,22 @@ methodologically important use has emerged in trials where the
 primary outcome is a rate of change: estimating individual
 baseline trajectories that, when incorporated into the analysis
 model, substantially increase statistical power.
+\end{orig}
 
+\begin{bullets}
+\textbf{Frost and colleagues established the mixed-model foundation: run-in observations help most when slope variability is large relative to measurement error.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The key insight is that pre-randomization observations inform each participant's underlying trajectory.
+\item This reduces the residual variance of the treatment-effect estimator, and the gain grows with the slope-to-noise ratio.
+\item In Alzheimer's neuroimaging trials, where that ratio is favorable, they reported sample-size reductions of 30 to 45 percent.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 @frostOptimizingDesignClinical2008 established the theoretical
 foundation for this approach within the linear mixed effects
 framework. Their key insight was that when between-subject
@@ -102,7 +133,22 @@ estimator. Working with neuroimaging outcomes in Alzheimer's
 disease trials, where the ratio of slope variability to
 measurement error is particularly favorable, they demonstrated
 sample size reductions of 30--45%.
+\end{orig}
 
+\begin{bullets}
+\textbf{Wang and colleagues extended the framework with two-period models that jointly model run-in and post-randomization data rather than treating run-in as a covariate.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Joint modelling of both periods yields additional power gains of up to 15 percent.
+\item It permits unequal randomization ratios without power loss.
+\item Run-in observations contribute placebo-equivalent information for all participants.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 @wangTwoPeriodLinear2019 extended this framework by proposing
 two-period linear mixed effects models that jointly model
 run-in and post-randomization data rather than using run-in
@@ -111,7 +157,22 @@ additional power gains of up to 15% and enables unequal
 randomization ratios without power loss, since run-in
 observations effectively contribute placebo-equivalent
 information for all participants.
+\end{orig}
 
+\begin{bullets}
+\textbf{A parallel literature gives closed-form variance and sample-size formulae for the random-coefficient model without a run-in phase, which form the baseline this paper extends.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Lu and colleagues derived the cLDA estimator variance, its link to ANCOVA, and the conditions under which the two coincide.
+\item Hu and colleagues generalized these to random-coefficient models with monotone missing data and variable follow-up, illustrated with ADNI data.
+\item These results cover only the $J_0 = 0$ case and serve as the baseline extended here.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 A parallel literature has developed closed-form variance and
 sample size formulae for the random coefficient regression
 model without a run-in phase. @lu2009 derived the variance of
@@ -125,7 +186,22 @@ expressions illustrated with data from the Alzheimer's Disease
 Neuroimaging Initiative. These formulae apply to designs with
 $J_0 = 0$ run-in observations and an arbitrary post-randomization
 visit schedule, and serve as the baseline case that we extend here.
+\end{orig}
 
+\begin{bullets}
+\textbf{The CRAN longpower package is the reference implementation of the baseline formulae, and our general result reduces to its routines at the appropriate boundaries.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item longpower provides edland, diggle, and liu.liang routines for slope-comparison trials.
+\item Our formula reduces to the Ard-Edland slope variance at $J_0 = J_2 = 0$, and to the Diggle compound-symmetry form when also $\sigma_b^2 = 0$.
+\item The generalization thus embeds the existing longpower formulae as the baseline against which run-in and common-close gains are measured.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The CRAN reference implementation of the $J_0=0$ formulae is
 the `longpower` package [@iddi2022], which provides the
 routines `edland.linear.power()`, `diggle.linear.power()`, and
@@ -139,7 +215,22 @@ $\sigma_b^2 = 0$. The generalization developed here therefore
 embeds the existing `longpower` formulae as the baseline case
 against which the efficiency gains from run-in and common
 close observations are measured.
+\end{orig}
 
+\begin{bullets}
+\textbf{No prior closed-form power formula handles an arbitrary number of run-in observations together with a separate common-close phase, the gap this paper fills.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The common-close phase observes all participants off-treatment after the randomized period.
+\item It supplies extra information about individual trajectories at no cost to the treatment comparison.
+\item Such post-treatment periods appear in delayed-start and randomized-withdrawal designs, but their GLS efficiency contribution has not been formally characterized.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 Despite these advances, no general closed-form power formula
 has been derived that simultaneously accounts for an arbitrary
 number of run-in observations and a separate set of common
@@ -154,7 +245,22 @@ disease-modifying effects [@sperlingA4StudyStopping2014],
 but the contribution of the common close to statistical
 efficiency within the GLS framework has not been formally
 characterized.
+\end{orig}
 
+\begin{bullets}
+\textbf{The paper presents three nested results, all derived from the GLS estimator via the Woodbury identity.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item A closed-form variance for exactly two run-in observations (Section 3.2), then its generalization to arbitrary $J_0$ (Section 3.3).
+\item A further extension adding $J_2$ common-close observations (Section 3.4).
+\item All expressions are in terms of $\sigma^2$, $\sigma_b^2$, and spacing $t$, with numerical examples from Alzheimer's neuroimaging studies (Section 5).
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 We present three results. First, we derive a simple
 closed-form variance formula for the treatment effect
 estimator when exactly two run-in observations precede
@@ -169,6 +275,7 @@ $\sigma^2$, the random slope variance $\sigma_b^2$, and the
 observation spacing $t$. Section 5 provides numerical
 examples using parameters estimated from Alzheimer's disease
 neuroimaging studies.
+\end{orig}
 
 
 # Model
@@ -194,14 +301,33 @@ We model the outcome as
 \begin{equation}
   Y_{ij} = \alpha + a_i +
   \bigl(\delta(1-h_j) + \beta h_j + \gamma h_j g_i + b_i
-  \bigr) t_j + e_{ij}
+  \bigr) t_j + u_{ij} + \varepsilon_{ij}
   \label{eq:model}
 \end{equation}
 where $\alpha$ is the overall intercept, $a_i \sim N(0,
 \sigma_a^2)$ is a random intercept, $b_i \sim N(0,
-\sigma_b^2)$ is a random slope, and $e_{ij} \sim N(0,
-\sigma^2)$ are independent residual errors. The phase
-indicator is
+\sigma_b^2)$ is a random slope, $u_{ij} \sim N(0,
+\sigma_u^2)$ are within-subject between-visit random
+effects independent across visits, and $\varepsilon_{ij}
+\sim N(0, \sigma_\varepsilon^2)$ are independent
+between-scan measurement errors. This three-component
+within-subject variance structure follows
+@frostOptimizingDesignClinical2008 (their Eq. 17). Because
+$u_{ij}$ and $\varepsilon_{ij}$ are both independent across
+visits, under a single scan per visit they enter every
+formula below only through their sum. We therefore write
+$w_{ij} = u_{ij} + \varepsilon_{ij}$ for the total
+within-visit residual, with
+\begin{equation}
+  \sigma^2 \;\equiv\; \Var(w_{ij}) \;=\; \sigma_u^2 +
+  \sigma_\varepsilon^2 .
+  \label{eq:resid}
+\end{equation}
+The two within-visit components are separately identifiable
+only when a visit carries replicate scans; for the
+single-scan designs treated here only their sum $\sigma^2$
+enters the variance of the treatment-effect estimator. The
+phase indicator is
 $$
   h_j =
   \begin{cases}
@@ -268,7 +394,7 @@ The change-score formulation yields
 \begin{equation}
   c_{ij} = \bigl(\delta(1-h_j) + \beta h_j
     + \gamma h_j g_i + b_i\bigr) t_j
-    + (e_{ij} - e_{i0})
+    + (w_{ij} - w_{i0})
   \label{eq:change_model}
 \end{equation}
 for $j \ne 0$. The change-score vector for participant $i$
@@ -284,21 +410,28 @@ The marginal covariance of the change-score vector is
 where $G = \sigma_b^2$ (scalar, since we have a single random
 slope), $Z = t \cdot \mathbf{1}_J$ is the $J \times 1$ random
 effects design vector, and $R$ is the $J \times J$ residual
-covariance of the differenced errors $(e_{ij} - e_{i0})$.
+covariance of the differenced within-visit residuals
+$(w_{ij} - w_{i0})$.
 
 The residual covariance has the structure
 \begin{equation}
-  R_{jl} = \Cov(e_{ij} - e_{i0},\; e_{il} - e_{i0})
+  R_{jl} = \Cov(w_{ij} - w_{i0},\; w_{il} - w_{i0})
   = \begin{cases}
     2\sigma^2 & \text{if } j = l \\
     \sigma^2  & \text{if } j \ne l
   \end{cases}
   \label{eq:R}
 \end{equation}
-since $e_{ij}$ are independent with common variance
-$\sigma^2$, and the baseline error $e_{i0}$ induces positive
+since $w_{ij} = u_{ij} + \varepsilon_{ij}$ are independent
+across visits with common variance
+$\sigma^2 = \sigma_u^2 + \sigma_\varepsilon^2$, and the
+shared baseline residual $w_{i0}$ induces positive
 correlation among all change scores. Thus
 $R = \sigma^2(\mathbf{I}_J + \mathbf{1}_J \mathbf{1}_J')$.
+Both within-visit components enter $R$ identically because
+$u_{i0}$ and $\varepsilon_{i0}$ are differenced out of every
+change score in the same way; this is why only their sum
+$\sigma^2$ is identified from single-scan designs.
 
 
 # Variance of the Treatment Effect Estimator
@@ -494,12 +627,12 @@ $c_{i,-1} = Y_{i,-1} - Y_{i,0}$.
 
 More carefully, under model \eqref{eq:model}:
 \begin{align}
-  c_{i,-2} &= -2(\delta + b_i)\,t + (e_{i,-2} - e_{i,0})
+  c_{i,-2} &= -2(\delta + b_i)\,t + (w_{i,-2} - w_{i,0})
     \notag \\
-  c_{i,-1} &= -(\delta + b_i)\,t + (e_{i,-1} - e_{i,0})
+  c_{i,-1} &= -(\delta + b_i)\,t + (w_{i,-1} - w_{i,0})
     \notag \\
   c_{i,1}  &= (\beta + \gamma g_i + b_i)\,t
-    + (e_{i,1} - e_{i,0})
+    + (w_{i,1} - w_{i,0})
   \label{eq:c_r2}
 \end{align}
 
@@ -694,10 +827,10 @@ is $J = J_0 + J_1$.
 
 The change scores are
 \begin{align}
-  c_{i,-s} &= -s(\delta + b_i)\,t + (e_{i,-s} - e_{i0})
+  c_{i,-s} &= -s(\delta + b_i)\,t + (w_{i,-s} - w_{i0})
     & s &= 1,\ldots,J_0 \notag \\
   c_{i,l}  &= l(\beta + \gamma g_i + b_i)\,t
-    + (e_{i,l} - e_{i0})
+    + (w_{i,l} - w_{i0})
     & l &= 1,\ldots,J_1
 \end{align}
 
@@ -847,7 +980,7 @@ J_1+J_2$), all participants are off-treatment. The change scores
 are:
 \begin{align}
   c_{i,J_1+s} &= [\beta(J_1+s) + \gamma g_i \cdot J_1 + b_i(J_1+s)]
-    \,t + (e_{i,J_1+s} - e_{i0})
+    \,t + (w_{i,J_1+s} - w_{i0})
     & s &= 1,\ldots,J_2
 \end{align}
 
@@ -1093,14 +1226,26 @@ filled.contour(
 
 Using variance parameters estimated from the MIRIAD dataset
 [@frostOptimizingDesignClinical2008]: $\sigma_b^2 = 0.9745$
-(between-subject slope variance), $\sigma^2 = 0.0025$
-(residual variance), with observation interval $t = 1$ year
+(between-subject slope variance) and a combined within-visit
+residual
+$\sigma^2 = \sigma_u^2 + \sigma_\varepsilon^2
+= 0.3338 + 0.0025 = 0.3363$, formed per Eq. \eqref{eq:resid}
+from the within-subject between-visit component
+($\sigma_u^2 = 0.3338$) and the additional between-scan
+measurement error ($\sigma_\varepsilon^2 = 0.0025$) of
+Frost's Table II. We take observation interval $t = 1$ year
 and treatment effect $\Delta = 0.25$ (25% reduction in
 atrophy rate relative to placebo rate of approximately 1.0%
-brain volume loss per year).
+brain volume loss per year). Using the combined residual,
+the conventional design reproduces Frost's reported sample
+sizes (Table III); using only the $0.0025$ measurement-error
+term, as in earlier drafts, understates the residual by two
+orders of magnitude and yields degenerate sample sizes.
 
 ```{r ad_example}
-sigma2_ad <- 0.0025
+# MIRIAD within-visit residual = between-visit (0.3338) +
+# between-scan measurement error (0.0025); see Eq. (resid).
+sigma2_ad <- 0.3338 + 0.0025
 sigma_b2_ad <- 0.9745
 t_ad <- 1.0
 delta_ad <- 0.25
