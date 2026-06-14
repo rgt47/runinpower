@@ -86,6 +86,20 @@ library(runinpower)
 
 # Introduction
 
+\begin{bullets}
+\textbf{The efficiency of run-in designs is governed by the correlation structure of the repeated measurements.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Under compound symmetry the correlation between change scores is constant.
+\item Run-in observations then inform the random slope through simple averaging.
+\item Under AR(1) the correlation decays with separation, so run-in information depends on distance from the treatment period.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The efficiency of run-in designs depends on the
 correlation structure of the repeated measurements.
 Under compound symmetry, the correlation between any
@@ -95,7 +109,22 @@ slope $b_i$ through a simple averaging mechanism. Under
 AR(1), the correlation decays with temporal separation,
 and the information content of run-in observations
 depends on how far they are from the treatment period.
+\end{orig}
 
+\begin{bullets}
+\textbf{This paper extends prior compound-symmetric run-in frameworks to AR(1) residual correlation.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Paper 1 assumed the rank-one-plus-identity change-score covariance from independent errors.
+\item Wang (2019) extended run-in to two-period mixed models but kept compound symmetry.
+\item We instead adopt AR(1) residual correlation with geometric decay in lag.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 Paper 1 [@frost2008] assumed $R = \sigma^2(I_J +
 \mathbf{1}_J\mathbf{1}_J')$, which arises from the
 change-score parameterization under independent errors.
@@ -104,7 +133,22 @@ linear mixed models but retained the compound symmetry
 assumption. We extend here to AR(1) residual
 correlation, where $\Corr(e_{ij}, e_{ij'}) =
 \rho^{|j-j'|}$ for $0 < \rho < 1$.
+\end{orig}
 
+\begin{bullets}
+\textbf{Existing literature treats autocorrelation and change-score variation but not the run-in setting.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Winkens (2007) studied optimal designs for autocorrelated data outside the run-in context.
+\item Diggle and Verbeke give general treatments of longitudinal correlation structures.
+\item Chambless (1993) addressed intra-individual variation in change scores, a concern amplified under AR(1).
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 @winkens2007 studied optimal designs for autocorrelated
 longitudinal data but did not consider the run-in
 setting. @diggle2002 and @verbeke2000 provide general
@@ -112,7 +156,22 @@ treatments of correlation structures in longitudinal
 models. @chambless1993 addressed the effect of
 intra-individual variation on change-score analyses,
 a concern that is amplified under AR(1) correlation.
+\end{orig}
 
+\begin{bullets}
+\textbf{The closed-form AR(1) derivation fills a gap left by the reference longpower toolkit.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Its closed-form routines assume independent or compound-symmetric residuals.
+\item More flexible routines handle arbitrary covariances only via simulation or a fitted lme object.
+\item Our AR(1) formula supplies the missing analytic case and reduces to longpower at the compound-symmetry limit.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The `longpower` R package [@iddi2022] is the CRAN
 reference implementation for longitudinal-trial power
 calculations. Its closed-form routines
@@ -127,6 +186,7 @@ AR(1) derivation developed here therefore fills a gap in
 the existing toolkit while remaining consistent with the
 `longpower` formulae when the correlation is replaced by
 its compound-symmetry limit.
+\end{orig}
 
 
 # Correlation structures for longitudinal trials
@@ -191,11 +251,26 @@ The change-score residual covariance becomes:
 \end{equation}
 for $j, l \ne 0$.
 
+\begin{bullets}
+\textbf{The AR(1) change-score covariance loses rank-one structure but the Woodbury reduction survives.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The matrix $R$ is no longer rank-one-plus-identity, so Sherman-Morrison does not apply.
+\item The Woodbury identity still reduces the inverse covariance to a scalar inversion.
+\item This holds because the random-effects covariance $G$ remains scalar.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 This $R$ no longer has the rank-one-plus-identity
 structure, so the Sherman-Morrison formula does not
 apply. However, the Woodbury identity still reduces
 $\Sigma^{-1}$ to a scalar inversion because $G$ remains
 scalar.
+\end{orig}
 
 ## Woodbury computation
 
@@ -204,10 +279,25 @@ The computation proceeds identically to Paper 1:
   \Sigma^{-1} = R^{-1} - R^{-1}Z
     (G^{-1} + Z'R^{-1}Z)^{-1} Z'R^{-1}
 \end{equation}
+\begin{bullets}
+\textbf{The Woodbury scalar term persists, but the residual inverse must now be computed differently.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The correction term $H$ remains a scalar as in Paper 1.
+\item The residual inverse $R^{-1}$ must be obtained numerically.
+\item Equivalently it follows from the AR(1) tridiagonal inverse rather than Sherman-Morrison.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 with $H = (G^{-1} + Z'R^{-1}Z)^{-1}$ still scalar.
 The difference is that $R^{-1}$ must be computed
 numerically (or via the AR(1) tridiagonal inverse)
 rather than by Sherman-Morrison.
+\end{orig}
 
 ```{r ar1_variance}
 a <- 1.0
@@ -261,6 +351,20 @@ knitr::kable(
 
 ## Cross-covariance between phase means
 
+\begin{bullets}
+\textbf{A moment-based alternative derives the pre-post variance directly from the phase means.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item It computes the variance of the test statistic from the moments of the phase means.
+\item The run-in mean averages the run-in observations.
+\item The treatment-period mean averages the treatment-period observations.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 An alternative to the GLS approach computes the
 variance of the pre-post test statistic directly
 from the moments of the phase means. Let
@@ -268,6 +372,7 @@ $\bar{X}_0 = \frac{1}{J_0}\sum_{i=1}^{J_0} Y_{i,\text{run-in}}$
 and
 $\bar{X}_K = \frac{1}{J_1}\sum_{j=1}^{J_1} Y_{j,\text{trt}}$
 denote the run-in and treatment-period means.
+\end{orig}
 
 Under AR(1) with parameter $c = \rho$, the
 cross-covariance is:
@@ -330,13 +435,42 @@ cat('  (Moment-based ignores random slope.)\n')
 
 # Relationship between the two approaches
 
+\begin{bullets}
+\textbf{The GLS and moment-based approaches target distinct variance quantities.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The GLS variance is the minimum-variance bound under the assumed model.
+\item The moment-based variance is that of the simple averaged change-score estimator.
+\item The two therefore answer different efficiency questions.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The GLS approach (Section 3) and the moment-based
 approach (Section 4) compute different quantities.
 The GLS variance is the minimum-variance bound under
 the assumed model, while the moment-based variance
 is the variance of the simple averaged change-score
 estimator $\bar{d}_1 - \bar{d}_0$.
+\end{orig}
 
+\begin{bullets}
+\textbf{The two approaches coincide without a random slope but diverge once one is present.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item With no random slope the GLS estimator reduces to the simple difference of means.
+\item With a positive random-slope variance the GLS estimator is strictly more efficient.
+\item GLS weights observations through the full covariance, whereas the moment-based approach weights them equally within a phase.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 When $\sigma_b^2 = 0$ (no random slope), the two
 approaches coincide because the GLS estimator reduces
 to the simple difference of means. When
@@ -345,7 +479,22 @@ efficient because it uses the full covariance structure
 $\Sigma = R + ZGZ'$ to weight the observations
 optimally, while the moment-based approach treats all
 observations within a phase equally.
+\end{orig}
 
+\begin{bullets}
+\textbf{The moment-based computation yields a conservative variance bound and an efficiency-loss metric.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item It provides an upper bound on the AR(1) variance.
+\item This bound requires no specification of the random-slope variance.
+\item The ratio of the two variances quantifies the efficiency loss studied in Paper 4.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The practical value of the moment-based computation is
 that it provides a conservative (upper) bound on the
 variance under AR(1) without requiring specification
@@ -353,6 +502,7 @@ of $\sigma_b^2$. The ratio of the two variances
 quantifies the efficiency loss from ignoring the
 random slope structure (this is the relative
 efficiency studied in Paper 4).
+\end{orig}
 
 
 # Robustness to correlation misspecification
@@ -489,30 +639,90 @@ This work received no specific funding.
 
 # Data availability statement
 
+\begin{bullets}
+\textbf{The implementing package, tests, and bibliography are openly available in the project repository.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The package implements the AR(1) variance formulas.
+\item Validation tests and the shared four-paper bibliography are included.
+\item Specific paths appear in the Reproducibility section below.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The `runinpower` R package implementing the AR(1) variance
 formulas (`covariance-ar1.R`), validation tests, and the
 shared bibliography across the four-paper compendium are
 openly available in the project repository. Specific paths
 are listed in the Reproducibility section below.
+\end{orig}
 
 # Reproducibility
 
+\begin{bullets}
+\textbf{The manuscript was rendered with R 4.4.x using a small set of principal packages.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The in-package source supplies the AR(1) machinery.
+\item Testing uses the tinytest harness.
+\item The manuscript build uses rmarkdown and bookdown.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 This manuscript was rendered with R 4.4.x. Principal packages
 used are the in-package `runinpower` source (the AR(1)
 machinery is in `covariance-ar1.R`), `tinytest` (testing
 harness), and `rmarkdown` plus `bookdown` for the manuscript
 build.
+\end{orig}
 
+\begin{bullets}
+\textbf{The AR(1) formulas are deterministic, with seeding reserved for Monte Carlo benchmarks.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Given fixed inputs the variance formulas exercise no random-number generator.
+\item Monte Carlo benchmarking is the only stochastic component.
+\item Its driver fixes the seed at its entry point for reproducibility.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 **Random-number generator.** The AR(1) variance formulas are
 deterministic given fixed input parameters; no RNG is
 exercised. Where Monte Carlo benchmarking is reported, the
 driver sets `set.seed(20260418)` at its entry point.
+\end{orig}
 
+\begin{bullets}
+\textbf{All source, companion manuscripts, and bibliography reside at documented repository paths.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The R package source is in the package source directory.
+\item The companion manuscripts for Papers 1, 3, and 4 have their own analysis subdirectories.
+\item This manuscript source and the shared bibliography reside in the correlation-paper directory.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 **Data and code availability.** The R package source is at
 `R/`. The companion manuscripts (Papers 1, 3, 4) are at
 `analysis/paper{1,3,4}-*/`. The manuscript source and shared
 bibliography (`../references.bib`) are at
 `analysis/paper2-correlation/`.
+\end{orig}
 
 # References
 

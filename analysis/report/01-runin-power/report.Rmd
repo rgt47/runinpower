@@ -282,12 +282,27 @@ neuroimaging studies.
 
 ## General formulation
 
+\begin{bullets}
+\textbf{The model accommodates a two-arm longitudinal trial whose observation schedule spans three distinct phases.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item $N$ participants are observed at equally spaced time points.
+\item The phases are run-in (pre-randomization), treatment (post-randomization), and an optional common close (post-treatment).
+\item $Y_{ij}$ denotes the outcome for participant $i$ at time point $j$.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 Consider a two-arm longitudinal clinical trial in which $N$
 participants are observed at equally spaced time points across
 three phases: a run-in period (pre-randomization), a treatment
 period (post-randomization), and an optional common close
 period (post-treatment). Let $Y_{ij}$ denote the outcome for
 participant $i$ at time point $j$. The observation schedule is:
+\end{orig}
 
 - **Run-in:** $j = -J_0, -J_0+1, \ldots, -1$ (all participants
   untreated)
@@ -304,6 +319,20 @@ We model the outcome as
   \bigr) t_j + u_{ij} + \varepsilon_{ij}
   \label{eq:model}
 \end{equation}
+\begin{bullets}
+\textbf{The outcome model combines a random intercept and random slope with a three-component within-subject variance structure following Frost and colleagues.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item $a_i$ and $b_i$ are the random intercept and slope, while $u_{ij}$ and $\varepsilon_{ij}$ are the between-visit and between-scan residuals.
+\item Both residual terms are independent across visits, so under a single scan per visit they enter every formula only through their sum.
+\item We therefore define the total within-visit residual $w_{ij} = u_{ij} + \varepsilon_{ij}$ with variance $\sigma^2$.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 where $\alpha$ is the overall intercept, $a_i \sim N(0,
 \sigma_a^2)$ is a random intercept, $b_i \sim N(0,
 \sigma_b^2)$ is a random slope, $u_{ij} \sim N(0,
@@ -318,16 +347,34 @@ visits, under a single scan per visit they enter every
 formula below only through their sum. We therefore write
 $w_{ij} = u_{ij} + \varepsilon_{ij}$ for the total
 within-visit residual, with
+\end{orig}
+
 \begin{equation}
   \sigma^2 \;\equiv\; \Var(w_{ij}) \;=\; \sigma_u^2 +
   \sigma_\varepsilon^2 .
   \label{eq:resid}
 \end{equation}
+
+\begin{bullets}
+\textbf{The two within-visit components are identifiable only with replicate scans, so single-scan designs depend solely on their sum.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Separating $\sigma_u^2$ from $\sigma_\varepsilon^2$ requires a visit carrying replicate scans.
+\item For the single-scan designs treated here, only the sum $\sigma^2$ enters the treatment-effect variance.
+\item This reduction simplifies all subsequent variance expressions.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The two within-visit components are separately identifiable
 only when a visit carries replicate scans; for the
 single-scan designs treated here only their sum $\sigma^2$
 enters the variance of the treatment-effect estimator. The
 phase indicator is
+\end{orig}
 $$
   h_j =
   \begin{cases}
@@ -346,13 +393,42 @@ $$
   \end{cases}
 $$
 
+\begin{bullets}
+\textbf{Three fixed-effect slope parameters describe the run-in, placebo post-randomization, and treatment trajectories under equally spaced observations.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item $\delta$ is the run-in rate of change common to all participants.
+\item $\beta$ is the placebo post-randomization rate of change, and $\gamma$ is the treatment effect on that rate.
+\item Observations are equally spaced with interval $t$, so $t_j = jt$.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The fixed effects are: $\delta$, the rate of change during the
 run-in period (common to all participants); $\beta$, the rate
 of change during the post-randomization period for the placebo
 group; and $\gamma$, the treatment effect on the rate of
 change. We assume equally spaced observations with interval
 $t$, so $t_j = jt$.
+\end{orig}
 
+\begin{bullets}
+\textbf{During the common close both arms revert to a shared off-treatment slope, modelled by deactivating the treatment indicator in that phase.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item For $j > J_1$ all participants are off-treatment with slope $\beta + b_i$.
+\item This is implemented by setting $g_i = 0$ for every participant during the common close.
+\item Equivalently, the treatment indicator is replaced with $g_i \cdot I(1 \le j \le J_1)$ in the model.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 For the common close phase ($j > J_1$), both treatment and
 placebo groups revert to a common off-treatment slope. We
 model this by setting $g_i = 0$ for all participants during
@@ -360,6 +436,7 @@ the common close, so that the slope for both groups is $\beta
 + b_i$ in this phase. This is equivalent to replacing the
 treatment indicator with $g_i \cdot I(1 \le j \le J_1)$ in
 model \eqref{eq:model}.
+\end{orig}
 
 ## Change-score parameterization
 
@@ -370,6 +447,20 @@ change scores relative to the randomization visit:
   \label{eq:change}
 \end{equation}
 
+\begin{bullets}
+\textbf{Differencing relative to baseline removes the intercept and aligns the analysis with constrained longitudinal data analysis under compound symmetry.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The change score eliminates $\alpha$ and the random intercept $a_i$, leaving only two variance components.
+\item It is algebraically equivalent to cLDA, so the derived formulas apply to both analyses of run-in designs.
+\item By dropping $\sigma_a^2$ it avoids the anticonservative sample sizes that arise from ignoring intercept-slope correlation.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 This eliminates the intercept $\alpha$ and the random
 intercept $a_i$. We note that the change-score approach
 is algebraically equivalent to constrained longitudinal
@@ -390,6 +481,8 @@ three-component model can produce anticonservative
 sample sizes; the change-score approach avoids this
 issue by construction, at the cost of discarding
 information about $\sigma_a^2$.
+\end{orig}
+
 The change-score formulation yields
 \begin{equation}
   c_{ij} = \bigl(\delta(1-h_j) + \beta h_j
@@ -422,6 +515,20 @@ The residual covariance has the structure
   \end{cases}
   \label{eq:R}
 \end{equation}
+\begin{bullets}
+\textbf{The shared baseline residual induces compound-symmetry correlation among change scores, so the residual covariance depends only on the summed within-visit variance.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The within-visit residuals are independent across visits with common variance $\sigma^2$.
+\item Differencing against the shared baseline $w_{i0}$ produces positive correlation, giving $R = \sigma^2(\mathbf{I}_J + \mathbf{1}_J \mathbf{1}_J')$.
+\item Both within-visit components enter $R$ identically, so only their sum is identified from single-scan designs.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 since $w_{ij} = u_{ij} + \varepsilon_{ij}$ are independent
 across visits with common variance
 $\sigma^2 = \sigma_u^2 + \sigma_\varepsilon^2$, and the
@@ -432,6 +539,7 @@ Both within-visit components enter $R$ identically because
 $u_{i0}$ and $\varepsilon_{i0}$ are differenced out of every
 change score in the same way; this is why only their sum
 $\sigma^2$ is identified from single-scan designs.
+\end{orig}
 
 
 # Variance of the Treatment Effect Estimator
@@ -445,12 +553,27 @@ is
   \mathbf{c}
   \label{eq:gls}
 \end{equation}
+\begin{bullets}
+\textbf{The estimand of interest is the treatment-effect variance, a single diagonal element of the inverted GLS information matrix.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The GLS estimator has covariance $(X' \Sigma^{-1} X)^{-1}$.
+\item $X$ is the fixed-effects design matrix and $\mathbf{c}$ is the stacked change-score vector.
+\item The target $\Var(\hat{\gamma})$ is the diagonal entry corresponding to $\gamma$.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 with $\Var(\hat{\boldsymbol{\beta}}) = (X' \Sigma^{-1} X)^{-1}$,
 where $X$ is the fixed effects design matrix and $\mathbf{c}$
 is the stacked change-score vector. Our target is
 $\Var(\hat{\gamma})$, the variance of the treatment effect
 estimator, which is the diagonal element of
 $(X' \Sigma^{-1} X)^{-1}$ corresponding to $\gamma$.
+\end{orig}
 
 The key computational tool is the Woodbury matrix identity.
 Since $\Sigma = R + Z G Z'$ with scalar $G = \sigma_b^2$:
@@ -518,6 +641,20 @@ the GLS information matrix is
            {\mathcal{J}_i}
   \label{eq:perpt_info}
 \end{equation}
+\begin{bullets}
+\textbf{The additive per-participant information form has two properties exploited later: a scalar rank-one correction and accommodation of heterogeneous designs.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The total information is the sum of per-participant contributions, with covariance given by its inverse.
+\item Under a single random slope, $\mathcal{J}_i$ is a scalar, making the correction a rank-one adjustment of the OLS-style information.
+\item Because contributions add, varying $J_0$, $J_2$, or dropout patterns are handled by summing over strata.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 and the total information is $X' \Sigma^{-1} X = \sum_i
 X_i' \Sigma_i^{-1} X_i$, with $\Var(\hat{\boldsymbol{\beta}})
 = (X' \Sigma^{-1} X)^{-1}$. Two features of this form are
@@ -527,20 +664,53 @@ of the OLS-style information $X_i' R_i^{-1} X_i$; (ii) because
 per-participant contributions add, heterogeneous designs
 (varying $J_0$, $J_2$, or dropout patterns) are accommodated
 by summing (\ref{eq:perpt_info}) over the relevant strata.
+\end{orig}
 
 ## Case 1: Standard design, no run-in ($J_0=0$, $J_1=2$, $J_2=0$)
 
+\begin{bullets}
+\textbf{The no-run-in case reproduces established results and serves as a verification baseline for the framework.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item It reproduces Frost and colleagues, Section 3.1.1.
+\item It is the $J_0 = 0$ baseline of the random-coefficient power formulae of Lu and Hu and colleagues.
+\item It thereby provides a verification checkpoint for the present derivation.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 This case reproduces the result in
 @frostOptimizingDesignClinical2008, Section 3.1.1, and
 is the $J_0 = 0$ baseline of the random coefficient regression
 power formulae of @lu2009 and @hu2021. It serves as
 verification for our framework.
+\end{orig}
 
+\begin{bullets}
+\textbf{Without a run-in phase the design reduces to two post-randomization change scores and a two-parameter fixed-effects model.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item There are $J = 2$ change scores at post-randomization times $t$ and $2t$.
+\item The absence of run-in removes the $\delta$ parameter from the model.
+\item The remaining fixed effects are the placebo slope $\beta$ and the treatment effect $\gamma$.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 With $J_0=0$ and $J_1=2$, there are $J = 2$ change scores
 $(c_{i,1},\, c_{i,2})$ at post-randomization times $(t,\,
 2t)$. Since there is no run-in, the model has two fixed
 effects: the placebo slope $\beta$ and the treatment effect
-$\gamma$. The design matrices are:
+$\gamma$.
+\end{orig}
+
+The design matrices are:
 $$
   X_i^{(\text{trt})} = t\begin{pmatrix}
     1 & 1 \\ 2 & 2
@@ -595,19 +765,49 @@ participant pair) is the $(2,2)$ element:
   \label{eq:var_r0k2}
 \end{equation}
 
+\begin{bullets}
+\textbf{The recovered variance matches Frost and supplies the per-group baseline for all run-in comparisons.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The expression agrees with Frost and colleagues, Section 3.1.1.
+\item For $m$ participants per group the variance scales as $(\sigma^2 + 2\sigma_b^2 t^2)/(m t^2)$.
+\item This quantity is the reference against which run-in designs are evaluated.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 This agrees with Frost et al. (2008), Section 3.1.1. For
 $m$ participants per group:
 $\Var(\hat{\gamma}) = (\sigma^2 + 2\sigma_b^2 t^2) /
 (m t^2)$. This serves as the baseline against which the
 run-in designs are compared.
+\end{orig}
 
 
 ## Case 2: Two run-in observations ($J_0=2$, $J_1=1$, $J_2=0$)
 
+\begin{bullets}
+\textbf{Two run-in observations yield three change scores and a design matrix that distinguishes the run-in slope from the post-randomization slopes.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item There are $J = 3$ change scores spanning the pre- and post-randomization times.
+\item The fixed-effects model now includes the run-in slope $\delta$ alongside $\beta$ and $\gamma$.
+\item The design matrix separates the run-in contribution from the post-randomization contribution.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 We now have $J = 3$ change scores $(c_{i,-2},\, c_{i,-1},\,
 c_{i,1})$ at times $(-2t,\, -t,\, 0,\, t)$. The fixed effects
 design matrix separates the run-in slope $\delta$ from the
 post-randomization slopes:
+\end{orig}
 $$
   X_i^{(\text{trt})} = \begin{pmatrix}
     -2t & 0 & 0 \\ -t & 0 & 0 \\ 0 & t & t
@@ -617,6 +817,20 @@ $$
   \end{pmatrix}
 $$
 
+\begin{bullets}
+\textbf{Because the random slope acts uniformly across visits, the random-effects design vector collapses to the scaled time distances from baseline.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The random slope $b_i$ applies to all time points alike.
+\item The random-effects design therefore reduces to $Z = t(-2,\, -1,\, 1)'$.
+\item The run-in change scores are differences of the pre-randomization outcomes from baseline.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The random effects design is $Z = t(1,\, 1,\, 1)' \cdot
 (-2,\, -1,\, 1)' \cdot b_i$. However, since the random
 slope applies uniformly to all time points, $Z = t(-2,\, -1,
@@ -624,6 +838,7 @@ slope applies uniformly to all time points, $Z = t(-2,\, -1,
 change scores at times $-2t$ and $-t$ relative to baseline
 at $0$ yield $c_{i,-2} = Y_{i,-2} - Y_{i,0}$ and
 $c_{i,-1} = Y_{i,-1} - Y_{i,0}$.
+\end{orig}
 
 More carefully, under model \eqref{eq:model}:
 \begin{align}
@@ -792,16 +1007,46 @@ Therefore
   X'\Sigma^{-1}X = X'R^{-1}X - W
 \end{equation}
 
+\begin{bullets}
+\textbf{The treatment-effect variance is the relevant diagonal element of the inverted information matrix, obtained numerically and checked against the closed form.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item $\Var(\hat{\gamma})$ is the $(3,3)$ element of $(X'\Sigma^{-1}X)^{-1}$.
+\item It is evaluated numerically in the accompanying R code.
+\item The numerical value is verified against the derived closed-form result.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 To find $\Var(\hat{\gamma})$, we need the $(3,3)$ element
 of $(X'\Sigma^{-1}X)^{-1}$. We compute this numerically in
 the R code below and verify against the closed-form result.
+\end{orig}
 
+\begin{bullets}
+\textbf{Completing the cofactor and determinant algebra yields the closed-form treatment-effect variance for the two-run-in design.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Define the auxiliary quantity $D = \sigma^2 + 5\sigma_b^2 t^2$.
+\item The $(3,3)$ cofactor simplifies to $6t^4/(16aD)$.
+\item Dividing the cofactor by the determinant gives the boxed variance below.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 Carrying through the algebra, define $D = a + 5bt^2 =
 \sigma^2 + 5\sigma_b^2 t^2$. The $(3,3)$ cofactor of
 $X'\Sigma^{-1}X$ simplifies to $1536aD \cdot
 t^4/(16aD)^2 = 6t^4/(16aD)$, and the determinant yields
 $\det = 16aD(3a+2bt^2)^2 \cdot t^6/(16aD)^3$. The ratio
 gives:
+\end{orig}
 
 \begin{equation}
   \boxed{
@@ -812,18 +1057,48 @@ gives:
   \label{eq:var_r2k1}
 \end{equation}
 
+\begin{bullets}
+\textbf{The run-in variance differs structurally from the Frost baseline by involving the residual variance in both numerator and denominator.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item In the Frost formula $\sigma^2$ appears only additively in the numerator.
+\item Here $\sigma^2$ enters both the numerator and the denominator.
+\item This reflects the extra information extracted from pre-randomization observations.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 Unlike the Frost formula \eqref{eq:var_r0k2}, the run-in
 variance depends on $\sigma^2$ both in the numerator and
 denominator, reflecting the additional information extracted
 from pre-randomization observations.
+\end{orig}
 
 
 ## General formula: $J_0$ run-in observations ($J_2=0$)
 
+\begin{bullets}
+\textbf{The derivation now generalizes to an arbitrary number of run-in observations with no common close.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The design has arbitrary $J_0$ run-in and $J_1$ post-randomization observations.
+\item The common close is absent, so $J_2 = 0$.
+\item The total number of change scores is $J = J_0 + J_1$.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 We now derive the variance for arbitrary $J_0$ run-in
 observations with $J_1$ post-randomization observations and
 no common close ($J_2 = 0$). The total number of change scores
 is $J = J_0 + J_1$.
+\end{orig}
 
 The change scores are
 \begin{align}
@@ -834,11 +1109,26 @@ The change scores are
     & l &= 1,\ldots,J_1
 \end{align}
 
+\begin{bullets}
+\textbf{The design matrix is built from run-in and post-randomization time vectors mapping to the three fixed-effect columns.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The columns correspond to the parameters $\delta$, $\beta$, and $\gamma$.
+\item $\mathbf{d}_{J_0}$ collects the negative run-in times scaled by $t$.
+\item $\mathbf{d}_{J_1}$ collects the positive post-randomization times scaled by $t$.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The fixed effects design matrix has columns for
 $(\delta, \beta, \gamma)$. Let $\mathbf{d}_{J_0} = (-J_0, -J_0+1,
 \ldots, -1)' \cdot t$ be the run-in time vector and
 $\mathbf{d}_{J_1} = (1, 2, \ldots, J_1)' \cdot t$ be the
 post-randomization time vector. Then:
+\end{orig}
 $$
   X_i^{(\text{trt})} = \begin{pmatrix}
     \mathbf{d}_{J_0} & \mathbf{0} & \mathbf{0} \\
@@ -860,9 +1150,24 @@ The residual covariance remains $R = a(\mathbf{I}_J +
 
 ### Computing $X'\Sigma^{-1}X$
 
+\begin{bullets}
+\textbf{The Woodbury computation is organized around the sum-of-squares of the run-in and post-randomization time indices.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The derivation proceeds via the Woodbury identity.
+\item $S_{J_0}$ is the sum of squared run-in indices in closed form.
+\item $S_{J_1}$ is the corresponding sum over post-randomization indices.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 We proceed through the Woodbury identity. Define
 $S_{J_0} = \sum_{s=1}^{J_0} s^2 = J_0(J_0+1)(2J_0+1)/6$ and
 $S_{J_1} = \sum_{l=1}^{J_1} l^2 = J_1(J_1+1)(2J_1+1)/6$.
+\end{orig}
 
 The key intermediate quantities are:
 
@@ -905,12 +1210,27 @@ summed over one treatment and one placebo participant is:
   \label{eq:XRX_general}
 \end{equation}
 
+\begin{bullets}
+\textbf{The structure of the information matrix reflects which parameters both groups inform and the opposing signs of the two phase time-sums.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Entries informed by both groups carry a factor of 2.
+\item The $\gamma$-related entries lack this factor because the placebo $\gamma$ column is zero.
+\item The positive $(\delta, \beta)$ cross-term arises from the opposite signs of the run-in and post-randomization time sums.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The factor of 2 appears on entries involving both groups,
 while $\gamma$-related entries lack this factor since
 the $\gamma$ column is zero for the placebo group. The
 positive sign on the $(\delta, \beta)$ cross-term arises
 because the run-in and post-randomization time sums have
 opposite signs ($\sum d_{J_0} < 0$, $\sum d_{J_1} > 0$).
+\end{orig}
 
 **Woodbury correction:** The correction is the sum of
 per-subject rank-one outer products:
@@ -924,6 +1244,20 @@ $X'\Sigma^{-1}X = X'R^{-1}X - W$.
 
 ### Numerical implementation
 
+\begin{bullets}
+\textbf{For general run-in and post-randomization counts the variance has no compact closed form and must be evaluated as a complex ratio.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item No simple closed-form expression exists for arbitrary $J_0$ and $J_1$.
+\item The variance depends on the sum-of-squares and sum quantities together with the dimension $J$.
+\item The Woodbury correction interacts with the information matrix to produce algebraically complex expressions.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The variance $\Var(\hat{\gamma})$ for general $J_0$ and $J_1$
 does not admit a simple closed-form expression. The
 formula depends on $\sigma^2$ and $\sigma_b^2$ in a
@@ -931,15 +1265,45 @@ ratio involving $S_{J_0}$, $S_{J_1}$, $D_{J_0}$, $D_{J_1}$, and $J$,
 and the interaction between the Woodbury correction and the
 information matrix produces algebraically complex
 expressions.
+\end{orig}
 
+\begin{bullets}
+\textbf{A matrix-based R implementation evaluates the exact variance for any configuration, with the closed-form cases as checkpoints.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The computation uses the matrix Woodbury identity in R code.
+\item It returns the exact variance for any $(J_0, J_1, J_2)$ configuration.
+\item The $J_0=0$ and $J_0=2$ closed forms serve as verification checkpoints.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 We therefore implement the computation via the matrix-based
 Woodbury identity in R code, which evaluates the exact
 variance for any configuration $(J_0, J_1, J_2)$. The
 closed-form expressions for $J_0=0$ (\ref{eq:var_r0k2}) and
 $J_0=2$ (\ref{eq:var_r2k1}) serve as verification checkpoints.
+\end{orig}
 
 ### Remark: recovery of the Edland and Diggle formulae
 
+\begin{bullets}
+\textbf{Setting the run-in count to zero collapses the information matrix to a two-parameter block and yields the slope-comparison variance.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item With $J_0 = 0$ the $\delta$ column vanishes, leaving a $2 \times 2$ block on $(\beta, \gamma)$.
+\item Sherman-Morrison cancellations collapse the Woodbury correction against the remaining structure.
+\item The result is the per-arm variance of the treatment-effect estimator for $n$ participants.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 At $J_0 = 0$, the $\delta$ column of $X$ is empty and the
 information matrix reduces to a $2 \times 2$ block on
 $(\beta, \gamma)$. Carrying the Woodbury algebra through, the
@@ -947,6 +1311,7 @@ Sherman-Morrison cancellations collapse the Woodbury correction
 against the $(2,1; 1,1)$ structure of $X'R^{-1}X$, and the
 variance of the treatment effect estimator for $n$ participants
 per arm becomes
+\end{orig}
 \begin{equation}
   \Var(\hat{\gamma})\big|_{J_0=0,J_2=0}
   = \frac{2}{n}\!\left[\sigma_b^2 + \frac{\sigma^2}{S_{xx}}\right],
@@ -954,6 +1319,20 @@ per arm becomes
   S_{xx} = \sum_{j=0}^{J_1}(t_j - \bar t)^2,
   \label{eq:var_edland}
 \end{equation}
+\begin{bullets}
+\textbf{The boundary case recovers the Edland, Diggle, and Frost formulae, confirming that the general result embeds the longpower routines as strict special cases.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The expression is the Ard-Edland slope-comparison formula implemented in the longpower edland routine.
+\item Setting the slope variance to zero gives compound symmetry and recovers the Diggle formula.
+\item The Frost formula is the two-visit specialization, so the general result quantifies gains accruing only from run-in or common-close observations.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 where the baseline visit at $t_0 = 0$ enters through the
 change-score transformation. Equation (\ref{eq:var_edland}) is
 the slope-comparison formula of @ard2011
@@ -968,12 +1347,28 @@ subsection therefore embeds both `longpower` closed-form
 routines as strict boundary cases, with the efficiency gains
 quantified in Section 5 accruing entirely from the information
 contributed by $J_0 > 0$ or $J_2 > 0$.
+\end{orig}
 
 
 ## General formula with common close ($J_2 \ge 0$)
 
+\begin{bullets}
+\textbf{The final extension adds common-close observations after the treatment period to the change-score vector.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item $J_2$ common-close observations follow the treatment period.
+\item All participants are off-treatment during this phase.
+\item The total dimension becomes $J = J_0 + J_1 + J_2$.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 We now extend to include $J_2$ common close observations after
 the treatment period. The total dimension is $J = J_0 + J_1 + J_2$.
+\end{orig}
 
 During the common close phase (time points $J_1+1, \ldots,
 J_1+J_2$), all participants are off-treatment. The change scores
@@ -984,12 +1379,27 @@ are:
     & s &= 1,\ldots,J_2
 \end{align}
 
+\begin{bullets}
+\textbf{In the common close the treatment effect persists only as an accumulated offset, fixing the design-matrix entry at the treatment-period value.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item $\gamma$ enters only through the effect accumulated during the treatment period.
+\item It does not contribute to the slope during the common close.
+\item The $\gamma$ column therefore equals $J_1 t$ for all common-close observations in the treatment group.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The treatment effect $\gamma$ enters the common close change
 scores only through the accumulated effect during the
 treatment period ($\gamma g_i \cdot J_1 \cdot t$), not through
 the slope during the common close. This means the $\gamma$
 column in the design matrix has the value $J_1 t$ for all common
 close observations in the treatment group.
+\end{orig}
 
 The fixed effects design matrix becomes:
 $$
@@ -1006,10 +1416,25 @@ $$
   \end{pmatrix}
 $$
 
+\begin{bullets}
+\textbf{The slope and treatment columns of the design matrix encode the post-randomization times and the capped treatment exposure respectively.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The $\beta$ column holds the post-randomization times of the placebo slope across all later visits.
+\item The $\gamma$ column rises through the treatment period then stays at $J_1$ during the common close.
+\item The $\gamma$ column is identically zero for placebo participants.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The $\beta$ column contains the post-randomization time for
 the placebo slope: $0,\ldots,0,1,\ldots,J_1,J_1+1,\ldots,J_1+J_2$.
 The $\gamma$ column is $0,\ldots,0,1,\ldots,J_1,J_1,\ldots,J_1$
 for treatment participants and all zeros for placebo.
+\end{orig}
 
 The random effects design remains $Z_i = t \cdot \mathbf{d}$
 where $\mathbf{d} = (-J_0,\ldots,-1,1,\ldots,J_1,J_1+1,\ldots,J_1+J_2)'$.
@@ -1018,10 +1443,25 @@ The residual covariance is still
 $R = a(\mathbf{I}_J + \mathbf{1}_J\mathbf{1}_J')$ with
 $J = J_0 + J_1 + J_2$.
 
+\begin{bullets}
+\textbf{The common-close extension reuses the same Woodbury computation with only three quantities altered.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The dimension $J$ increases to include the common-close visits.
+\item The $X$ matrix changes only in its $\gamma$ column.
+\item The elements of the random-effects vector $Z$ are extended accordingly.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The Woodbury computation proceeds identically, with the only
 changes being the dimension $J$, the structure of the $X$
 matrix (specifically the $\gamma$ column), and the elements
 of $Z$.
+\end{orig}
 
 We implement the general computation in R below.
 
@@ -1064,6 +1504,20 @@ is
 Values greater than 1 indicate that the run-in/common close
 design requires fewer participants.
 
+\begin{bullets}
+\textbf{A single run-in observation can be counterproductive because the extra slope parameter it introduces may offset the information it contributes.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Adding one run-in observation introduces the parameter $\delta$, enlarging the fixed-effect dimension.
+\item This added degree of freedom can make the one-run-in variance exceed the no-run-in variance for some parameters.
+\item Designers should therefore plan either zero or at least two run-in observations, never exactly one.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 A practical caveat: adding a single run-in observation
 ($J_0=1$) introduces the run-in slope parameter $\delta$
 into the model, increasing the dimension of $\beta$ from
@@ -1075,6 +1529,7 @@ configurations. This effect, noted in a different context
 by @frisonLinearlyDivergentTreatment1997, implies that
 trial designers should plan either zero or at least two
 run-in observations, not one.
+\end{orig}
 
 
 # Numerical Examples
@@ -1085,6 +1540,20 @@ library(runinpower)
 
 ## Verification of closed-form results
 
+\begin{bullets}
+\textbf{The closed-form expressions are validated against the matrix computation in two representative design configurations.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The verification confirms agreement between the analytic and matrix-based variances.
+\item The Frost standard design uses the two-parameter model with two post-baseline visits.
+\item The two-run-in case exercises the three-parameter model.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 We verify that the closed-form expressions agree with
 the matrix computation. The Frost et al. (2008) result
 corresponds to the standard design with $J_0=0$, $J_1=2$
@@ -1092,6 +1561,7 @@ corresponds to the standard design with $J_0=0$, $J_1=2$
 under the two-parameter model yields
 $\Var(\hat{\gamma}) = (\sigma^2 + 2\sigma_b^2 t^2)/t^2$.
 The $J_0=2$, $J_1=1$ case uses the three-parameter model.
+\end{orig}
 
 ```{r verification, echo=TRUE}
 a <- 1.0
@@ -1224,6 +1694,20 @@ filled.contour(
 
 ## Application: Alzheimer's disease imaging trial
 
+\begin{bullets}
+\textbf{The Alzheimer's application uses MIRIAD-derived parameters with the correctly combined within-visit residual, which is essential to reproduce Frost's reported sample sizes.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The slope variance and combined within-visit residual are taken from Frost's MIRIAD estimates.
+\item The example assumes a one-year observation interval and a treatment effect of one quarter.
+\item Using only the small measurement-error term understates the residual by two orders of magnitude and yields degenerate sample sizes.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 Using variance parameters estimated from the MIRIAD dataset
 [@frostOptimizingDesignClinical2008]: $\sigma_b^2 = 0.9745$
 (between-subject slope variance) and a combined within-visit
@@ -1241,6 +1725,7 @@ the conventional design reproduces Frost's reported sample
 sizes (Table III); using only the $0.0025$ measurement-error
 term, as in earlier drafts, understates the residual by two
 orders of magnitude and yields degenerate sample sizes.
+\end{orig}
 
 ```{r ad_example}
 # MIRIAD within-visit residual = between-visit (0.3338) +
@@ -1303,12 +1788,41 @@ cat('  Full     (r=2, k=2, f=2):', n_runin2_close2,
 
 # Discussion
 
+\begin{bullets}
+\textbf{The work formalizes and extends Frost's framework with explicit variance formulas for run-in and common-close designs.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The results provide explicit treatment-effect variance formulas.
+\item They cover designs incorporating both run-in and common-close observations.
+\item Three substantive points warrant further discussion.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The results presented here formalize and extend the framework
 of @frostOptimizingDesignClinical2008 by providing explicit
 variance formulas for the treatment effect estimator under
 designs that incorporate run-in and common close observations.
 Three points merit discussion.
+\end{orig}
 
+\begin{bullets}
+\textbf{The benefit of run-in observations is governed by the slope-to-noise ratio and is largest for outcomes such as neuroimaging.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The efficiency gain depends on the ratio of slope variance to residual variance.
+\item When that ratio is large, even one or two run-in observations cut sample sizes substantially.
+\item For cognitive outcomes with a less favorable ratio, gains are modest and must be weighed against longer study duration.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 **When run-in observations are most beneficial.** The
 efficiency gain from run-in observations depends on the ratio
 $\sigma_b^2 t^2 / \sigma^2$. When between-subject slope
@@ -1318,7 +1832,22 @@ yield substantial sample size reductions. For cognitive
 outcomes, where this ratio is typically less favorable, the
 gains are more modest and the cost of extended study duration
 must be weighed against the sample size reduction.
+\end{orig}
 
+\begin{bullets}
+\textbf{Common-close observations sharpen the treatment-effect estimator at low cost, with diminishing returns beyond the first few visits.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item They inform individual trajectories without keeping participants on treatment.
+\item Both groups contribute to slope-variability estimation once treatment has ceased.
+\item Marginal benefit diminishes, but the first one or two visits give meaningful reductions when the slope-to-noise ratio is large.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 **Common close as a low-cost efficiency gain.** The common
 close phase provides information about individual trajectories
 without requiring participants to remain on treatment. Since
@@ -1330,7 +1859,22 @@ benefit of each additional common close observation diminishes
 close visits typically provide meaningful sample size
 reductions, particularly when $\sigma_b^2 t^2 / \sigma^2$ is
 large.
+\end{orig}
 
+\begin{bullets}
+\textbf{The derived formulas are consistent with Wang's two-period model while making the three phases explicit and separately optimizable.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Wang's common-slope scenario corresponds to setting the run-in and placebo slopes equal.
+\item Their different-slope scenario corresponds to the general case treated here.
+\item The present formulation separates run-in, treatment, and common-close phases, enabling per-phase optimization.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 **Relationship to the two-period model.** The formulas
 derived here are consistent with the two-period linear mixed
 effects model of @wangTwoPeriodLinear2019. Their Scenario 1
@@ -1340,7 +1884,22 @@ $\delta = \beta$ in our model, while their Scenario 2
 advantage of our formulation is the explicit separation of
 run-in, treatment, and common close phases, enabling direct
 optimization of the number of observations in each phase.
+\end{orig}
 
+\begin{bullets}
+\textbf{The derivations rest on simplifying assumptions whose relaxation is feasible but typically forfeits closed-form simplicity.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item They assume equally spaced observations, linear trajectories, and a random intercept-plus-slope structure.
+\item Extensions to unequal spacing, nonlinear progression, or richer random effects remain within the Woodbury framework but lose simple closed forms.
+\item No dropout is assumed, though the Dawson-Lagakos pattern-mixture approach can adjust for anticipated attrition.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 **Limitations.** The derivations assume equally spaced
 observations, linear trajectories, and a random intercept
 plus random slope covariance structure. Extensions to unequal
@@ -1352,6 +1911,7 @@ closed forms. The formulas also assume no dropout; in
 practice, the Dawson-Lagakos pattern-mixture approach
 [@frostOptimizingDesignClinical2008] can be applied to adjust
 for anticipated attrition.
+\end{orig}
 
 
 # Conflict of interest
@@ -1364,14 +1924,43 @@ This work received no specific funding.
 
 # Data availability statement
 
+\begin{bullets}
+\textbf{All artefacts supporting the paper are openly available in the project repository.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item These include the R package, the four companion manuscripts, and the MATLAB derivation scripts.
+\item The shared bibliography is likewise available.
+\item Specific paths are enumerated in the Reproducibility section.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 The `runinpower` R package, the four companion manuscripts
 of this compendium, the MATLAB symbolic-derivation scripts,
 and the shared bibliography are openly available in the
 project repository. Specific paths are listed in the
 Reproducibility section below.
+\end{orig}
 
 # Reproducibility
 
+\begin{bullets}
+\textbf{The manuscript build relies on the in-package source together with a small set of testing and rendering packages.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Rendering used R version 4.4.x.
+\item The principal dependencies are the in-package source plus tinytest, rmarkdown, and bookdown.
+\item Supporting MATLAB symbolic derivations reside in the analysis scripts directory.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 This manuscript was rendered with R 4.4.x. Principal packages
 used are the in-package `runinpower` source (nine source
 files: allocation, ancova, averaged, covariance,
@@ -1380,19 +1969,50 @@ covariance-ar1, design, power, replicated, variance),
 `bookdown` for the manuscript build. MATLAB symbolic
 derivations supporting the Woodbury-based variance formulas
 are at `analysis/scripts/`.
+\end{orig}
 
+\begin{bullets}
+\textbf{The variance results are deterministic, and any Monte Carlo benchmarking uses a fixed seed for reproducibility.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Given fixed input parameters the formulas exercise no random-number generation.
+\item Monte Carlo benchmarking against the analytic formulas is the only stochastic component.
+\item That benchmarking driver fixes the seed at its entry point.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 **Random-number generator.** The variance formulas are
 deterministic given fixed input parameters; no RNG is
 exercised. Where Monte Carlo benchmarking against the
 analytic formulas is reported, the driver sets
 `set.seed(20260418)` at its entry point.
+\end{orig}
 
+\begin{bullets}
+\textbf{The repository organizes the package source, derivation scripts, companion manuscripts, and bibliography into well-defined locations.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The R package source and the MATLAB scripts each have a dedicated directory.
+\item The three companion manuscripts share a report subtree.
+\item This manuscript source and the shared bibliography sit in the run-in power report directory.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
 **Data and code availability.** The R package source is at
 `R/`. MATLAB scripts are at `analysis/scripts/`. The
 companion manuscripts are at
 `analysis/report/{02,03,04}-*/`. The manuscript source and shared
 bibliography (`../references.bib`) are at
 `analysis/report/01-runin-power/`.
+\end{orig}
 
 # References
 
