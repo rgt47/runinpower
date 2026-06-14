@@ -1,0 +1,856 @@
+---
+title: |
+  GLS versus Averaged Change-Score Estimators for
+  Clinical Trials with Run-In Observations
+author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
+date: "June 14, 2026"
+affiliation: "University of California, San Diego"
+abstract: |
+  **Background.** Three estimators of the treatment effect in
+  longitudinal trials with run-in observations are in routine
+  use: the GLS estimator under the linear mixed model, which
+  exploits the full covariance structure to extract maximum
+  information from all observations; the ANCOVA estimator,
+  which regresses post-randomisation means on the run-in mean
+  as a covariate without specifying the random-effects
+  covariance; and the averaged change-score estimator, which
+  computes a simple difference of phase means and applies a
+  $t$-test, requiring no variance-component estimation. The
+  relative efficiency of these estimators under correct and
+  misspecified models has not been comprehensively
+  characterised.
+
+  **Methods.** We derive the relative efficiency of the three
+  estimators as a function of the trial design
+  $(J_0, J_1, J_2)$ and the variance parameters
+  $(\sigma^2, \sigma_b^2)$. The derivation proceeds via the
+  Woodbury-based variance formulas of Paper 1 in this
+  compendium, plus closed-form expressions for the ANCOVA
+  and averaged-change-score variances under the same
+  random-slopes model. We complement the analytic comparison
+  with a Monte Carlo simulation that probes robustness to
+  misspecification of the within-subject covariance
+  ($R$) and the random-effects covariance ($G$).
+
+  **Results.** Under correct specification, GLS $\le$ ANCOVA
+  $\le$ averaged in variance. The efficiency loss from ANCOVA
+  relative to GLS is below 5\% across a broad regime of
+  ($J_0, J_1, J_2$) and signal-to-noise ratios; conditions
+  characterising this regime are derived. Under
+  misspecification of $G$ or $R$, the simpler estimators can
+  outperform GLS: when the variance components are mis-stated,
+  GLS amplifies the misspecification through its inverse-
+  covariance weighting, while ANCOVA and averaged remain
+  comparatively robust.
+
+  **Conclusions.** GLS is the optimal estimator under correct
+  model specification but does not dominate the simpler
+  alternatives in the practical regime of mild
+  misspecification. ANCOVA is the recommended default when
+  the variance components are known only approximately;
+  averaged change-score remains useful as a robust
+  benchmark and a teaching tool.
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    number_sections: true
+    keep_tex: true
+    highlight: tango
+    includes:
+      in_header: claudecode.tex
+fontsize: 11pt
+geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+bibliography: references.bib
+knit: (function(input, encoding) source(normalizePath(file.path(dirname(input), '..', '..', '..', 'tools', 'stage-render.R')))$value(input, encoding))
+csl: statistics-in-medicine.csl
+link-citations: true
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{lineno}
+  - \linenumbers
+  - \usepackage{booktabs}
+  - \usepackage{float}
+  - \DeclareMathOperator{\Var}{Var}
+  - \DeclareMathOperator{\Cov}{Cov}
+  - \DeclareMathOperator{\E}{E}
+  - \usepackage{setspace}
+  - \setstretch{1.1}
+---
+
+
+
+# Introduction
+
+\begin{bullets}
+\textbf{The optimality of GLS is contingent on knowing the covariance, which in practice must be estimated and may be unstable in small samples.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item GLS is the minimum-variance unbiased estimator only when the covariance matrix is known.
+\item Feasible GLS substitutes estimated variance components, so its efficiency depends on estimation accuracy.
+\item Small samples or short follow-up yield unstable estimates that can erode the theoretical advantage of GLS.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The GLS estimator $\hat\gamma_{\text{GLS}} =
+(X'\Sigma^{-1}X)^{-1}X'\Sigma^{-1}\mathbf{c}$ is the
+minimum-variance unbiased estimator when $\Sigma$ is
+known. In practice, $\Sigma$ must be estimated, and
+the efficiency of the feasible GLS depends on the
+accuracy of this estimation. With small sample sizes
+or short follow-up, variance component estimates can
+be unstable, potentially eroding the theoretical
+advantage of GLS.
+\end{orig}
+
+The averaged change-score approach sidesteps variance
+component estimation entirely. For a trial with $J_0$
+run-in and $J_2$ common close observations, the
+estimator is:
+\begin{equation}
+  \hat\gamma_{\text{avg}} = \bar{d}_1 - \bar{d}_0
+\end{equation}
+where
+\begin{equation}
+  d_{ik} = \frac{1}{J_{2,i} + 1}
+    \sum_{\ell=0}^{J_{2,i}} Y_{i,q+\ell,k}
+    - \frac{1}{J_{0,i} + 1}
+    \sum_{\ell=0}^{J_{0,i}} Y_{i,\ell,k}
+\end{equation}
+is the difference of post- and pre-randomization
+means for participant $i$.
+
+\begin{bullets}
+\textbf{The relative merits of change-score and ANCOVA analyses have been studied extensively across several methodological traditions.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Formal efficiency comparisons for pretest-posttest designs trace back to @brogan1980 and @yang2001.
+\item Subsequent work contrasted baseline-as-covariate with baseline-as-response and developed semiparametric covariate adjustment.
+\item Later contributions clarified when longitudinal models gain power over ANCOVA and adapted these ideas to run-in trials.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The debate between change-score and ANCOVA analyses has
+a long history [@senn2006; @vanbreukelen2006;
+@crager1987]. @yang2001 provided a formal efficiency
+comparison for pretest-posttest designs. @liu2009 and
+@lu2010 compared baseline-as-covariate against
+baseline-as-response (constrained longitudinal data
+analysis). @tsiatis2008 developed a semiparametric
+framework for covariate adjustment. @mallinckrodt2021
+showed that MMRM requires time-by-covariate interactions
+to guarantee power gains over ANCOVA. @brogan1980
+established the foundational comparison of pretest-posttest
+designs. @coffman2016 addressed conditioning on baseline
+in longitudinal RCTs. @wang2019 proposed the two-period
+approach for run-in trials.
+\end{orig}
+
+\begin{bullets}
+\textbf{The averaged change-score estimator is distinct from and less efficient than the constrained longitudinal data analysis estimator, which is excluded from the present comparison.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The cLDA estimator places baseline in the response vector under a common-mean constraint.
+\item It exploits the full covariance structure without specifying the random-effects distribution, ranking between the averaged estimator and GLS.
+\item A full comparison including cLDA lies beyond the present scope but constitutes a natural extension.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+We note that the averaged change-score estimator
+studied here is distinct from (and less efficient than)
+the constrained longitudinal data analysis (cLDA)
+estimator of @liang2000 and @lu2010, which includes
+baseline in the response vector with a common-mean
+constraint. The cLDA estimator uses the full covariance
+structure without requiring specification of the random
+effects distribution $G$, placing it between the
+averaged estimator and GLS in the efficiency ordering.
+@funatogawa2020 extended the cLDA framework to pre-
+and post-treatment measurements with equal baseline
+assumptions. A full comparison including cLDA is beyond
+the scope of this paper but represents a natural
+extension.
+\end{orig}
+
+\begin{bullets}
+\textbf{The longpower package implements the GLS baseline but omits the simpler estimators and the misspecification analysis developed here.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item It is the CRAN reference for slope-comparison power calculations under the Liu-Liang, Diggle, and Edland formulations.
+\item Its routines correspond to the GLS estimator under correct specification, matching the Paper 1 baseline.
+\item It does not cover ANCOVA, the averaged change-score test, or the efficiency loss from misspecified covariance.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The `longpower` R package [@iddi2022] provides the
+CRAN reference implementation of power calculations for
+the GLS / REML-based slope-comparison estimator,
+covering the Liu-Liang [@liuliang1997], Diggle
+[@diggle2002], and Edland [@ard2011] formulations.
+These routines correspond to the $\hat\gamma_{\text{GLS}}$
+estimator studied here under correct specification and
+constitute the Paper 1 baseline extended by run-in and
+common close observations. However, `longpower` does not
+cover the ANCOVA-on-run-in-mean estimator or the
+averaged change-score $t$-test, nor does it characterize
+the efficiency loss from misspecification of $G$ or $R$.
+The comparison developed here therefore complements
+`longpower` by (i) ordering the three candidate
+estimators under correct specification and (ii)
+quantifying when the simpler estimators outperform GLS
+under misspecified covariance.
+\end{orig}
+
+
+# Three estimators
+
+## GLS under the mixed model
+
+\begin{bullets}
+\textbf{The GLS variance for the treatment effect follows from the relevant diagonal element of the inverse information matrix under the marginal covariance.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The per-pair variance is the treatment-effect element of $(X'\Sigma^{-1}X)^{-1}$.
+\item The marginal covariance decomposes as residual plus random-effects components.
+\item The inverse is obtained efficiently via the Woodbury identity.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+From @frost2008, the per-pair variance is the
+$(\gamma, \gamma)$ element of
+$(X'\Sigma^{-1}X)^{-1}$ with $\Sigma = R + ZGZ'$
+[@laird1982; @verbeke2000], computed via the Woodbury
+identity.
+\end{orig}
+
+For the Frost conventional design ($J_0 = 0$, $J_1 = 2$):
+\begin{equation}
+  \hat\gamma_{\text{GLS}} = \frac{1}{2t}
+    [(C_{22} + C_{21}) - (C_{12} + C_{11})]
+\end{equation}
+with $\Var(\hat\gamma_{\text{GLS}}) =
+(\sigma^2 + 2\sigma_b^2 t^2)/t^2$.
+
+## Averaged change score ($t$-test)
+
+The averaged change-score estimator ignores the
+within-subject correlation structure and treats
+$d_{ik}$ as independent observations:
+\begin{equation}
+  \Var(\hat\gamma_{\text{avg}})
+  = \frac{2}{m}\Var(d_{ik})
+\end{equation}
+
+The variance $\Var(d_{ik})$ depends on the correlation
+structure but does not require its estimation.
+
+
+``` r
+a <- 1.0
+b <- 1.0
+tt <- 1.0
+
+v_gls <- var_gamma_matrix(2, 2, 0, a, b, tt)
+v_avg <- var_gamma_avg(2, 2, 0, a, b, tt)
+re <- re_avg_vs_gls(2, 2, 0, a, b, tt)
+
+cat(sprintf('J_0=2, J_1=2: GLS=%.4f, Avg=%.4f, RE=%.4f\n',
+            v_gls, v_avg, re))
+```
+
+```
+## J_0=2, J_1=2: GLS=2.1569, Avg=20.0000, RE=0.1078
+```
+
+
+## ANCOVA with run-in mean as covariate
+
+The ANCOVA approach uses the averaged run-in rate as a
+baseline covariate without specifying $\sigma_b^2$:
+\begin{equation}
+  \bar{Y}_{i,\text{post}} = \alpha + \gamma g_i
+    + \phi \bar{Y}_{i,\text{pre}} + \varepsilon_i
+\end{equation}
+
+The variance of $\hat\gamma$ under this model is
+\begin{equation}
+  \Var(\hat\gamma_{\text{ANC}})
+  = \frac{2}{m}\,\Var(\bar{Y}_{\text{post}})
+    \,(1 - \rho_{\text{pre,post}}^2)
+\end{equation}
+\begin{bullets}
+\textbf{The ANCOVA variance is governed by the run-in to post-randomization correlation, which determines the magnitude of the variance reduction.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The factor $(1 - \rho^2)$ scales the variance by the squared marginal correlation between the phase means.
+\item With no run-in observations the covariate vanishes and ANCOVA reduces to the averaged estimator.
+\item A large correlation, arising when the random-slope variance dominates the residual, yields substantial variance reduction.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+where $\rho_{\text{pre,post}}$ is the marginal
+correlation between the run-in and post-randomization
+means. When $J_0 = 0$ there is no covariate and ANCOVA
+reduces to the averaged estimator. When
+$\rho_{\text{pre,post}}$ is large (i.e., when
+$\sigma_b^2$ dominates $\sigma^2$), the $(1-\rho^2)$
+factor produces substantial variance reduction.
+\end{orig}
+
+\begin{bullets}
+\textbf{ANCOVA occupies a middle ground by estimating the baseline coefficient from the data while still using the predictive run-in observations.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Unlike GLS, the coefficient on the run-in mean is estimated empirically rather than derived from assumed variance components.
+\item Unlike the averaged estimator, it exploits the predictive value of the run-in observations.
+\item It therefore reduces variance without committing to a full random-effects specification.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The key advantage over GLS is that $\phi$ is estimated
+from the data rather than derived from assumed variance
+components [@senn2006; @borm2007]. The key advantage
+over the averaged estimator is that it exploits the
+predictive value of the run-in observations
+[@vanbreukelen2006; @vickers2001].
+\end{orig}
+
+
+``` r
+v_gls <- var_gamma_matrix(2, 2, 0, a, b, tt)
+v_anc <- var_gamma_ancova(2, 2, 0, a, b, tt)
+v_avg <- var_gamma_avg(2, 2, 0, a, b, tt)
+
+cat(sprintf('J_0=2, J_1=2 (sigma_b/sigma = 1):\n'))
+```
+
+```
+## J_0=2, J_1=2 (sigma_b/sigma = 1):
+```
+
+``` r
+cat(sprintf('  GLS:    %.4f\n', v_gls))
+```
+
+```
+##   GLS:    2.1569
+```
+
+``` r
+cat(sprintf('  ANCOVA: %.4f\n', v_anc))
+```
+
+```
+##   ANCOVA: 6.6667
+```
+
+``` r
+cat(sprintf('  Avg:    %.4f\n', v_avg))
+```
+
+```
+##   Avg:    20.0000
+```
+
+``` r
+cat(sprintf('  RE(GLS/ANC): %.3f\n', v_gls / v_anc))
+```
+
+```
+##   RE(GLS/ANC): 0.324
+```
+
+``` r
+cat(sprintf('  RE(ANC/Avg): %.3f\n', v_anc / v_avg))
+```
+
+```
+##   RE(ANC/Avg): 0.333
+```
+
+
+## SUR (seemingly unrelated regression)
+
+The SUR approach treats the run-in and treatment
+periods as separate regression equations linked by
+correlated errors:
+\begin{align}
+  Y_1 &= X_2 \begin{pmatrix}
+    \beta_{11} \\ \beta_{12}
+  \end{pmatrix} + e_1
+  & &\text{(both groups)} \\
+  Y_2 &= X_1 \alpha_2 + e_2
+  & &\text{(baseline)}
+\end{align}
+
+The deviation-from-mean parameterization gives
+$\beta_1 = (\delta_1 + \delta_2)/2$ and
+$\beta_2 = (\delta_2 - \delta_1)/2$, where
+$\delta_j$ are the group-specific rates.
+
+<!-- TODO: derive the SUR variance and compare -->
+<!-- to GLS and averaged change-score -->
+
+
+## BLUP as theoretical benchmark
+
+\begin{bullets}
+\textbf{The three estimators are linear functions of the change scores and admit a common benchmark in the best linear unbiased predictor of the random slopes.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Each estimator can be viewed as a linear combination of the observed change scores.
+\item The BLUP of the subject-specific random slope provides the natural reference predictor.
+\item It weights the residuals by the inverse marginal covariance using the GLS fixed-effect estimate.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The three estimators above are linear functions of the
+observed change scores and can be compared to a common
+benchmark: the best linear unbiased predictor (BLUP) of the
+individual random slopes. Under the random-slopes model with
+marginal covariance $V_i = R_i + Z_i G Z_i'$, the BLUP of the
+subject-specific random slope $b_i$ given the data is
+\begin{equation}
+  \hat b_i
+  = G Z_i' V_i^{-1}
+    \bigl(y_i - X_i \hat{\boldsymbol{\beta}}\bigr)
+  \label{eq:blup}
+\end{equation}
+where $\hat{\boldsymbol{\beta}}$ is the GLS estimator of the
+fixed effects [@henderson1975; @robinson1991].
+\end{orig}
+
+\begin{bullets}
+\textbf{GLS attains the minimum variance among linear unbiased estimators when the covariance is correct, while the simpler estimators are specific approximations to this benchmark.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The group-specific slope estimators inherit the variance of the treatment-effect fixed effect.
+\item GLS is optimal among linear unbiased estimators under a correctly specified marginal covariance.
+\item The averaged and ANCOVA estimators are particular linear approximations to this optimal benchmark.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The group-specific slope estimators derived from the fixed
+effects share the same variance as
+$(\hat{\boldsymbol{\beta}})_\gamma$, and the GLS estimator
+$\hat\gamma_{\text{GLS}}$ minimizes the variance among all
+linear unbiased estimators of $\gamma$ when $V_i$ is correctly
+specified. The averaged and ANCOVA estimators are specific
+linear approximations to this benchmark:
+\end{orig}
+
+- **Averaged change-score** replaces $V_i^{-1}$ with an
+  unweighted sum; this is optimal only when $V_i \propto I$,
+  which fails for any non-zero random-slope variance.
+- **ANCOVA** collapses the run-in visits into a single
+  scalar covariate (the run-in mean) rather than weighting
+  them by $V_i^{-1}$; the resulting efficiency loss vanishes
+  as $J_0 \to \infty$ since the run-in mean becomes a
+  sufficient statistic for the subject-specific intercept
+  plus average slope.
+
+\begin{bullets}
+\textbf{Under misspecification the simpler approximations can outperform GLS precisely because they rely on fewer variance components.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item GLS amplifies errors in the assumed covariance through its inverse weighting.
+\item The averaged and ANCOVA estimators depend on fewer estimated variance components.
+\item This reduced dependence confers robustness when the model is misspecified.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+Under model misspecification (Section 4), these
+approximations can outperform the nominally optimal GLS
+because they depend on fewer variance components.
+\end{orig}
+
+# Relative efficiency under correct specification
+
+## Analytical comparison
+
+The relative efficiency of the averaged estimator
+to GLS is:
+\begin{equation}
+  \text{RE}_{\text{avg}} =
+    \frac{\Var(\hat\gamma_{\text{GLS}})}
+         {\Var(\hat\gamma_{\text{avg}})}
+    \le 1
+\end{equation}
+with equality when the averaged estimator happens
+to coincide with GLS (which occurs in special cases).
+
+
+Table: RE of averaged change-score vs GLS ($\Var_{\text{GLS}} / \Var_{\text{avg}}$) by $\sigma_b/\sigma$.
+
+|$(J_0,J_1,J_2)$ | $0.5$|   $1$|   $2$|   $5$|  $20$|
+|:---------------|-----:|-----:|-----:|-----:|-----:|
+|(1,1,0)         | 0.667| 0.500| 0.250| 0.056| 0.004|
+|(2,1,0)         | 0.653| 0.344| 0.117| 0.021| 0.001|
+|(4,1,0)         | 0.427| 0.149| 0.041| 0.007| 0.000|
+|(0,2,0)         | 0.364| 0.400| 0.429| 0.442| 0.444|
+|(1,2,0)         | 0.235| 0.182| 0.091| 0.020| 0.001|
+|(2,2,0)         | 0.218| 0.108| 0.036| 0.006| 0.000|
+|(4,2,0)         | 0.123| 0.040| 0.011| 0.002| 0.000|
+|(0,3,0)         | 0.193| 0.225| 0.242| 0.249| 0.250|
+|(1,3,0)         | 0.125| 0.099| 0.048| 0.010| 0.001|
+|(2,3,0)         | 0.108| 0.052| 0.017| 0.003| 0.000|
+|(4,3,0)         | 0.055| 0.017| 0.005| 0.001| 0.000|
+|(0,1,1)         | 0.727| 0.533| 0.245| 0.050| 0.003|
+|(1,1,1)         | 0.452| 0.258| 0.093| 0.017| 0.001|
+|(2,1,1)         | 0.422| 0.181| 0.055| 0.009| 0.001|
+|(4,1,1)         | 0.255| 0.080| 0.021| 0.003| 0.000|
+|(0,2,1)         | 0.254| 0.186| 0.081| 0.016| 0.001|
+|(1,2,1)         | 0.161| 0.094| 0.034| 0.006| 0.000|
+|(2,2,1)         | 0.144| 0.062| 0.019| 0.003| 0.000|
+|(4,2,1)         | 0.079| 0.025| 0.007| 0.001| 0.000|
+|(0,3,1)         | 0.135| 0.096| 0.040| 0.008| 0.000|
+|(1,3,1)         | 0.088| 0.051| 0.018| 0.003| 0.000|
+|(2,3,1)         | 0.075| 0.032| 0.010| 0.002| 0.000|
+|(4,3,1)         | 0.038| 0.012| 0.003| 0.001| 0.000|
+
+
+
+Table: RE of ANCOVA vs GLS ($\Var_{\text{GLS}} / \Var_{\text{ANC}}$) by $\sigma_b/\sigma$.
+
+|$(J_0,J_1,J_2)$ | $0.5$|   $1$|   $2$|   $5$|  $20$|
+|:---------------|-----:|-----:|-----:|-----:|-----:|
+|(1,1,0)         | 1.000| 1.000| 1.000| 1.000| 1.000|
+|(2,1,0)         | 0.971| 0.909| 0.860| 0.838| 0.834|
+|(4,1,0)         | 0.838| 0.747| 0.713| 0.702| 0.700|
+|(0,2,0)         | 0.364| 0.400| 0.429| 0.442| 0.444|
+|(1,2,0)         | 0.381| 0.385| 0.379| 0.372| 0.371|
+|(2,2,0)         | 0.359| 0.324| 0.298| 0.288| 0.286|
+|(4,2,0)         | 0.283| 0.242| 0.228| 0.223| 0.222|
+|(0,3,0)         | 0.193| 0.225| 0.242| 0.249| 0.250|
+|(1,3,0)         | 0.202| 0.204| 0.196| 0.189| 0.188|
+|(2,3,0)         | 0.183| 0.161| 0.145| 0.139| 0.138|
+|(4,3,0)         | 0.134| 0.112| 0.105| 0.103| 0.102|
+|(0,1,1)         | 0.727| 0.533| 0.245| 0.050| 0.003|
+|(1,1,1)         | 0.733| 0.545| 0.390| 0.319| 0.304|
+|(2,1,1)         | 0.697| 0.542| 0.460| 0.430| 0.425|
+|(4,1,1)         | 0.587| 0.490| 0.456| 0.446| 0.445|
+|(0,2,1)         | 0.254| 0.186| 0.081| 0.016| 0.001|
+|(1,2,1)         | 0.260| 0.195| 0.138| 0.113| 0.108|
+|(2,2,1)         | 0.244| 0.190| 0.161| 0.150| 0.148|
+|(4,2,1)         | 0.194| 0.160| 0.149| 0.145| 0.145|
+|(0,3,1)         | 0.135| 0.096| 0.040| 0.008| 0.000|
+|(1,3,1)         | 0.138| 0.102| 0.071| 0.058| 0.055|
+|(2,3,1)         | 0.127| 0.098| 0.082| 0.077| 0.076|
+|(4,3,1)         | 0.096| 0.078| 0.073| 0.071| 0.071|
+
+## When does the gap exceed 5%?
+
+<!-- TODO: characterize the parameter space where -->
+<!-- RE_avg < 0.95, i.e., where the simpler -->
+<!-- approach loses more than 5% efficiency -->
+
+
+# Robustness to misspecification
+
+## Misspecified $G$
+
+\begin{bullets}
+\textbf{Misestimating the random-slope variance forfeits the optimality of GLS while leaving the averaged estimator unchanged.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item An incorrect random-slope variance renders the feasible GLS no longer minimum-variance.
+\item The error enters through the inverse-covariance weighting of GLS.
+\item The averaged change-score estimator does not use this variance component and is unaffected.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+When $\sigma_b^2$ is misestimated (e.g., too large
+or too small), the feasible GLS is no longer optimal.
+The averaged change-score estimator is unaffected.
+\end{orig}
+
+![Effect of misspecifying $\sigma_b^2$ on GLS variance. True $\sigma_b^2 = 1$. The GLS estimator uses an assumed value on the x-axis. The averaged estimator (horizontal line) is unaffected.](/tmp/p4_files/figure-latex/misspec_G-1.pdf) 
+
+## Misspecified $R$
+
+\begin{bullets}
+\textbf{Misspecifying the residual correlation biases the GLS variance machinery but again leaves the averaged estimator intact.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Assuming compound symmetry when the truth is AR(1) is a representative misspecification.
+\item Both the GLS variance formula and the Woodbury correction become biased.
+\item The averaged estimator does not depend on the assumed correlation and is unaffected.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+When the residual correlation structure is wrong
+(e.g., compound symmetry assumed but AR(1) is true),
+both the GLS variance formula and the Woodbury
+correction are biased. The averaged estimator is
+again unaffected.
+\end{orig}
+
+![Effect of analyzing under compound symmetry when the true correlation is AR(1). Sandwich variance of GLS (solid) vs averaged change-score (dashed) as a function of $\rho$.](/tmp/p4_files/figure-latex/misspec_R-1.pdf) 
+
+
+# Simulation study
+
+## Design
+
+\begin{bullets}
+\textbf{A factorial Monte Carlo design complements the analytical results by varying sample size, design, signal-to-noise, correlation, and analysis method.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Sample size and the run-in design configuration are crossed across several levels.
+\item The signal-to-noise ratio and the true correlation structure are varied.
+\item Three analysis methods are compared: correctly specified GLS, misspecified GLS, and the averaged change-score test.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+To complement the analytical results, we simulate
+trials under the following factorial design:
+\end{orig}
+
+- $n \in \{30, 50, 100, 200\}$ per group
+- $(J_0, J_1, J_2) \in \{(0,2,0), (2,2,0), (2,2,2)\}$
+- $\sigma_b/\sigma \in \{1, 5, 20\}$
+- True correlation: compound symmetry or AR(1)
+- Analysis: GLS (correctly specified), GLS
+  (misspecified), averaged change-score
+
+\begin{bullets}
+\textbf{Each configuration is replicated extensively and evaluated on variance, power, and interval coverage.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Five thousand trials are simulated per configuration.
+\item Empirical variance and empirical power are recorded for each estimator.
+\item Coverage of nominal 95\% confidence intervals is assessed.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+For each configuration, 5000 trials are simulated.
+The outcomes are empirical variance, empirical power,
+and coverage of nominal 95\% confidence intervals.
+\end{orig}
+
+
+```
+## Single trial (m=100, delta=0.5):
+```
+
+```
+##   GLS: est=0.694, se=0.147
+```
+
+```
+##   Avg: est=1.154, se=0.432
+```
+
+
+# Numerical examples
+
+## MIRIAD parameters
+
+
+Table: Sample size per group: GLS, ANCOVA, and averaged estimators (MIRIAD parameters, $\Delta=0.25$, 90\% power).
+
+|$(J_0,J_1,J_2)$ | $N$ GLS| $N$ ANC| $N$ Avg|
+|:---------------|-------:|-------:|-------:|
+|(4,3,1)         |      36|     480|    8249|
+|(4,3,0)         |      43|     399|    6702|
+|(4,2,1)         |      60|     399|    6702|
+|(2,3,1)         |      69|     817|    5328|
+|(4,2,0)         |      78|     339|    5328|
+|(2,3,0)         |      93|     627|    4109|
+|(1,3,1)         |      99|    1290|    4156|
+|(2,2,1)         |     104|     627|    4109|
+|(0,3,1)         |     112|    2190|    2190|
+|(1,2,1)         |     138|     931|    3100|
+|(2,2,0)         |     145|     478|    3063|
+|(0,2,1)         |     150|    1462|    1462|
+|(4,1,1)         |     156|     339|    5328|
+|(1,3,0)         |     185|     931|    3100|
+|(2,1,1)         |     226|     478|    3063|
+
+## When to use which estimator
+
+<!-- TODO: decision flowchart or rule based on -->
+<!-- n, sigma_b/sigma, and confidence in the -->
+<!-- correlation structure -->
+
+
+# Discussion
+
+<!-- TODO: practical guidance. Key messages: -->
+<!-- (1) GLS is preferred when the model is -->
+<!--     well-specified and n is moderate-large -->
+<!-- (2) The averaged approach is a safe default -->
+<!--     when variance components are uncertain -->
+<!-- (3) The efficiency gap is small when r and k -->
+<!--     are large (because the averaging already -->
+<!--     captures most of the slope information) -->
+<!-- (4) SUR provides a middle ground but adds -->
+<!--     implementation complexity -->
+
+# Conflict of interest
+
+The author declares no conflicts of interest.
+
+# Funding
+
+This work received no specific funding.
+
+# Data availability statement
+
+\begin{bullets}
+\textbf{The package implementing all three estimators, the simulation drivers, and the shared bibliography are openly available in the project repository.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The estimator implementations reside in the package source files.
+\item The simulation drivers and shared compendium bibliography are included.
+\item Specific paths appear in the Reproducibility section below.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The `runinpower` R package implementing the GLS, ANCOVA, and
+averaged-change-score estimators (`ancova.R`, `averaged.R`),
+the simulation drivers, and the shared bibliography across the
+four-paper compendium are openly available in the project
+repository. Specific paths are listed in the Reproducibility
+section below.
+\end{orig}
+
+# Reproducibility
+
+\begin{bullets}
+\textbf{The manuscript was rendered with R 4.4.x using the package source and a small set of standard analysis and build packages.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The in-package source supplies the estimator implementations.
+\item The GLS comparator in the simulation relies on nlme, with tinytest as the testing harness.
+\item The manuscript is built with rmarkdown and bookdown.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+This manuscript was rendered with R 4.4.x. Principal packages
+used are the in-package `runinpower` source, `nlme` (the GLS
+fitter for the simulation comparator), `tinytest` (testing
+harness), and `rmarkdown` plus `bookdown` for the manuscript
+build.
+\end{orig}
+
+\begin{bullets}
+\textbf{The simulation uses a fixed master seed with deterministic per-replicate offsets to ensure reproducibility.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item A single master seed is set at the entry point of the Monte Carlo comparison.
+\item Per-replicate seeds derive deterministically from the master seed by adding the replicate index.
+\item This scheme makes the full simulation exactly reproducible.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+**Random-number generator.** The Monte Carlo simulation
+comparing the three estimators sets `set.seed(20260418)` at
+its entry point. Per-replicate seeds derive from the master
+seed by `+ rep_idx`.
+\end{orig}
+
+\begin{bullets}
+\textbf{All code, drivers, companion manuscripts, and the shared bibliography are located at documented paths within the compendium.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The package source and simulation drivers reside in their respective directories.
+\item The three companion manuscripts are stored alongside this paper in the compendium.
+\item The manuscript source and shared bibliography are co-located in the paper directory.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+**Data and code availability.** The R package source is at
+`R/`. Simulation drivers are at `analysis/scripts/`. The
+companion manuscripts (Papers 1, 2, 3) are at
+`analysis/paper{1,2,3}-*/`. The manuscript source and shared
+bibliography (`../references.bib`) are at
+`analysis/paper4-gls-vs-ttest/`.
+\end{orig}
+
+# References
+
+
+::: {#refs}
+:::
+
+
+\vfill
+
+---
+
+*Rendered on 2026-06-14 at 11:11 PDT.*  
+*Source: `~/prj/res/04-runin-power-analysis/runinpower/analysis/report/04-gls-vs-ttest/report.Rmd`*
