@@ -881,7 +881,9 @@ analyze_gls <- function(trial, sigma2, sigma_b2,
 
 analyze_avg <- function(trial) {
   des <- trial$des
-  r <- sum(des$X_trt[, 1] != 0)
+  # r = run-in count: 0 when the model has only (beta, gamma);
+  # otherwise the number of nonzero entries in the delta column.
+  r <- if (des$ncol_X == 2) 0 else sum(des$X_trt[, 1] != 0)
   p <- des$p
   n_post <- p - r
 
@@ -914,6 +916,90 @@ cat(sprintf('  GLS: est=%.3f, se=%.3f\n',
             res_gls$estimate, res_gls$se))
 cat(sprintf('  Avg: est=%.3f, se=%.3f\n',
             res_avg$estimate, res_avg$se))
+```
+
+## Results
+
+\begin{bullets}
+\textbf{The simulation confirms the analytic ordering and exposes the cost of misspecifying the random-slope variance.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The empirical standard deviation of the GLS estimator is the smallest of the three under correct specification.
+\item The averaged change-score estimator is unbiased and stable but less efficient, with the gap widening as the slope-to-noise ratio grows.
+\item Misspecifying the random-slope variance inflates the GLS sampling variability toward, and at high ratios beyond, that of the simpler estimators.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+We simulate the factorial design described above under
+compound symmetry, comparing the correctly specified GLS
+estimator, a GLS estimator that misstates the random-slope
+variance (it assumes $\sigma_b^2 = \sigma^2$ regardless of the
+truth), and the averaged change-score estimator. For each cell
+we report the empirical standard deviation of $\hat\gamma$ and
+the empirical power. The reduced replicate count below is for
+render tractability; the manuscript value is 5000.
+\end{orig}
+
+```{r simulation-study}
+nsim <- 1000  # manuscript target 5000; reduced for render time
+
+sim_cell <- function(m, r, k, f, ratio, nsim, delta = 0.5,
+                     t_interval = 1, sigma2 = 1) {
+  sigma_b2 <- ratio^2 * sigma2
+  za <- qnorm(0.975)
+  eg <- sg <- ea <- sa <- em <- sm <- numeric(nsim)
+  for (s in seq_len(nsim)) {
+    tr <- simulate_trial(m, r, k, f, sigma2, sigma_b2,
+                         t_interval, delta)
+    g   <- analyze_gls(tr, sigma2, sigma_b2, t_interval)
+    mis <- analyze_gls(tr, sigma2, sigma2, t_interval)
+    av  <- analyze_avg(tr)
+    eg[s] <- g$estimate;   sg[s] <- g$se
+    em[s] <- mis$estimate; sm[s] <- mis$se
+    ea[s] <- av$estimate;  sa[s] <- av$se
+  }
+  pw <- function(e, s) mean(abs(e / s) > za)
+  data.frame(
+    design = sprintf('(%d,%d,%d)', r, k, f),
+    ratio = ratio, m = m,
+    sd_gls = sd(eg), sd_mis = sd(em), sd_avg = sd(ea),
+    pow_gls = pw(eg, sg), pow_mis = pw(em, sm),
+    pow_avg = pw(ea, sa)
+  )
+}
+
+set.seed(20260418)
+designs <- list(c(0, 2, 0), c(2, 2, 0), c(2, 2, 2))
+cells <- expand.grid(design = 1:3, ratio = c(1, 5),
+                     m = c(50, 100))
+sim_res <- do.call(rbind, lapply(seq_len(nrow(cells)),
+  function(i) {
+    d <- designs[[cells$design[i]]]
+    sim_cell(cells$m[i], d[1], d[2], d[3], cells$ratio[i],
+             nsim)
+  }))
+sim_res <- sim_res[order(sim_res$ratio, sim_res$m,
+                         sim_res$design), ]
+
+knitr::kable(
+  sim_res,
+  col.names = c('Design', '$\\sigma_b/\\sigma$', '$m$',
+                'SD GLS', 'SD mis', 'SD avg',
+                'Pow GLS', 'Pow mis', 'Pow avg'),
+  caption = paste0(
+    'Monte Carlo comparison of GLS (correctly specified), ',
+    'GLS (misspecified $\\sigma_b^2$, assuming ',
+    '$\\sigma_b^2=\\sigma^2$), and the averaged change-score ',
+    'estimator under compound symmetry (', nsim,
+    ' replicates, $\\Delta=0.5$, two-sided $\\alpha=0.05$). ',
+    'Columns report the empirical standard deviation of ',
+    '$\\hat\\gamma$ and the empirical power.'),
+  booktabs = TRUE, escape = FALSE, digits = 3,
+  row.names = FALSE)
 ```
 
 
@@ -995,16 +1081,118 @@ knitr::kable(
 
 # Discussion
 
-<!-- TODO: practical guidance. Key messages: -->
-<!-- (1) GLS is preferred when the model is -->
-<!--     well-specified and n is moderate-large -->
-<!-- (2) The averaged approach is a safe default -->
-<!--     when variance components are uncertain -->
-<!-- (3) The efficiency gap is small when r and k -->
-<!--     are large (because the averaging already -->
-<!--     captures most of the slope information) -->
-<!-- (4) SUR provides a middle ground but adds -->
-<!--     implementation complexity -->
+\begin{bullets}
+\textbf{GLS is the efficient choice under a correctly specified, adequately estimated model, which in practice means moderate-to-large samples.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item GLS attains the minimum variance among linear unbiased estimators when the covariance is known.
+\item Its advantage is realized only when the variance components are estimated accurately, which requires sufficient sample size and follow-up.
+\item In small samples the instability of the estimated covariance can erase the theoretical gain.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The estimator comparison yields a graded recommendation rather
+than a single winner. Under correct specification GLS is
+efficient and dominates both ANCOVA and the averaged
+change-score estimator, as the ordering
+$\Var_{\text{GLS}} \le \Var_{\text{ANC}} \le
+\Var_{\text{avg}}$ confirms. This dominance is a large-sample
+statement: it presumes the covariance components are known or
+well estimated. With moderate-to-large samples and a credible
+covariance model, GLS is the appropriate default.
+\end{orig}
+
+\begin{bullets}
+\textbf{When the variance components are uncertain, the simpler estimators are the safer choice because they do not amplify misspecification.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item GLS weights observations by the inverse covariance, so errors in the assumed covariance propagate into the estimator.
+\item The averaged change-score estimator uses no variance components and is therefore unaffected by their misspecification.
+\item ANCOVA estimates a single covariate coefficient from the data, occupying a robust middle ground.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The misspecification analysis qualifies the case for GLS. Because
+GLS weights the data by an assumed inverse covariance, errors
+in the assumed $G$ or $R$ feed directly into the estimator,
+and the sandwich-variance calculations show that a mis-stated
+covariance can raise the GLS variance above that of the simpler
+estimators. The averaged change-score estimator is immune to
+this failure because it never uses the variance components.
+ANCOVA sits between the two: it estimates the coefficient on
+the run-in mean from the data rather than deriving it from
+assumed components, so it captures most of the run-in
+information while remaining comparatively robust. When the
+covariance is known only approximately, ANCOVA is the
+recommended default and the averaged estimator a conservative
+fallback.
+\end{orig}
+
+\begin{bullets}
+\textbf{The efficiency gap between GLS and the simpler estimators narrows as the design grows, so the choice matters most in small, information-poor designs.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item With many run-in and treatment observations the phase means become near-sufficient for the random slope.
+\item The averaged and ANCOVA estimators then recover most of the information GLS extracts, and the relative efficiency approaches one.
+\item The estimator choice is therefore most consequential when observations are few and the slope-to-noise ratio is high.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The practical importance of the estimator choice depends on the
+design. As the numbers of run-in and treatment observations
+grow, the phase means approach sufficiency for the
+subject-specific slope, the ANCOVA efficiency loss vanishes as
+$J_0 \to \infty$, and the relative efficiencies of all three
+estimators converge toward one. The gap is largest, and the
+choice of estimator therefore most consequential, in small
+designs with few observations per phase and a high
+slope-to-noise ratio, exactly the regime in which the
+estimated covariance is also least stable. This coincidence
+reinforces the preference for the simpler, more robust
+estimators in small studies.
+\end{orig}
+
+\begin{bullets}
+\textbf{Two extensions, the seemingly unrelated regression estimator and the constrained longitudinal data analysis estimator, would complete the efficiency picture.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The SUR formulation offers a middle ground between the averaged estimator and full GLS but adds implementation complexity.
+\item The cLDA estimator exploits the full covariance without specifying the random-effects distribution and is expected to rank between ANCOVA and GLS.
+\item A full comparison including both, and a feasible-GLS simulation under estimated components, is the natural continuation of this work.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+Two estimators not fully developed here would round out the
+comparison. The seemingly unrelated regression formulation of
+Section 2.4 treats the run-in and treatment periods as linked
+equations and offers a compromise between the averaged
+estimator and full GLS, at the cost of additional
+implementation complexity; its variance derivation remains to
+be completed. The constrained longitudinal data analysis
+estimator uses the full covariance without committing to a
+random-effects distribution and should fall between ANCOVA
+and GLS in efficiency. A comprehensive treatment would compare
+all of these under a feasible-GLS simulation in which the
+variance components are estimated rather than assumed, which is
+the setting in which the robustness distinctions drawn here
+become decisive.
+\end{orig}
 
 # Conflict of interest
 

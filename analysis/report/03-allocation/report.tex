@@ -855,6 +855,124 @@ $(J_0, J_1, J_2)$ & $\mathop{\mathrm{Var}}_1(\hat\gamma)$ & $N$ per group\\
 
 \section{Discussion}\label{discussion}
 
+\begin{bullets}
+\textbf{The optimal allocation is governed almost entirely by the signal-to-noise ratio, which yields a compact design rule.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item For most parameter configurations, one to two run-in observations and zero to one common close observation are near-optimal.
+\item The remaining budget should be allocated to the treatment period, which always contributes directly to the treatment comparison.
+\item This rule follows from diminishing returns to run-in observations and the conditional value of the common close.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The allocation results admit a simple summary. Across the
+range of signal-to-noise ratios examined, including the
+Alzheimer's neuroimaging regime, the optimal design places
+one or two observations in the run-in phase, at most one in
+the common close phase, and the remainder in the treatment
+period. The treatment period is favored because its
+observations contribute directly to the contrast of interest,
+whereas run-in and common close observations contribute only
+indirectly, through estimation of the random slope. The
+near-optimality of small run-in and common close counts
+reflects the diminishing returns established in Sections 3
+and 4: the first run-in observation pair recovers most of the
+attainable variance reduction, and the marginal value of
+additional pre- and post-treatment observations falls quickly.
+\end{orig}
+
+\begin{bullets}
+\textbf{The signal-to-noise ratio determines whether the common close phase is worth any allocation at all.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The common close is beneficial only when the slope-to-noise ratio exceeds a threshold that increases with the number of treatment observations.
+\item Below the threshold the entire budget, beyond a small run-in, should go to the treatment phase.
+\item Designers should therefore estimate the slope-to-noise ratio from pilot data before committing observations to a common close.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The decision to include a common close phase is more sensitive
+to the variance parameters than the decision to include a
+run-in phase. Because common close observations inform only
+the random slope and never the treatment contrast directly,
+they repay their cost only when the slope variability they help
+estimate is itself a large component of the
+treatment-effect variance. This is the threshold behavior of
+Section 4: the common close is worthwhile only when
+$\sigma_b / \sigma$ exceeds a bound that grows with $J_1$. The
+practical implication is that the common close should be
+treated as an optional refinement reserved for outcomes with
+high slope-to-noise ratios, such as neuroimaging endpoints,
+rather than as a default design element.
+\end{orig}
+
+\begin{bullets}
+\textbf{Two refinements, unequal spacing and endpoint replication, offer further efficiency without changing the phase counts.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Placing observations toward the extremes of each phase improves slope estimation, with the largest gains at low signal-to-noise ratios.
+\item Replicating the endpoint or baseline visit reduces measurement error and is most valuable when measurement error dominates.
+\item Run-in observations at new time points dominate endpoint replicates once the slope-to-noise ratio exceeds one, because they also inform the individual slope.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+Two refinements operate within a fixed phase allocation.
+First, when observation times within a phase are free,
+spacing them toward the extremes of the follow-up window
+improves slope estimation, with gains that are largest where
+measurement error dominates. Second, replicating the baseline
+or endpoint visit reduces the measurement-error contribution
+to the change score without adding new time points; this is
+most valuable at low slope-to-noise ratios and offers little
+when slope variability dominates. The comparison of Section 6
+clarifies the choice between spending an additional
+measurement on a new run-in time point versus an endpoint
+replicate: the former dominates once $\sigma_b / \sigma \ge 1$,
+because it contributes slope information and not merely
+measurement-error reduction, while the latter is competitive
+only when measurement error is the dominant variance source.
+\end{orig}
+
+\begin{bullets}
+\textbf{The allocation rules are derived under idealizing assumptions whose relaxation is the natural next step.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The optima assume equally spaced observations, a linear trajectory, and compound-symmetric residuals.
+\item Dropout is handled by a conservative pattern-mixture approximation rather than an exact monotone-missingness treatment.
+\item Under AR(1) residuals the diminishing returns to distant run-in observations are steeper, shifting the optimum toward fewer, closer run-in observations.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+Several assumptions bound the scope of these recommendations.
+The allocation optima are computed under equally spaced
+observations, linear individual trajectories, and a
+compound-symmetric residual structure; the AR(1) analysis of
+Paper 2 implies that under decaying correlation the optimum
+shifts toward fewer and more closely spaced run-in
+observations, since distant ones lose informativeness. Dropout
+is accommodated only through the conservative pattern-mixture
+approximation of Section 7, which the exact monotone-dropout
+treatment of @hu2021 would refine. Extending the allocation
+optimization jointly over phase counts, within-phase timing,
+and the correlation structure remains the natural next step.
+\end{orig}
+
 \section{Conflict of interest}\label{conflict-of-interest}
 
 \begin{bullets}
@@ -989,7 +1107,7 @@ shared bibliography (`references.bib`, a symlink to
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\emph{Rendered on 2026-06-23 at 18:31 PDT.}\\
+\emph{Rendered on 2026-06-23 at 18:48 PDT.}\\
 \emph{Source: \texttt{/Users/zenn/Library/CloudStorage/Dropbox/prj/res/04-runin-power-analysis/runinpower/analysis/report/03-allocation/report.Rmd}}
 
 \end{document}

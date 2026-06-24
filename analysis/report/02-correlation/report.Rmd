@@ -415,7 +415,7 @@ ar1_var_mean <- function(n, sigma2, rho) {
   if (n == 1) return(sigma2)
   c <- rho
   S_n <- (n * (1 - c) - (1 - c^n)) / (1 - c)^2
-  sigma2 / n * (1 + 2 * rho / (n * c) * S_n)
+  sigma2 / n * (1 + 2 * rho / n * S_n)
 }
 
 ar1_var_change <- function(r, q, K, sigma2, rho) {
@@ -427,7 +427,7 @@ ar1_var_change <- function(r, q, K, sigma2, rho) {
 }
 
 cat('Moment-based vs GLS variance (r=2, k=2, rho=0.5):\n')
-v_moment <- ar1_var_change(2, 2, 1, a, 0.5)
+v_moment <- ar1_var_change(2, 2, 2, a, 0.5)
 v_gls <- var_gamma_ar1(2, 2, 0, a, b, tt, 0.5)
 cat(sprintf('  Moment-based (sigma_b=0): %.4f\n',
             v_moment))
@@ -630,8 +630,91 @@ legend('topright', legend = paste('J_0 =', r_values),
 
 # Discussion
 
-<!-- TODO: summarize when CS assumption is adequate, -->
-<!-- when AR(1) matters, implications for trial design -->
+\begin{bullets}
+\textbf{The autocorrelation structure matters for run-in designs only when the autocorrelation is weak relative to the random-slope signal.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item When the slope-to-noise ratio is large, the random-slope term dominates the change-score covariance and the residual correlation structure is second order.
+\item The AR(1) and compound-symmetry variances then differ negligibly, and the simpler Paper 1 formula suffices.
+\item The two structures diverge most when the slope-to-noise ratio is small and run-in observations are distant from randomization.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The central practical question is when the compound-symmetry
+formulas of Paper 1 can be used in place of the AR(1)
+formulas derived here. The numerical comparisons indicate
+that the answer is governed by the same slope-to-noise ratio
+$\sigma_b^2 t^2 / \sigma^2$ that governs the value of run-in
+observations themselves. When this ratio is large, the random
+slope term $Z G Z'$ dominates the change-score covariance
+$\Sigma = R + Z G Z'$, the residual term $R$ contributes
+little, and the choice between an AR(1) and a
+compound-symmetric $R$ is immaterial. When the ratio is small,
+the residual term dominates and the correlation structure
+becomes the leading determinant of efficiency.
+\end{orig}
+
+\begin{bullets}
+\textbf{Compound symmetry is anticonservative under true AR(1) at low autocorrelation, so it understates the required sample size.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Under AR(1) the run-in observations farthest from randomization carry the least information, unlike under compound symmetry where all carry equal information.
+\item A design powered under compound symmetry therefore overstates the information from distant run-in observations.
+\item The resulting sample size is too small, with the discrepancy largest at small $\rho$ and small $J_0$.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+The direction of the error is important for trial design.
+Under compound symmetry every run-in change score is equally
+correlated with the treatment-period change scores, so each
+run-in observation contributes equally to estimating the
+random slope. Under AR(1) the correlation decays with temporal
+separation, so run-in observations far from randomization
+contribute less. A trial powered under the compound-symmetry
+assumption therefore credits distant run-in observations with
+more information than they in fact provide, and the resulting
+sample size is anticonservative. The numerical results show
+this gap is largest precisely where run-in designs are most
+tempting to over-specify: many run-in observations at low
+autocorrelation.
+\end{orig}
+
+\begin{bullets}
+\textbf{The five-case taxonomy gives a practical decision rule for when the simpler formula is safe.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item For moderate-to-high autocorrelation the compound-symmetry formula is an adequate and convenient approximation.
+\item For low autocorrelation or many distant run-in observations the AR(1) formula should be used directly.
+\item When the correlation structure is uncertain, the AR(1) formula evaluated at a conservative (low) $\rho$ provides a safe default.
+\end{itemize}
+\end{bullets}
+
+\begin{rgt}
+To be completed by rgt.
+\end{rgt}
+
+\begin{orig}
+For applied use we recommend the following. When pilot data
+support moderate-to-high autocorrelation, the
+compound-symmetry formula of Paper 1 is adequate and the
+AR(1) correction is a refinement rather than a necessity.
+When autocorrelation is low, or when the design places several
+run-in observations well before randomization, the AR(1)
+formula should be used directly for sample-size calculation.
+When the correlation structure cannot be pinned down from
+prior data, evaluating the AR(1) formula at a deliberately
+low $\rho$ yields a conservative sample size that protects
+against the anticonservatism of the compound-symmetry
+assumption. The moment-based bound of Section 4 provides a
+further, variance-component-free conservative check.
+\end{orig}
 
 # Conflict of interest
 
