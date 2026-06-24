@@ -43,7 +43,7 @@ abstract: |
   taxonomy provides a practical map of when the simpler
   compound-symmetric formula remains adequate.
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     latex_engine: xelatex
     toc: true
     number_sections: true
@@ -299,7 +299,7 @@ numerically (or via the AR(1) tridiagonal inverse)
 rather than by Sherman-Morrison.
 \end{orig}
 
-```{r ar1_variance}
+```{r ar1-variance}
 a <- 1.0
 b <- 1.0
 tt <- 1.0
@@ -378,11 +378,15 @@ Under AR(1) with parameter $c = \rho$, the
 cross-covariance is:
 \begin{equation}
   \Cov(\bar{X}_0, \bar{X}_K)
-  = \frac{\sigma^2}{J_0 c}\,\rho_1\, c^{K-1}\,
+  = \frac{\sigma^2}{J_0 J_1}\,\rho\, c^{K-1}\,
     \frac{(1 - c^{J_0})(1 - c^{J_1})}{(1 - c)^2}
 \end{equation}
-where $K$ is the gap between the last run-in and
-first treatment observation.
+where $c = \rho$ and $K$ is the gap between the last
+run-in and first treatment observation. The division by
+$J_0 J_1$ reflects that $\bar{X}_0$ and $\bar{X}_K$ are
+means of $J_0$ and $J_1$ observations respectively; this
+matches the implementation in `ar1_cov_phase_means()`
+below.
 
 ## Variance of the change score
 
@@ -719,9 +723,10 @@ To be completed by rgt.
 \begin{orig}
 **Data and code availability.** The R package source is at
 `R/`. The companion manuscripts (Papers 1, 3, 4) are at
-`analysis/paper{1,3,4}-*/`. The manuscript source and shared
-bibliography (`../references.bib`) are at
-`analysis/paper2-correlation/`.
+`analysis/report/{01,03,04}-*/`. The manuscript source and
+shared bibliography (`references.bib`, a symlink to
+`../../references.bib`) are at
+`analysis/report/02-correlation/`.
 \end{orig}
 
 # References

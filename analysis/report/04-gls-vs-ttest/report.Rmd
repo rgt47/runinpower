@@ -51,7 +51,7 @@ abstract: |
   averaged change-score remains useful as a robust
   benchmark and a teaching tool.
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     latex_engine: xelatex
     toc: true
     number_sections: true
@@ -127,13 +127,16 @@ estimator is:
 \end{equation}
 where
 \begin{equation}
-  d_{ik} = \frac{1}{J_{2,i} + 1}
-    \sum_{\ell=0}^{J_{2,i}} Y_{i,q+\ell,k}
-    - \frac{1}{J_{0,i} + 1}
-    \sum_{\ell=0}^{J_{0,i}} Y_{i,\ell,k}
+  d_{ik} = \frac{1}{J_1 + J_2}
+    \sum_{\ell=1}^{J_1+J_2} Y_{i,\ell,k}
+    - \frac{1}{J_0}
+    \sum_{\ell=1}^{J_0} Y_{i,-\ell,k}
 \end{equation}
-is the difference of post- and pre-randomization
-means for participant $i$.
+is the difference of the post-randomization and run-in
+means for participant $i$. The baseline visit is the
+change-score reference and cancels, so it enters neither
+average; this matches the contrast implemented in
+`var_gamma_avg()`.
 
 \begin{bullets}
 \textbf{The relative merits of change-score and ANCOVA analyses have been studied extensively across several methodological traditions.}
@@ -485,7 +488,7 @@ to GLS is:
 with equality when the averaged estimator happens
 to coincide with GLS (which occurs in special cases).
 
-```{r re_table}
+```{r re-table}
 configs <- expand.grid(
   r = c(0, 1, 2, 4),
   k = c(1, 2, 3),
@@ -918,7 +921,7 @@ cat(sprintf('  Avg: est=%.3f, se=%.3f\n',
 
 ## MIRIAD parameters
 
-```{r miriad_comparison}
+```{r miriad-comparison}
 # MIRIAD within-visit residual = between-visit (0.3338) +
 # between-scan measurement error (0.0025); see Paper 1.
 sigma2_ad <- 0.3338 + 0.0025
@@ -1095,9 +1098,10 @@ To be completed by rgt.
 **Data and code availability.** The R package source is at
 `R/`. Simulation drivers are at `analysis/scripts/`. The
 companion manuscripts (Papers 1, 2, 3) are at
-`analysis/paper{1,2,3}-*/`. The manuscript source and shared
-bibliography (`../references.bib`) are at
-`analysis/paper4-gls-vs-ttest/`.
+`analysis/report/{01,02,03}-*/`. The manuscript source and
+shared bibliography (`references.bib`, a symlink to
+`../../references.bib`) are at
+`analysis/report/04-gls-vs-ttest/`.
 \end{orig}
 
 # References

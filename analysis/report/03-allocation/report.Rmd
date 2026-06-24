@@ -46,7 +46,7 @@ abstract: |
   generalises to non-equally-spaced and dropout-adjusted
   designs without sacrificing closed-form tractability.
 output:
-  pdf_document:
+  bookdown::pdf_document2:
     latex_engine: xelatex
     toc: true
     number_sections: true
@@ -228,7 +228,7 @@ the $J_0$-th run-in observation:
   \Delta V_{J_0} = V(J_0 - 1, J_1, J_2) - V(J_0, J_1, J_2)
 \end{equation}
 
-```{r marginal_value}
+```{r marginal-value}
 a <- 1.0
 b <- 1.0
 tt <- 1.0
@@ -339,7 +339,7 @@ returns from distant run-in observations.
 
 # Optimal allocation for fixed $J$
 
-```{r optimal_grid}
+```{r optimal-grid}
 p_values <- 3:8
 tt <- 1.0
 
@@ -589,7 +589,7 @@ $\sigma^2 / n_{\text{rep,pre}}$. The Woodbury
 computation proceeds identically.
 \end{orig}
 
-```{r replication_table}
+```{r replication-table}
 a <- 1.0
 tt <- 1.0
 rep_values <- c(1, 2, 3, 5)
@@ -776,7 +776,7 @@ Replicating both the baseline and endpoint visits
 provides symmetric measurement-error reduction.
 \end{orig}
 
-```{r both_ends}
+```{r both-ends}
 configs <- expand.grid(
   n_pre = c(1, 2, 3),
   n_post = c(1, 2, 3)
@@ -952,7 +952,7 @@ optimal allocation for $J = 4, 5, 6$ total
 observations with and without dropout.
 \end{orig}
 
-```{r ad_optimal, fig.cap="Variance across all allocations for $J=5$ total observations using MIRIAD parameters. Each point is one $(J_0, J_1, J_2)$ configuration."}
+```{r ad-optimal, fig.cap="Variance across all allocations for $J=5$ total observations using MIRIAD parameters. Each point is one $(J_0, J_1, J_2)$ configuration."}
 # MIRIAD within-visit residual = between-visit (0.3338) +
 # between-scan measurement error (0.0025); see Paper 1.
 sigma2_ad <- 0.3338 + 0.0025
@@ -1122,8 +1122,8 @@ Carlo benchmarking is reported, the driver sets
 \textbf{Source code, companion manuscripts, and the shared bibliography are located at documented repository paths.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item The R package source is under R/.
-\item Companion manuscripts (Papers 1, 2, 4) are under analysis/paper\{1,2,4\}-*/.
-\item This manuscript source and the shared bibliography are under analysis/paper3-allocation/.
+\item Companion manuscripts (Papers 1, 2, 4) are under analysis/report/\{01,02,04\}-*/.
+\item This manuscript source and the shared bibliography are under analysis/report/03-allocation/.
 \end{itemize}
 \end{bullets}
 
@@ -1134,9 +1134,10 @@ To be completed by rgt.
 \begin{orig}
 **Data and code availability.** The R package source is at
 `R/`. The companion manuscripts (Papers 1, 2, 4) are at
-`analysis/paper{1,2,4}-*/`. The manuscript source and shared
-bibliography (`../references.bib`) are at
-`analysis/paper3-allocation/`.
+`analysis/report/{01,02,04}-*/`. The manuscript source and
+shared bibliography (`references.bib`, a symlink to
+`../../references.bib`) are at
+`analysis/report/03-allocation/`.
 \end{orig}
 
 # References
