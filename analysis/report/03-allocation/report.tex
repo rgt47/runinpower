@@ -64,6 +64,39 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -108,6 +141,10 @@
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
 \hypersetup{
   pdftitle={Optimal Allocation of Observations across Run-In{,} Treatment{,} and Common Close Phases in Longitudinal Clinical Trials},
   pdfauthor={Ronald G. Thomas, Ph.D.},
@@ -118,7 +155,7 @@
 Treatment, and Common Close Phases in Longitudinal
 Clinical Trials}
 \author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
-\date{June 23, 2026}
+\date{June 26, 2026}
 
 \begin{document}
 \maketitle
@@ -190,7 +227,8 @@ provides the largest variance reduction, while
 subsequent observations contribute progressively less.
 Similarly, common close observations improve efficiency
 but at a rate that depends on the number of treatment
-observations $J_1$.
+observations \(J_1\).
+
 \end{orig}
 
 \begin{bullets}
@@ -212,6 +250,7 @@ does not address: given operational constraints on the
 total number of visits or total trial duration, what is
 the optimal distribution of observations across the
 three phases?
+
 \end{orig}
 
 \begin{bullets}
@@ -228,21 +267,19 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-@winkens2005 calculated optimal time-point positions
+\textsuperscript{\citeproc{ref-winkens2005}{1}} calculated optimal time-point positions
 for linearly divergent treatment effects under compound
-symmetry, but did not consider the run-in setting.
-@yi2002 derived sample sizes for trends across repeated
-measurements under missing data.
-@frison1992 showed that having more than one
+symmetry, but did not consider the run-in setting.\textsuperscript{\citeproc{ref-yi2002}{2}} derived sample sizes for trends across repeated
+measurements under missing data.\textsuperscript{\citeproc{ref-frison1992}{3}} showed that having more than one
 pre-treatment measurement is beneficial for designs
-analyzed via ANCOVA. @overall1994 provided sample size
-formulas for repeated measurement designs.
-@galbraith2002 developed general guidelines for the
+analyzed via ANCOVA.\textsuperscript{\citeproc{ref-overall1994}{4}} provided sample size
+formulas for repeated measurement designs.\textsuperscript{\citeproc{ref-galbraith2002}{5}} developed general guidelines for the
 design of clinical trials with longitudinal outcomes.
-The slopepower command [@nash2021] and the longpower
-R package [@iddi2022] implement power calculations
+The slopepower command\textsuperscript{\citeproc{ref-nash2021}{6}} and the longpower
+R package\textsuperscript{\citeproc{ref-iddi2022}{7}} implement power calculations
 for slope-comparison trials but do not optimize the
 allocation of observations across phases.
+
 \end{orig}
 
 \section{Problem formulation}\label{problem-formulation}
@@ -263,14 +300,15 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-Given $J$ total observations (excluding baseline),
-choose $(J_0^*, J_1^*, J_2^*)$ to minimize
-$\mathop{\mathrm{Var}}_1(\hat\gamma)$ subject to $J_0 + J_1 + J_2 = J$,
-$J_0 \ge 0$, $J_1 \ge 1$, $J_2 \ge 0$.
+Given \(J\) total observations (excluding baseline),
+choose \((J_0^*, J_1^*, J_2^*)\) to minimize
+\(\mathop{\mathrm{Var}}_1(\hat\gamma)\) subject to \(J_0 + J_1 + J_2 = J\),
+\(J_0 \ge 0\), \(J_1 \ge 1\), \(J_2 \ge 0\).
 
 The objective function is
-$V(J_0, J_1, J_2) = [(X'\Sigma^{-1}X)^{-1}]_{\gamma\gamma}$
+\(V(J_0, J_1, J_2) = [(X'\Sigma^{-1}X)^{-1}]_{\gamma\gamma}\)
 computed via the Woodbury identity from Paper 1.
+
 \end{orig}
 
 \subsection{Fixed total duration}\label{fixed-total-duration}
@@ -290,11 +328,12 @@ To be completed by rgt.
 
 \begin{orig}
 Alternatively, fix the trial duration
-$T = (J_0 + J_1 + J_2) \cdot t$ and minimize
-$\mathop{\mathrm{Var}}_1(\hat\gamma)$ subject to
-$J_0 + J_1 + J_2 = T/t$, or more generally allow
+\(T = (J_0 + J_1 + J_2) \cdot t\) and minimize
+\(\mathop{\mathrm{Var}}_1(\hat\gamma)\) subject to
+\(J_0 + J_1 + J_2 = T/t\), or more generally allow
 non-equally-spaced observations within each phase
 and minimize over the observation times as well.
+
 \end{orig}
 
 \section{Diminishing returns from run-in observations}\label{diminishing-returns-from-run-in-observations}
@@ -345,14 +384,15 @@ To be completed by rgt.
 
 \begin{orig}
 An important non-monotonicity is visible in the table:
-$\Delta V_1 < \Delta V_2$ for moderate
-$\sigma_b / \sigma$. The first run-in observation is
+\(\Delta V_1 < \Delta V_2\) for moderate
+\(\sigma_b / \sigma\). The first run-in observation is
 less valuable than the second. This occurs because
 adding a single run-in observation forces the model from
-2 parameters ($\beta, \gamma$) to 3 parameters
-($\delta, \beta, \gamma$), consuming a degree of
+2 parameters (\(\beta, \gamma\)) to 3 parameters
+(\(\delta, \beta, \gamma\)), consuming a degree of
 freedom. The second run-in observation does not increase
 the parameter count and provides pure information gain.
+
 \end{orig}
 
 \begin{bullets}
@@ -369,12 +409,13 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-This effect is analogous to @frison1992's finding that
+This effect is analogous to\textsuperscript{\citeproc{ref-frison1992}{3}}'s finding that
 a single pre-treatment measurement used as an ANCOVA
 covariate can reduce power when the pre-post correlation
-is low. The practical implication is clear: **a trial
+is low. The practical implication is clear: \textbf{a trial
 designer should plan either zero or at least two run-in
-observations, not one.**
+observations, not one.}
+
 \end{orig}
 
 \subsection{Correlation structure governs diminishing returns}\label{correlation-structure-governs-diminishing-returns}
@@ -402,12 +443,12 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-which is constant in $J_0$. The diminishing returns
-(for $J_0 \ge 2$) arise from the information matrix
-structure, not from declining correlation. Under AR(1)
-[@winkens2007], the correlation does decline with
+which is constant in \(J_0\). The diminishing returns
+(for \(J_0 \ge 2\)) arise from the information matrix
+structure, not from declining correlation. Under AR(1)\textsuperscript{\citeproc{ref-winkens2007}{8}}, the correlation does decline with
 temporal distance, producing faster diminishing
 returns from distant run-in observations.
+
 \end{orig}
 
 \section{\texorpdfstring{Optimal allocation for fixed \(J\)}{Optimal allocation for fixed J}}\label{optimal-allocation-for-fixed-j}
@@ -448,10 +489,11 @@ To be completed by rgt.
 
 \begin{orig}
 The common close phase contributes information about
-the random slope $b_i$ without contributing to the
+the random slope \(b_i\) without contributing to the
 treatment comparison directly. It is beneficial when
 the additional slope information sufficiently reduces
-the variance of $\hat\gamma$.
+the variance of \(\hat\gamma\).
+
 \end{orig}
 
 \begin{verbatim}
@@ -494,11 +536,12 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-This is minimized when $t_1 t_2$ is minimized (most
+This is minimized when \(t_1 t_2\) is minimized (most
 negative), i.e., when the two time points are
 maximally separated. This reproduces the known result
 that observations at the extremes of the follow-up
 period are optimal for slope estimation.
+
 \end{orig}
 
 \subsection{Optimization over observation times within phases}\label{optimization-over-observation-times-within-phases}
@@ -523,8 +566,7 @@ To be completed by rgt.
 \begin{orig}
 The run-in mechanism averages multiple pre-randomization
 observations to reduce the contribution of measurement
-error $\sigma^2$ to the estimated baseline slope
-[@frost2008; @frison1992]. @goulet2019 showed that
+error \(\sigma^2\) to the estimated baseline slope\textsuperscript{\citeproc{ref-frison1992}{3},\citeproc{ref-frost2008}{9}}.\textsuperscript{\citeproc{ref-goulet2019}{10}} showed that
 replicated measures increase power but with diminishing
 returns past 20-50 replications. The same logic applies
 at the end of the treatment period:
@@ -533,6 +575,7 @@ with) two or three closely-spaced measurements, all
 under the same treatment condition, the measurement
 error on the endpoint assessment is reduced by
 averaging.
+
 \end{orig}
 
 \begin{bullets}
@@ -549,15 +592,16 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-Concretely, if the last visit at time $J_1 t$ is replicated
-$n_{\text{rep}}$ times over a short interval (days to
-weeks, negligible relative to $t$), the effective
+Concretely, if the last visit at time \(J_1 t\) is replicated
+\(n_{\text{rep}}\) times over a short interval (days to
+weeks, negligible relative to \(t\)), the effective
 residual variance for the averaged endpoint becomes
-$\sigma^2 / n_{\text{rep}}$ while the random slope
-contribution $\sigma_b^2 t^2$ is essentially unchanged.
-Similarly, the baseline visit at $j = 0$ can be
-replicated to reduce $\sigma^2$ in the change-score
+\(\sigma^2 / n_{\text{rep}}\) while the random slope
+contribution \(\sigma_b^2 t^2\) is essentially unchanged.
+Similarly, the baseline visit at \(j = 0\) can be
+replicated to reduce \(\sigma^2\) in the change-score
 covariance.
+
 \end{orig}
 
 \begin{bullets}
@@ -580,6 +624,7 @@ points after treatment stops, providing information
 about the off-treatment slope. Replicated endpoints are
 at the \emph{same} time point as the last treatment
 visit, providing only measurement-error reduction.
+
 \end{orig}
 
 \subsection{Variance formula with replication}\label{variance-formula-with-replication}
@@ -598,13 +643,14 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-The residual covariance matrix $R$ is modified so that
+The residual covariance matrix \(R\) is modified so that
 the diagonal element corresponding to a replicated
-visit uses $\sigma^2 / n_{\text{rep}}$ instead of
-$\sigma^2$, and the off-diagonal elements reflecting
+visit uses \(\sigma^2 / n_{\text{rep}}\) instead of
+\(\sigma^2\), and the off-diagonal elements reflecting
 the shared baseline error use
-$\sigma^2 / n_{\text{rep,pre}}$. The Woodbury
+\(\sigma^2 / n_{\text{rep,pre}}\). The Woodbury
 computation proceeds identically.
+
 \end{orig}
 
 \begin{table}
@@ -639,11 +685,12 @@ To be completed by rgt.
 \begin{orig}
 The table confirms that endpoint replication is most
 beneficial when measurement error dominates
-($\sigma_b / \sigma$ small). When between-subject slope
-variability is large ($\sigma_b / \sigma > 2$), the
+(\(\sigma_b / \sigma\) small). When between-subject slope
+variability is large (\(\sigma_b / \sigma > 2\)), the
 gain from replication is modest because the variance
-is dominated by $\sigma_b^2 t^2$, which replication
+is dominated by \(\sigma_b^2 t^2\), which replication
 cannot reduce.
+
 \end{orig}
 
 \subsection{Replication vs additional run-in observations}\label{replication-vs-additional-run-in-observations}
@@ -665,8 +712,9 @@ To be completed by rgt.
 A natural question is whether a fixed budget of
 additional measurements should be spent on run-in
 observations (at distinct time points, separated by
-$t$) or on endpoint replicates (closely spaced,
+\(t\)) or on endpoint replicates (closely spaced,
 measurement-error reduction only).
+
 \end{orig}
 
 \begin{figure}
@@ -689,13 +737,14 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-When $\sigma_b / \sigma \ge 1$, run-in observations at
+When \(\sigma_b / \sigma \ge 1\), run-in observations at
 new time points outperform endpoint replicates because
 they provide information about the individual slope
-$b_i$, not just measurement-error reduction. When
-$\sigma_b / \sigma < 1$, endpoint replication can be
+\(b_i\), not just measurement-error reduction. When
+\(\sigma_b / \sigma < 1\), endpoint replication can be
 competitive because measurement error is the dominant
 source of variance.
+
 \end{orig}
 
 \subsection{Combined replication at both ends}\label{combined-replication-at-both-ends}
@@ -716,6 +765,7 @@ To be completed by rgt.
 \begin{orig}
 Replicating both the baseline and endpoint visits
 provides symmetric measurement-error reduction.
+
 \end{orig}
 
 \begin{table}
@@ -751,11 +801,11 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-Following @frost2008 (Section 2.3), dropout
-is handled via a pattern-mixture model
-[@dawson1993; @lu2008]. Participants
+Following\textsuperscript{\citeproc{ref-frost2008}{9}} (Section 2.3), dropout
+is handled via a pattern-mixture model\textsuperscript{\citeproc{ref-dawson1993}{11},\citeproc{ref-lu2008}{12}}. Participants
 are stratified by their observed visit pattern, and
 the overall variance is a weighted average:
+
 \end{orig}
 
 \begin{equation}
@@ -776,18 +826,19 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-where $p_s$ is the proportion with pattern $s$ and
-$N_s$ is the sample size that would be needed if all
-participants had pattern $s$. This approximation
-treats each stratum independently. @hu2021 derive
+where \(p_s\) is the proportion with pattern \(s\) and
+\(N_s\) is the sample size that would be needed if all
+participants had pattern \(s\). This approximation
+treats each stratum independently.\textsuperscript{\citeproc{ref-hu2021}{13}} derive
 exact variance formulas under monotone dropout for
 the three-component random coefficient regression
-model ($\sigma^2, \sigma_a^2, \sigma_b^2$),
+model (\(\sigma^2, \sigma_a^2, \sigma_b^2\)),
 accounting for the effect of dropout on the
 estimability of the random slope variance. Their
 approach is more rigorous than the pattern-mixture
 approximation used here, which is conservative when
 dropout is informative about the random slope.
+
 \end{orig}
 
 \begin{table}
@@ -824,10 +875,11 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-Using MIRIAD parameters ($\sigma^2 = 0.3363$,
-$\sigma_b^2 = 0.9745$, $t = 1$ year), compare the
-optimal allocation for $J = 4, 5, 6$ total
+Using MIRIAD parameters (\(\sigma^2 = 0.3363\),
+\(\sigma_b^2 = 0.9745\), \(t = 1\) year), compare the
+optimal allocation for \(J = 4, 5, 6\) total
 observations with and without dropout.
+
 \end{orig}
 
 \begin{table}
@@ -883,6 +935,7 @@ reflects the diminishing returns established in Sections 3
 and 4: the first run-in observation pair recovers most of the
 attainable variance reduction, and the marginal value of
 additional pre- and post-treatment observations falls quickly.
+
 \end{orig}
 
 \begin{bullets}
@@ -907,11 +960,12 @@ they repay their cost only when the slope variability they help
 estimate is itself a large component of the
 treatment-effect variance. This is the threshold behavior of
 Section 4: the common close is worthwhile only when
-$\sigma_b / \sigma$ exceeds a bound that grows with $J_1$. The
+\(\sigma_b / \sigma\) exceeds a bound that grows with \(J_1\). The
 practical implication is that the common close should be
 treated as an optional refinement reserved for outcomes with
 high slope-to-noise ratios, such as neuroimaging endpoints,
 rather than as a default design element.
+
 \end{orig}
 
 \begin{bullets}
@@ -939,10 +993,11 @@ most valuable at low slope-to-noise ratios and offers little
 when slope variability dominates. The comparison of Section 6
 clarifies the choice between spending an additional
 measurement on a new run-in time point versus an endpoint
-replicate: the former dominates once $\sigma_b / \sigma \ge 1$,
+replicate: the former dominates once \(\sigma_b / \sigma \ge 1\),
 because it contributes slope information and not merely
 measurement-error reduction, while the latter is competitive
 only when measurement error is the dominant variance source.
+
 \end{orig}
 
 \begin{bullets}
@@ -968,9 +1023,10 @@ shifts toward fewer and more closely spaced run-in
 observations, since distant ones lose informativeness. Dropout
 is accommodated only through the conservative pattern-mixture
 approximation of Section 7, which the exact monotone-dropout
-treatment of @hu2021 would refine. Extending the allocation
+treatment of\textsuperscript{\citeproc{ref-hu2021}{13}} would refine. Extending the allocation
 optimization jointly over phase counts, within-phase timing,
 and the correlation structure remains the natural next step.
+
 \end{orig}
 
 \section{Conflict of interest}\label{conflict-of-interest}
@@ -990,6 +1046,7 @@ To be completed by rgt.
 
 \begin{orig}
 The author declares no conflicts of interest.
+
 \end{orig}
 
 \section{Funding}\label{funding}
@@ -1009,6 +1066,7 @@ To be completed by rgt.
 
 \begin{orig}
 This work received no specific funding.
+
 \end{orig}
 
 \section{Data availability statement}\label{data-availability-statement}
@@ -1027,12 +1085,13 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-The `runinpower` R package implementing the
-optimal-allocation routines (`allocation.R`, `replicated.R`,
-`design.R`), validation tests, and the shared bibliography
+The \texttt{runinpower} R package implementing the
+optimal-allocation routines (\texttt{allocation.R}, \texttt{replicated.R},
+\texttt{design.R}), validation tests, and the shared bibliography
 across the four-paper compendium are openly available in the
 project repository. Specific paths are listed in the
 Reproducibility section below.
+
 \end{orig}
 
 \section{Reproducibility}\label{reproducibility}
@@ -1052,9 +1111,10 @@ To be completed by rgt.
 
 \begin{orig}
 This manuscript was rendered with R 4.4.x. Principal packages
-used are the in-package `runinpower` source, `tinytest`
-(testing harness), and `rmarkdown` plus `bookdown` for the
+used are the in-package \texttt{runinpower} source, \texttt{tinytest}
+(testing harness), and \texttt{rmarkdown} plus \texttt{bookdown} for the
 manuscript build.
+
 \end{orig}
 
 \begin{bullets}
@@ -1071,10 +1131,11 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-**Random-number generator.** Optimisation results are
+\textbf{Random-number generator.} Optimisation results are
 deterministic given fixed input parameters. Where Monte
 Carlo benchmarking is reported, the driver sets
-`set.seed(20260418)` at its entry point.
+\texttt{set.seed(20260418)} at its entry point.
+
 \end{orig}
 
 \begin{bullets}
@@ -1091,23 +1152,78 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-**Data and code availability.** The R package source is at
-`R/`. The companion manuscripts (Papers 1, 2, 4) are at
-`analysis/report/{01,02,04}-*/`. The manuscript source and
-shared bibliography (`references.bib`, a symlink to
-`../../references.bib`) are at
-`analysis/report/03-allocation/`.
+\textbf{Data and code availability.} The R package source is at
+\texttt{R/}. The companion manuscripts (Papers 1, 2, 4) are at
+\texttt{analysis/report/\{01,02,04\}-*/}. The manuscript source and
+shared bibliography (\texttt{references.bib}, a symlink to
+\texttt{../../references.bib}) are at
+\texttt{analysis/report/03-allocation/}.
+
 \end{orig}
 
 \section{References}\label{references}
 
 \protect\phantomsection\label{refs}
+\begin{CSLReferences}{0}{1}
+\bibitem[\citeproctext]{ref-winkens2005}
+\CSLLeftMargin{1. }%
+\CSLRightInline{Winkens B, Schouten HJA, Breukelen GJP van, Berger MPF. Optimal time-points in clinical trials with linearly divergent treatment effects. \emph{Statistics in Medicine}. 2005;24(24):3743-3756. doi:\href{https://doi.org/10.1002/sim.2370}{10.1002/sim.2370}}
+
+\bibitem[\citeproctext]{ref-yi2002}
+\CSLLeftMargin{2. }%
+\CSLRightInline{Yi Q, Panzarella T. Estimating sample size for tests on trends across repeated measurements with missing data based on the interaction term in a mixed model. \emph{Controlled Clinical Trials}. 2002;23(5):481-496. doi:\href{https://doi.org/10.1016/S0197-2456(02)00228-3}{10.1016/S0197-2456(02)00228-3}}
+
+\bibitem[\citeproctext]{ref-frison1992}
+\CSLLeftMargin{3. }%
+\CSLRightInline{Frison L, Pocock SJ. Repeated measures in clinical trials: Analysis using mean summary statistics and its implications for design. \emph{Statistics in Medicine}. 1992;11(13):1685-1704. doi:\href{https://doi.org/10.1002/sim.4780111304}{10.1002/sim.4780111304}}
+
+\bibitem[\citeproctext]{ref-overall1994}
+\CSLLeftMargin{4. }%
+\CSLRightInline{Overall JE, Doyle SR. Estimating sample sizes for repeated measurement designs. \emph{Controlled Clinical Trials}. 1994;15(2):100-123. doi:\href{https://doi.org/10.1016/0197-2456(94)90015-9}{10.1016/0197-2456(94)90015-9}}
+
+\bibitem[\citeproctext]{ref-galbraith2002}
+\CSLLeftMargin{5. }%
+\CSLRightInline{Galbraith S, Marschner IC. Guidelines for the design of clinical trials with longitudinal outcomes. \emph{Controlled Clinical Trials}. 2002;23(3):257-273. doi:\href{https://doi.org/10.1016/S0197-2456(02)00205-2}{10.1016/S0197-2456(02)00205-2}}
+
+\bibitem[\citeproctext]{ref-nash2021}
+\CSLLeftMargin{6. }%
+\CSLRightInline{Nash S, Morgan KE, Frost C, Mulick A. Power and sample-size calculations for trials that compare slopes over time: Introducing the slopepower command. \emph{The Stata Journal}. 2021;21:572-601. doi:\href{https://doi.org/10.1177/1536867X211045512}{10.1177/1536867X211045512}}
+
+\bibitem[\citeproctext]{ref-iddi2022}
+\CSLLeftMargin{7. }%
+\CSLRightInline{Iddi S, Donohue MC. Power and sample size for longitudinal models in {R} -- the longpower package and {Shiny} app. \emph{The R Journal}. 2022;14(1):264-282. \url{https://journal.r-project.org/articles/RJ-2022-022/}}
+
+\bibitem[\citeproctext]{ref-winkens2007}
+\CSLLeftMargin{8. }%
+\CSLRightInline{Winkens B, Breukelen GJP van, Schouten HJA, Berger MPF. Randomized clinical trial designs for auto-correlated longitudinal data. \emph{Statistics in Medicine}. 2007;26(28):5023-5037. doi:\href{https://doi.org/10.1002/sim.2907}{10.1002/sim.2907}}
+
+\bibitem[\citeproctext]{ref-frost2008}
+\CSLLeftMargin{9. }%
+\CSLRightInline{Frost C, Kenward MG, Fox NC. Optimizing the design of clinical trials where the outcome is a rate. {Can} estimating a baseline rate in a run-in period increase efficiency? \emph{Statistics in Medicine}. 2008;27(18):3717-3731. doi:\href{https://doi.org/10.1002/sim.3280}{10.1002/sim.3280}}
+
+\bibitem[\citeproctext]{ref-goulet2019}
+\CSLLeftMargin{10. }%
+\CSLRightInline{Goulet MA, Cousineau D. The power of replicated measures to increase statistical power. \emph{Advances in Methods and Practices in Psychological Science}. 2019;2:199-213.}
+
+\bibitem[\citeproctext]{ref-dawson1993}
+\CSLLeftMargin{11. }%
+\CSLRightInline{Dawson JD, Lagakos SW. Size and power of two-sample tests of repeated measures data. \emph{Biometrics}. 1993;49(4):1022-1032.}
+
+\bibitem[\citeproctext]{ref-lu2008}
+\CSLLeftMargin{12. }%
+\CSLRightInline{Lu K, Luo X, Chen PY. Sample size estimation for repeated measures analysis in randomized clinical trials with missing data. \emph{International Journal of Biostatistics}. 2008;4(1):Article 9. doi:\href{https://doi.org/10.2202/1557-4679.1098}{10.2202/1557-4679.1098}}
+
+\bibitem[\citeproctext]{ref-hu2021}
+\CSLLeftMargin{13. }%
+\CSLRightInline{Hu N, Mackey H, Thomas R. Power and sample size for random coefficient regression models in randomized experiments with monotone missing data. \emph{Biometrical Journal}. 2021;63(4):806-824. doi:\href{https://doi.org/10.1002/bimj.202000184}{10.1002/bimj.202000184}}
+
+\end{CSLReferences}
 
 \vfill
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\emph{Rendered on 2026-06-23 at 18:48 PDT.}\\
-\emph{Source: \texttt{/Users/zenn/Library/CloudStorage/Dropbox/prj/res/04-runin-power-analysis/runinpower/analysis/report/03-allocation/report.Rmd}}
+\emph{Rendered on 2026-06-26 at 17:43 PDT.}\\
+\emph{Source: \texttt{\textasciitilde{}/prj/res/04-runin-power-analysis/runinpower/analysis/report/03-allocation/report.Rmd}}
 
 \end{document}

@@ -64,6 +64,39 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -109,6 +142,10 @@
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
 \hypersetup{
   pdftitle={Power Analysis for Run-In Clinical Trials under AR(1) and General Correlation Structures},
   pdfauthor={Ronald G. Thomas, Ph.D.},
@@ -118,7 +155,7 @@
 \title{Power Analysis for Run-In Clinical Trials under
 AR(1) and General Correlation Structures}
 \author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
-\date{June 23, 2026}
+\date{June 26, 2026}
 
 \begin{document}
 \maketitle
@@ -186,10 +223,11 @@ correlation structure of the repeated measurements.
 Under compound symmetry, the correlation between any
 two change scores is constant, and the run-in
 observations contribute information about the random
-slope $b_i$ through a simple averaging mechanism. Under
+slope \(b_i\) through a simple averaging mechanism. Under
 AR(1), the correlation decays with temporal separation,
 and the information content of run-in observations
 depends on how far they are from the treatment period.
+
 \end{orig}
 
 \begin{bullets}
@@ -206,14 +244,14 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-Paper 1 [@frost2008] assumed $R = \sigma^2(I_J +
-\mathbf{1}_J\mathbf{1}_J')$, which arises from the
-change-score parameterization under independent errors.
-@wang2019 extended the run-in framework to two-period
+Paper 1\textsuperscript{\citeproc{ref-frost2008}{1}} assumed \(R = \sigma^2(I_J +
+\mathbf{1}_J\mathbf{1}_J')\), which arises from the
+change-score parameterization under independent errors.\textsuperscript{\citeproc{ref-wang2019}{2}} extended the run-in framework to two-period
 linear mixed models but retained the compound symmetry
 assumption. We extend here to AR(1) residual
-correlation, where $\mathop{\mathrm{Corr}}(e_{ij}, e_{ij'}) =
-\rho^{|j-j'|}$ for $0 < \rho < 1$.
+correlation, where \(\mathop{\mathrm{Corr}}(e_{ij}, e_{ij'}) =
+\rho^{|j-j'|}\) for \(0 < \rho < 1\).
+
 \end{orig}
 
 \begin{bullets}
@@ -230,13 +268,14 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-@winkens2007 studied optimal designs for autocorrelated
+\textsuperscript{\citeproc{ref-winkens2007}{3}} studied optimal designs for autocorrelated
 longitudinal data but did not consider the run-in
-setting. @diggle2002 and @verbeke2000 provide general
+setting.\textsuperscript{\citeproc{ref-diggle2002}{4}} and\textsuperscript{\citeproc{ref-verbeke2000}{5}} provide general
 treatments of correlation structures in longitudinal
-models. @chambless1993 addressed the effect of
+models.\textsuperscript{\citeproc{ref-chambless1993}{6}} addressed the effect of
 intra-individual variation on change-score analyses,
 a concern that is amplified under AR(1) correlation.
+
 \end{orig}
 
 \begin{bullets}
@@ -253,20 +292,21 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-The `longpower` R package [@iddi2022] is the CRAN
+The \texttt{longpower} R package\textsuperscript{\citeproc{ref-iddi2022}{7}} is the CRAN
 reference implementation for longitudinal-trial power
 calculations. Its closed-form routines
-(`edland.linear.power()`, `diggle.linear.power()`)
+(\texttt{edland.linear.power()}, \texttt{diggle.linear.power()})
 assume random intercepts and slopes with independent or
 compound-symmetric residuals, and the more flexible
-`liu.liang.linear.power()` and `lmmpower()` accommodate
+\texttt{liu.liang.linear.power()} and \texttt{lmmpower()} accommodate
 arbitrary working covariances only through simulation or
-a user-supplied fitted `lme` object. No analytic
+a user-supplied fitted \texttt{lme} object. No analytic
 AR(1)-residual formula is provided. The closed-form
 AR(1) derivation developed here therefore fills a gap in
 the existing toolkit while remaining consistent with the
-`longpower` formulae when the correlation is replaced by
+\texttt{longpower} formulae when the correlation is replaced by
 its compound-symmetry limit.
+
 \end{orig}
 
 \section{Correlation structures for longitudinal trials}\label{correlation-structures-for-longitudinal-trials}
@@ -344,11 +384,12 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-This $R$ no longer has the rank-one-plus-identity
+This \(R\) no longer has the rank-one-plus-identity
 structure, so the Sherman-Morrison formula does not
 apply. However, the Woodbury identity still reduces
-$\Sigma^{-1}$ to a scalar inversion because $G$ remains
+\(\Sigma^{-1}\) to a scalar inversion because \(G\) remains
 scalar.
+
 \end{orig}
 
 \subsection{Woodbury computation}\label{woodbury-computation}
@@ -373,10 +414,11 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-with $H = (G^{-1} + Z'R^{-1}Z)^{-1}$ still scalar.
-The difference is that $R^{-1}$ must be computed
+with \(H = (G^{-1} + Z'R^{-1}Z)^{-1}\) still scalar.
+The difference is that \(R^{-1}\) must be computed
 numerically (or via the AR(1) tridiagonal inverse)
 rather than by Sherman-Morrison.
+
 \end{orig}
 
 \begin{table}
@@ -415,10 +457,11 @@ To be completed by rgt.
 An alternative to the GLS approach computes the
 variance of the pre-post test statistic directly
 from the moments of the phase means. Let
-$\bar{X}_0 = \frac{1}{J_0}\sum_{i=1}^{J_0} Y_{i,\text{run-in}}$
+\(\bar{X}_0 = \frac{1}{J_0}\sum_{i=1}^{J_0} Y_{i,\text{run-in}}\)
 and
-$\bar{X}_K = \frac{1}{J_1}\sum_{j=1}^{J_1} Y_{j,\text{trt}}$
+\(\bar{X}_K = \frac{1}{J_1}\sum_{j=1}^{J_1} Y_{j,\text{trt}}\)
 denote the run-in and treatment-period means.
+
 \end{orig}
 
 Under AR(1) with parameter \(c = \rho\), the
@@ -487,7 +530,8 @@ approach (Section 4) compute different quantities.
 The GLS variance is the minimum-variance bound under
 the assumed model, while the moment-based variance
 is the variance of the simple averaged change-score
-estimator $\bar{d}_1 - \bar{d}_0$.
+estimator \(\bar{d}_1 - \bar{d}_0\).
+
 \end{orig}
 
 \begin{bullets}
@@ -504,14 +548,15 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-When $\sigma_b^2 = 0$ (no random slope), the two
+When \(\sigma_b^2 = 0\) (no random slope), the two
 approaches coincide because the GLS estimator reduces
 to the simple difference of means. When
-$\sigma_b^2 > 0$, the GLS estimator is strictly more
+\(\sigma_b^2 > 0\), the GLS estimator is strictly more
 efficient because it uses the full covariance structure
-$\Sigma = R + ZGZ'$ to weight the observations
+\(\Sigma = R + ZGZ'\) to weight the observations
 optimally, while the moment-based approach treats all
 observations within a phase equally.
+
 \end{orig}
 
 \begin{bullets}
@@ -531,10 +576,11 @@ To be completed by rgt.
 The practical value of the moment-based computation is
 that it provides a conservative (upper) bound on the
 variance under AR(1) without requiring specification
-of $\sigma_b^2$. The ratio of the two variances
+of \(\sigma_b^2\). The ratio of the two variances
 quantifies the efficiency loss from ignoring the
 random slope structure (this is the relative
 efficiency studied in Paper 4).
+
 \end{orig}
 
 \section{Robustness to correlation misspecification}\label{robustness-to-correlation-misspecification}
@@ -608,14 +654,15 @@ The central practical question is when the compound-symmetry
 formulas of Paper 1 can be used in place of the AR(1)
 formulas derived here. The numerical comparisons indicate
 that the answer is governed by the same slope-to-noise ratio
-$\sigma_b^2 t^2 / \sigma^2$ that governs the value of run-in
+\(\sigma_b^2 t^2 / \sigma^2\) that governs the value of run-in
 observations themselves. When this ratio is large, the random
-slope term $Z G Z'$ dominates the change-score covariance
-$\Sigma = R + Z G Z'$, the residual term $R$ contributes
+slope term \(Z G Z'\) dominates the change-score covariance
+\(\Sigma = R + Z G Z'\), the residual term \(R\) contributes
 little, and the choice between an AR(1) and a
-compound-symmetric $R$ is immaterial. When the ratio is small,
+compound-symmetric \(R\) is immaterial. When the ratio is small,
 the residual term dominates and the correlation structure
 becomes the leading determinant of efficiency.
+
 \end{orig}
 
 \begin{bullets}
@@ -645,6 +692,7 @@ sample size is anticonservative. The numerical results show
 this gap is largest precisely where run-in designs are most
 tempting to over-specify: many run-in observations at low
 autocorrelation.
+
 \end{orig}
 
 \begin{bullets}
@@ -670,10 +718,11 @@ run-in observations well before randomization, the AR(1)
 formula should be used directly for sample-size calculation.
 When the correlation structure cannot be pinned down from
 prior data, evaluating the AR(1) formula at a deliberately
-low $\rho$ yields a conservative sample size that protects
+low \(\rho\) yields a conservative sample size that protects
 against the anticonservatism of the compound-symmetry
 assumption. The moment-based bound of Section 4 provides a
 further, variance-component-free conservative check.
+
 \end{orig}
 
 \section{Conflict of interest}\label{conflict-of-interest}
@@ -700,11 +749,12 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-The `runinpower` R package implementing the AR(1) variance
-formulas (`covariance-ar1.R`), validation tests, and the
+The \texttt{runinpower} R package implementing the AR(1) variance
+formulas (\texttt{covariance-ar1.R}), validation tests, and the
 shared bibliography across the four-paper compendium are
 openly available in the project repository. Specific paths
 are listed in the Reproducibility section below.
+
 \end{orig}
 
 \section{Reproducibility}\label{reproducibility}
@@ -724,10 +774,11 @@ To be completed by rgt.
 
 \begin{orig}
 This manuscript was rendered with R 4.4.x. Principal packages
-used are the in-package `runinpower` source (the AR(1)
-machinery is in `covariance-ar1.R`), `tinytest` (testing
-harness), and `rmarkdown` plus `bookdown` for the manuscript
+used are the in-package \texttt{runinpower} source (the AR(1)
+machinery is in \texttt{covariance-ar1.R}), \texttt{tinytest} (testing
+harness), and \texttt{rmarkdown} plus \texttt{bookdown} for the manuscript
 build.
+
 \end{orig}
 
 \begin{bullets}
@@ -744,10 +795,11 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-**Random-number generator.** The AR(1) variance formulas are
+\textbf{Random-number generator.} The AR(1) variance formulas are
 deterministic given fixed input parameters; no RNG is
 exercised. Where Monte Carlo benchmarking is reported, the
-driver sets `set.seed(20260418)` at its entry point.
+driver sets \texttt{set.seed(20260418)} at its entry point.
+
 \end{orig}
 
 \begin{bullets}
@@ -764,23 +816,54 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-**Data and code availability.** The R package source is at
-`R/`. The companion manuscripts (Papers 1, 3, 4) are at
-`analysis/report/{01,03,04}-*/`. The manuscript source and
-shared bibliography (`references.bib`, a symlink to
-`../../references.bib`) are at
-`analysis/report/02-correlation/`.
+\textbf{Data and code availability.} The R package source is at
+\texttt{R/}. The companion manuscripts (Papers 1, 3, 4) are at
+\texttt{analysis/report/\{01,03,04\}-*/}. The manuscript source and
+shared bibliography (\texttt{references.bib}, a symlink to
+\texttt{../../references.bib}) are at
+\texttt{analysis/report/02-correlation/}.
+
 \end{orig}
 
 \section{References}\label{references}
 
 \protect\phantomsection\label{refs}
+\begin{CSLReferences}{0}{1}
+\bibitem[\citeproctext]{ref-frost2008}
+\CSLLeftMargin{1. }%
+\CSLRightInline{Frost C, Kenward MG, Fox NC. Optimizing the design of clinical trials where the outcome is a rate. {Can} estimating a baseline rate in a run-in period increase efficiency? \emph{Statistics in Medicine}. 2008;27(18):3717-3731. doi:\href{https://doi.org/10.1002/sim.3280}{10.1002/sim.3280}}
+
+\bibitem[\citeproctext]{ref-wang2019}
+\CSLLeftMargin{2. }%
+\CSLRightInline{Wang G, Aschenbrenner AJ, Li Y, et al. Two-period linear mixed effects models to analyze clinical trials with run-in data when the primary outcome is continuous: {Applications} to {Alzheimer's} disease. \emph{Alzheimer's \& Dementia: Translational Research \& Clinical Interventions}. 2019;5:450-457. doi:\href{https://doi.org/10.1016/j.trci.2019.08.002}{10.1016/j.trci.2019.08.002}}
+
+\bibitem[\citeproctext]{ref-winkens2007}
+\CSLLeftMargin{3. }%
+\CSLRightInline{Winkens B, Breukelen GJP van, Schouten HJA, Berger MPF. Randomized clinical trial designs for auto-correlated longitudinal data. \emph{Statistics in Medicine}. 2007;26(28):5023-5037. doi:\href{https://doi.org/10.1002/sim.2907}{10.1002/sim.2907}}
+
+\bibitem[\citeproctext]{ref-diggle2002}
+\CSLLeftMargin{4. }%
+\CSLRightInline{Diggle PJ, Heagerty P, Liang KY, Zeger SL. \emph{Analysis of Longitudinal Data}. 2nd ed. Oxford University Press; 2002.}
+
+\bibitem[\citeproctext]{ref-verbeke2000}
+\CSLLeftMargin{5. }%
+\CSLRightInline{Verbeke G, Molenberghs G. \emph{Linear Mixed Models for Longitudinal Data}. Springer; 2000.}
+
+\bibitem[\citeproctext]{ref-chambless1993}
+\CSLLeftMargin{6. }%
+\CSLRightInline{Chambless LE, Roeback JR. Methods for assessing difference between groups in change when initial measurement is subject to intra-individual variation. \emph{Statistics in Medicine}. 1993;12(14):1213-1237. doi:\href{https://doi.org/10.1002/sim.4780121403}{10.1002/sim.4780121403}}
+
+\bibitem[\citeproctext]{ref-iddi2022}
+\CSLLeftMargin{7. }%
+\CSLRightInline{Iddi S, Donohue MC. Power and sample size for longitudinal models in {R} -- the longpower package and {Shiny} app. \emph{The R Journal}. 2022;14(1):264-282. \url{https://journal.r-project.org/articles/RJ-2022-022/}}
+
+\end{CSLReferences}
 
 \vfill
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\emph{Rendered on 2026-06-23 at 18:48 PDT.}\\
-\emph{Source: \texttt{/Users/zenn/Library/CloudStorage/Dropbox/prj/res/04-runin-power-analysis/runinpower/analysis/report/02-correlation/report.Rmd}}
+\emph{Rendered on 2026-06-26 at 17:43 PDT.}\\
+\emph{Source: \texttt{\textasciitilde{}/prj/res/04-runin-power-analysis/runinpower/analysis/report/02-correlation/report.Rmd}}
 
 \end{document}

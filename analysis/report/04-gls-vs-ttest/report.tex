@@ -104,6 +104,39 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -148,6 +181,10 @@
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
 \hypersetup{
   pdftitle={GLS versus Averaged Change-Score Estimators for Clinical Trials with Run-In Observations},
   pdfauthor={Ronald G. Thomas, Ph.D.},
@@ -157,7 +194,7 @@
 \title{GLS versus Averaged Change-Score Estimators for
 Clinical Trials with Run-In Observations}
 \author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
-\date{June 23, 2026}
+\date{June 26, 2026}
 
 \begin{document}
 \maketitle
@@ -228,15 +265,16 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-The GLS estimator $\hat\gamma_{\text{GLS}} =
-(X'\Sigma^{-1}X)^{-1}X'\Sigma^{-1}\mathbf{c}$ is the
-minimum-variance unbiased estimator when $\Sigma$ is
-known. In practice, $\Sigma$ must be estimated, and
+The GLS estimator \(\hat\gamma_{\text{GLS}} =
+(X'\Sigma^{-1}X)^{-1}X'\Sigma^{-1}\mathbf{c}\) is the
+minimum-variance unbiased estimator when \(\Sigma\) is
+known. In practice, \(\Sigma\) must be estimated, and
 the efficiency of the feasible GLS depends on the
 accuracy of this estimation. With small sample sizes
 or short follow-up, variance component estimates can
 be unstable, potentially eroding the theoretical
 advantage of GLS.
+
 \end{orig}
 
 The averaged change-score approach sidesteps variance
@@ -274,19 +312,18 @@ To be completed by rgt.
 
 \begin{orig}
 The debate between change-score and ANCOVA analyses has
-a long history [@senn2006; @vanbreukelen2006;
-@crager1987]. @yang2001 provided a formal efficiency
-comparison for pretest-posttest designs. @liu2009 and
-@lu2010 compared baseline-as-covariate against
+a long history\textsuperscript{\citeproc{ref-senn2006}{1}--\citeproc{ref-crager1987}{3}}.\textsuperscript{\citeproc{ref-yang2001}{4}} provided a formal efficiency
+comparison for pretest-posttest designs.\textsuperscript{\citeproc{ref-liu2009}{5}} and\textsuperscript{\citeproc{ref-lu2010}{6}} compared baseline-as-covariate against
 baseline-as-response (constrained longitudinal data
-analysis). @tsiatis2008 developed a semiparametric
-framework for covariate adjustment. @mallinckrodt2021
+analysis).\textsuperscript{\citeproc{ref-tsiatis2008}{7}} developed a semiparametric
+framework for covariate adjustment.\textsuperscript{\citeproc{ref-mallinckrodt2021}{8}}
 showed that MMRM requires time-by-covariate interactions
-to guarantee power gains over ANCOVA. @brogan1980
+to guarantee power gains over ANCOVA.\textsuperscript{\citeproc{ref-brogan1980}{9}}
 established the foundational comparison of pretest-posttest
-designs. @coffman2016 addressed conditioning on baseline
-in longitudinal RCTs. @wang2019 proposed the two-period
+designs.\textsuperscript{\citeproc{ref-coffman2016}{10}} addressed conditioning on baseline
+in longitudinal RCTs.\textsuperscript{\citeproc{ref-wang2019}{11}} proposed the two-period
 approach for run-in trials.
+
 \end{orig}
 
 \begin{bullets}
@@ -306,17 +343,17 @@ To be completed by rgt.
 We note that the averaged change-score estimator
 studied here is distinct from (and less efficient than)
 the constrained longitudinal data analysis (cLDA)
-estimator of @liang2000 and @lu2010, which includes
+estimator of\textsuperscript{\citeproc{ref-liang2000}{12}} and\textsuperscript{\citeproc{ref-lu2010}{6}}, which includes
 baseline in the response vector with a common-mean
 constraint. The cLDA estimator uses the full covariance
 structure without requiring specification of the random
-effects distribution $G$, placing it between the
-averaged estimator and GLS in the efficiency ordering.
-@funatogawa2020 extended the cLDA framework to pre-
+effects distribution \(G\), placing it between the
+averaged estimator and GLS in the efficiency ordering.\textsuperscript{\citeproc{ref-funatogawa2020}{13}} extended the cLDA framework to pre-
 and post-treatment measurements with equal baseline
 assumptions. A full comparison including cLDA is beyond
 the scope of this paper but represents a natural
 extension.
+
 \end{orig}
 
 \begin{bullets}
@@ -333,23 +370,23 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-The `longpower` R package [@iddi2022] provides the
+The \texttt{longpower} R package\textsuperscript{\citeproc{ref-iddi2022}{14}} provides the
 CRAN reference implementation of power calculations for
 the GLS / REML-based slope-comparison estimator,
-covering the Liu-Liang [@liuliang1997], Diggle
-[@diggle2002], and Edland [@ard2011] formulations.
-These routines correspond to the $\hat\gamma_{\text{GLS}}$
+covering the Liu-Liang\textsuperscript{\citeproc{ref-liuliang1997}{15}}, Diggle\textsuperscript{\citeproc{ref-diggle2002}{16}}, and Edland\textsuperscript{\citeproc{ref-ard2011}{17}} formulations.
+These routines correspond to the \(\hat\gamma_{\text{GLS}}\)
 estimator studied here under correct specification and
 constitute the Paper 1 baseline extended by run-in and
-common close observations. However, `longpower` does not
+common close observations. However, \texttt{longpower} does not
 cover the ANCOVA-on-run-in-mean estimator or the
-averaged change-score $t$-test, nor does it characterize
-the efficiency loss from misspecification of $G$ or $R$.
+averaged change-score \(t\)-test, nor does it characterize
+the efficiency loss from misspecification of \(G\) or \(R\).
 The comparison developed here therefore complements
-`longpower` by (i) ordering the three candidate
+\texttt{longpower} by (i) ordering the three candidate
 estimators under correct specification and (ii)
 quantifying when the simpler estimators outperform GLS
 under misspecified covariance.
+
 \end{orig}
 
 \section{Three estimators}\label{three-estimators}
@@ -370,11 +407,11 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-From @frost2008, the per-pair variance is the
-$(\gamma, \gamma)$ element of
-$(X'\Sigma^{-1}X)^{-1}$ with $\Sigma = R + ZGZ'$
-[@laird1982; @verbeke2000], computed via the Woodbury
+From\textsuperscript{\citeproc{ref-frost2008}{18}}, the per-pair variance is the
+\((\gamma, \gamma)\) element of
+\((X'\Sigma^{-1}X)^{-1}\) with \(\Sigma = R + ZGZ'\)\textsuperscript{\citeproc{ref-laird1982}{19},\citeproc{ref-verbeke2000}{20}}, computed via the Woodbury
 identity.
+
 \end{orig}
 
 For the Frost conventional design (\(J_0 = 0\), \(J_1 = 2\)):
@@ -447,13 +484,14 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-where $\rho_{\text{pre,post}}$ is the marginal
+where \(\rho_{\text{pre,post}}\) is the marginal
 correlation between the run-in and post-randomization
-means. When $J_0 = 0$ there is no covariate and ANCOVA
+means. When \(J_0 = 0\) there is no covariate and ANCOVA
 reduces to the averaged estimator. When
-$\rho_{\text{pre,post}}$ is large (i.e., when
-$\sigma_b^2$ dominates $\sigma^2$), the $(1-\rho^2)$
+\(\rho_{\text{pre,post}}\) is large (i.e., when
+\(\sigma_b^2\) dominates \(\sigma^2\)), the \((1-\rho^2)\)
 factor produces substantial variance reduction.
+
 \end{orig}
 
 \begin{bullets}
@@ -470,12 +508,12 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-The key advantage over GLS is that $\phi$ is estimated
+The key advantage over GLS is that \(\phi\) is estimated
 from the data rather than derived from assumed variance
-components [@senn2006; @borm2007]. The key advantage
+components\textsuperscript{\citeproc{ref-senn2006}{1},\citeproc{ref-borm2007}{21}}. The key advantage
 over the averaged estimator is that it exploits the
-predictive value of the run-in observations
-[@vanbreukelen2006; @vickers2001].
+predictive value of the run-in observations\textsuperscript{\citeproc{ref-vanbreukelen2006}{2},\citeproc{ref-vickers2001}{22}}.
+
 \end{orig}
 
 \begin{Shaded}
@@ -581,16 +619,17 @@ The three estimators above are linear functions of the
 observed change scores and can be compared to a common
 benchmark: the best linear unbiased predictor (BLUP) of the
 individual random slopes. Under the random-slopes model with
-marginal covariance $V_i = R_i + Z_i G Z_i'$, the BLUP of the
-subject-specific random slope $b_i$ given the data is
+marginal covariance \(V_i = R_i + Z_i G Z_i'\), the BLUP of the
+subject-specific random slope \(b_i\) given the data is
 \begin{equation}
   \hat b_i
   = G Z_i' V_i^{-1}
     \bigl(y_i - X_i \hat{\boldsymbol{\beta}}\bigr)
   \label{eq:blup}
 \end{equation}
-where $\hat{\boldsymbol{\beta}}$ is the GLS estimator of the
-fixed effects [@henderson1975; @robinson1991].
+where \(\hat{\boldsymbol{\beta}}\) is the GLS estimator of the
+fixed effects\textsuperscript{\citeproc{ref-henderson1975}{23},\citeproc{ref-robinson1991}{24}}.
+
 \end{orig}
 
 \begin{bullets}
@@ -609,11 +648,12 @@ To be completed by rgt.
 \begin{orig}
 The group-specific slope estimators derived from the fixed
 effects share the same variance as
-$(\hat{\boldsymbol{\beta}})_\gamma$, and the GLS estimator
-$\hat\gamma_{\text{GLS}}$ minimizes the variance among all
-linear unbiased estimators of $\gamma$ when $V_i$ is correctly
+\((\hat{\boldsymbol{\beta}})_\gamma\), and the GLS estimator
+\(\hat\gamma_{\text{GLS}}\) minimizes the variance among all
+linear unbiased estimators of \(\gamma\) when \(V_i\) is correctly
 specified. The averaged and ANCOVA estimators are specific
 linear approximations to this benchmark:
+
 \end{orig}
 
 \begin{itemize}
@@ -648,6 +688,7 @@ To be completed by rgt.
 Under model misspecification (Section 4), these
 approximations can outperform the nominally optimal GLS
 because they depend on fewer variance components.
+
 \end{orig}
 
 \section{Relative efficiency under correct specification}\label{relative-efficiency-under-correct-specification}
@@ -763,9 +804,10 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-When $\sigma_b^2$ is misestimated (e.g., too large
+When \(\sigma_b^2\) is misestimated (e.g., too large
 or too small), the feasible GLS is no longer optimal.
 The averaged change-score estimator is unaffected.
+
 \end{orig}
 
 \begin{figure}
@@ -795,6 +837,7 @@ When the residual correlation structure is wrong
 both the GLS variance formula and the Woodbury
 correction are biased. The averaged estimator is
 again unaffected.
+
 \end{orig}
 
 \begin{figure}
@@ -823,6 +866,7 @@ To be completed by rgt.
 \begin{orig}
 To complement the analytical results, we simulate
 trials under the following factorial design:
+
 \end{orig}
 
 \begin{itemize}
@@ -857,6 +901,7 @@ To be completed by rgt.
 For each configuration, 5000 trials are simulated.
 The outcomes are empirical variance, empirical power,
 and coverage of nominal 95\% confidence intervals.
+
 \end{orig}
 
 \begin{verbatim}
@@ -890,11 +935,12 @@ To be completed by rgt.
 We simulate the factorial design described above under
 compound symmetry, comparing the correctly specified GLS
 estimator, a GLS estimator that misstates the random-slope
-variance (it assumes $\sigma_b^2 = \sigma^2$ regardless of the
+variance (it assumes \(\sigma_b^2 = \sigma^2\) regardless of the
 truth), and the averaged change-score estimator. For each cell
-we report the empirical standard deviation of $\hat\gamma$ and
+we report the empirical standard deviation of \(\hat\gamma\) and
 the empirical power. The reduced replicate count below is for
 render tractability; the manuscript value is 5000.
+
 \end{orig}
 
 \begin{table}
@@ -978,11 +1024,12 @@ The estimator comparison yields a graded recommendation rather
 than a single winner. Under correct specification GLS is
 efficient and dominates both ANCOVA and the averaged
 change-score estimator, as the ordering
-$\mathop{\mathrm{Var}}_{\text{GLS}} \le \mathop{\mathrm{Var}}_{\text{ANC}} \le
-\mathop{\mathrm{Var}}_{\text{avg}}$ confirms. This dominance is a large-sample
+\(\mathop{\mathrm{Var}}_{\text{GLS}} \le \mathop{\mathrm{Var}}_{\text{ANC}} \le
+\mathop{\mathrm{Var}}_{\text{avg}}\) confirms. This dominance is a large-sample
 statement: it presumes the covariance components are known or
 well estimated. With moderate-to-large samples and a credible
 covariance model, GLS is the appropriate default.
+
 \end{orig}
 
 \begin{bullets}
@@ -1001,7 +1048,7 @@ To be completed by rgt.
 \begin{orig}
 The misspecification analysis qualifies the case for GLS. Because
 GLS weights the data by an assumed inverse covariance, errors
-in the assumed $G$ or $R$ feed directly into the estimator,
+in the assumed \(G\) or \(R\) feed directly into the estimator,
 and the sandwich-variance calculations show that a mis-stated
 covariance can raise the GLS variance above that of the simpler
 estimators. The averaged change-score estimator is immune to
@@ -1013,6 +1060,7 @@ information while remaining comparatively robust. When the
 covariance is known only approximately, ANCOVA is the
 recommended default and the averaged estimator a conservative
 fallback.
+
 \end{orig}
 
 \begin{bullets}
@@ -1033,7 +1081,7 @@ The practical importance of the estimator choice depends on the
 design. As the numbers of run-in and treatment observations
 grow, the phase means approach sufficiency for the
 subject-specific slope, the ANCOVA efficiency loss vanishes as
-$J_0 \to \infty$, and the relative efficiencies of all three
+\(J_0 \to \infty\), and the relative efficiencies of all three
 estimators converge toward one. The gap is largest, and the
 choice of estimator therefore most consequential, in small
 designs with few observations per phase and a high
@@ -1041,6 +1089,7 @@ slope-to-noise ratio, exactly the regime in which the
 estimated covariance is also least stable. This coincidence
 reinforces the preference for the simpler, more robust
 estimators in small studies.
+
 \end{orig}
 
 \begin{bullets}
@@ -1071,6 +1120,7 @@ all of these under a feasible-GLS simulation in which the
 variance components are estimated rather than assumed, which is
 the setting in which the robustness distinctions drawn here
 become decisive.
+
 \end{orig}
 
 \section{Conflict of interest}\label{conflict-of-interest}
@@ -1097,12 +1147,13 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-The `runinpower` R package implementing the GLS, ANCOVA, and
-averaged-change-score estimators (`ancova.R`, `averaged.R`),
+The \texttt{runinpower} R package implementing the GLS, ANCOVA, and
+averaged-change-score estimators (\texttt{ancova.R}, \texttt{averaged.R}),
 the simulation drivers, and the shared bibliography across the
 four-paper compendium are openly available in the project
 repository. Specific paths are listed in the Reproducibility
 section below.
+
 \end{orig}
 
 \section{Reproducibility}\label{reproducibility}
@@ -1122,10 +1173,11 @@ To be completed by rgt.
 
 \begin{orig}
 This manuscript was rendered with R 4.4.x. Principal packages
-used are the in-package `runinpower` source, `nlme` (the GLS
-fitter for the simulation comparator), `tinytest` (testing
-harness), and `rmarkdown` plus `bookdown` for the manuscript
+used are the in-package \texttt{runinpower} source, \texttt{nlme} (the GLS
+fitter for the simulation comparator), \texttt{tinytest} (testing
+harness), and \texttt{rmarkdown} plus \texttt{bookdown} for the manuscript
 build.
+
 \end{orig}
 
 \begin{bullets}
@@ -1142,10 +1194,11 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-**Random-number generator.** The Monte Carlo simulation
-comparing the three estimators sets `set.seed(20260418)` at
+\textbf{Random-number generator.} The Monte Carlo simulation
+comparing the three estimators sets \texttt{set.seed(20260418)} at
 its entry point. Per-replicate seeds derive from the master
-seed by `+ rep\_idx`.
+seed by \texttt{+\ rep\_idx}.
+
 \end{orig}
 
 \begin{bullets}
@@ -1162,24 +1215,123 @@ To be completed by rgt.
 \end{rgt}
 
 \begin{orig}
-**Data and code availability.** The R package source is at
-`R/`. Simulation drivers are at `analysis/scripts/`. The
+\textbf{Data and code availability.} The R package source is at
+\texttt{R/}. Simulation drivers are at \texttt{analysis/scripts/}. The
 companion manuscripts (Papers 1, 2, 3) are at
-`analysis/report/{01,02,03}-*/`. The manuscript source and
-shared bibliography (`references.bib`, a symlink to
-`../../references.bib`) are at
-`analysis/report/04-gls-vs-ttest/`.
+\texttt{analysis/report/\{01,02,03\}-*/}. The manuscript source and
+shared bibliography (\texttt{references.bib}, a symlink to
+\texttt{../../references.bib}) are at
+\texttt{analysis/report/04-gls-vs-ttest/}.
+
 \end{orig}
 
 \section{References}\label{references}
 
 \protect\phantomsection\label{refs}
+\begin{CSLReferences}{0}{1}
+\bibitem[\citeproctext]{ref-senn2006}
+\CSLLeftMargin{1. }%
+\CSLRightInline{Senn S. Change from baseline and analysis of covariance revisited. \emph{Statistics in Medicine}. 2006;25(24):4334-4344. doi:\href{https://doi.org/10.1002/sim.2682}{10.1002/sim.2682}}
+
+\bibitem[\citeproctext]{ref-vanbreukelen2006}
+\CSLLeftMargin{2. }%
+\CSLRightInline{Van Breukelen GJP. {ANCOVA} versus change from baseline had more power in randomized studies and more bias in nonrandomized studies. \emph{Journal of Clinical Epidemiology}. 2006;59(9):920-925. doi:\href{https://doi.org/10.1016/j.jclinepi.2006.02.007}{10.1016/j.jclinepi.2006.02.007}}
+
+\bibitem[\citeproctext]{ref-crager1987}
+\CSLLeftMargin{3. }%
+\CSLRightInline{Crager MR. Analysis of covariance in parallel-group clinical trials with pretreatment baselines. \emph{Biometrics}. 1987;43(4):895-901. doi:\href{https://doi.org/10.2307/2531542}{10.2307/2531542}}
+
+\bibitem[\citeproctext]{ref-yang2001}
+\CSLLeftMargin{4. }%
+\CSLRightInline{Yang L, Tsiatis AA. Efficiency study of estimators for a treatment effect in a pretest-posttest trial. \emph{The American Statistician}. 2001;55(4):314-321. doi:\href{https://doi.org/10.1198/000313001753272466}{10.1198/000313001753272466}}
+
+\bibitem[\citeproctext]{ref-liu2009}
+\CSLLeftMargin{5. }%
+\CSLRightInline{Liu GF, Lu K, Mogg R, Mallick M, Mehrotra DV. Should baseline be a covariate or dependent variable in analyses of change from baseline in clinical trials? \emph{Statistics in Medicine}. 2009;28(20):2509-2530. doi:\href{https://doi.org/10.1002/sim.3639}{10.1002/sim.3639}}
+
+\bibitem[\citeproctext]{ref-lu2010}
+\CSLLeftMargin{6. }%
+\CSLRightInline{Lu K. On efficiency of constrained longitudinal data analysis versus longitudinal analysis of covariance. \emph{Biometrics}. 2010;66(3):891-896. doi:\href{https://doi.org/10.1111/j.1541-0420.2009.01322.x}{10.1111/j.1541-0420.2009.01322.x}}
+
+\bibitem[\citeproctext]{ref-tsiatis2008}
+\CSLLeftMargin{7. }%
+\CSLRightInline{Tsiatis AA, Davidian M, Zhang M, Lu X. Covariate adjustment for two-sample treatment comparisons in randomized clinical trials: A principled yet flexible approach. \emph{Statistics in Medicine}. 2008;27(23):4658-4677. doi:\href{https://doi.org/10.1002/sim.3113}{10.1002/sim.3113}}
+
+\bibitem[\citeproctext]{ref-mallinckrodt2021}
+\CSLLeftMargin{8. }%
+\CSLRightInline{{Mallinckrodt CH, Ye J, et al.} Mixed models for repeated measures should include time-by-covariate interactions to assure power gains and robustness against dropout bias relative to complete-case {ANCOVA}. \emph{Statistics in Biopharmaceutical Research}. Published online 2021. doi:\href{https://doi.org/10.1080/19466315.2021.1976846}{10.1080/19466315.2021.1976846}}
+
+\bibitem[\citeproctext]{ref-brogan1980}
+\CSLLeftMargin{9. }%
+\CSLRightInline{Brogan DR, Kutner MH. Comparative analyses of pretest-posttest research designs. \emph{The American Statistician}. 1980;34(4):229-232. doi:\href{https://doi.org/10.1080/00031305.1980.10483034}{10.1080/00031305.1980.10483034}}
+
+\bibitem[\citeproctext]{ref-coffman2016}
+\CSLLeftMargin{10. }%
+\CSLRightInline{Coffman CJ, Edelman D, Woolson RF. To condition or not condition? {Analysing} {``change''} in longitudinal randomised controlled trials. \emph{BMJ Open}. 2016;6(12):e013096. doi:\href{https://doi.org/10.1136/bmjopen-2016-013096}{10.1136/bmjopen-2016-013096}}
+
+\bibitem[\citeproctext]{ref-wang2019}
+\CSLLeftMargin{11. }%
+\CSLRightInline{Wang G, Aschenbrenner AJ, Li Y, et al. Two-period linear mixed effects models to analyze clinical trials with run-in data when the primary outcome is continuous: {Applications} to {Alzheimer's} disease. \emph{Alzheimer's \& Dementia: Translational Research \& Clinical Interventions}. 2019;5:450-457. doi:\href{https://doi.org/10.1016/j.trci.2019.08.002}{10.1016/j.trci.2019.08.002}}
+
+\bibitem[\citeproctext]{ref-liang2000}
+\CSLLeftMargin{12. }%
+\CSLRightInline{Liang KY, Zeger SL. Longitudinal data analysis of continuous and discrete responses for pre-post designs. \emph{Sankhya: The Indian Journal of Statistics, Series B}. 2000;62(1):134-148.}
+
+\bibitem[\citeproctext]{ref-funatogawa2020}
+\CSLLeftMargin{13. }%
+\CSLRightInline{Funatogawa I, Funatogawa T. Longitudinal analysis of pre- and post-treatment measurements with equal baseline assumptions in randomized trials. \emph{Biometrical Journal}. 2020;62(5):1235-1249. doi:\href{https://doi.org/10.1002/bimj.201800389}{10.1002/bimj.201800389}}
+
+\bibitem[\citeproctext]{ref-iddi2022}
+\CSLLeftMargin{14. }%
+\CSLRightInline{Iddi S, Donohue MC. Power and sample size for longitudinal models in {R} -- the longpower package and {Shiny} app. \emph{The R Journal}. 2022;14(1):264-282. \url{https://journal.r-project.org/articles/RJ-2022-022/}}
+
+\bibitem[\citeproctext]{ref-liuliang1997}
+\CSLLeftMargin{15. }%
+\CSLRightInline{Liu G, Liang KY. Sample size calculations for studies with correlated observations. \emph{Biometrics}. 1997;53:937-947. doi:\href{https://doi.org/10.2307/2533554}{10.2307/2533554}}
+
+\bibitem[\citeproctext]{ref-diggle2002}
+\CSLLeftMargin{16. }%
+\CSLRightInline{Diggle PJ, Heagerty P, Liang KY, Zeger SL. \emph{Analysis of Longitudinal Data}. 2nd ed. Oxford University Press; 2002.}
+
+\bibitem[\citeproctext]{ref-ard2011}
+\CSLLeftMargin{17. }%
+\CSLRightInline{Ard MC, Edland SD. Power calculations for clinical trials in {Alzheimer's} disease. \emph{Journal of Alzheimer's Disease}. 2011;21:369-377. doi:\href{https://doi.org/10.3233/JAD-2011-0062}{10.3233/JAD-2011-0062}}
+
+\bibitem[\citeproctext]{ref-frost2008}
+\CSLLeftMargin{18. }%
+\CSLRightInline{Frost C, Kenward MG, Fox NC. Optimizing the design of clinical trials where the outcome is a rate. {Can} estimating a baseline rate in a run-in period increase efficiency? \emph{Statistics in Medicine}. 2008;27(18):3717-3731. doi:\href{https://doi.org/10.1002/sim.3280}{10.1002/sim.3280}}
+
+\bibitem[\citeproctext]{ref-laird1982}
+\CSLLeftMargin{19. }%
+\CSLRightInline{Laird NM, Ware JH. Random-effects models for longitudinal data. \emph{Biometrics}. 1982;38(4):963-974. doi:\href{https://doi.org/10.2307/2529876}{10.2307/2529876}}
+
+\bibitem[\citeproctext]{ref-verbeke2000}
+\CSLLeftMargin{20. }%
+\CSLRightInline{Verbeke G, Molenberghs G. \emph{Linear Mixed Models for Longitudinal Data}. Springer; 2000.}
+
+\bibitem[\citeproctext]{ref-borm2007}
+\CSLLeftMargin{21. }%
+\CSLRightInline{Borm GF, Fransen J, Lemmens WAJG. A simple sample size formula for analysis of covariance in randomized clinical trials. \emph{Journal of Clinical Epidemiology}. 2007;60(12):1234-1238. doi:\href{https://doi.org/10.1016/j.jclinepi.2007.02.006}{10.1016/j.jclinepi.2007.02.006}}
+
+\bibitem[\citeproctext]{ref-vickers2001}
+\CSLLeftMargin{22. }%
+\CSLRightInline{Vickers AJ. The use of percentage change from baseline as an outcome in a controlled trial is statistically inefficient: A simulation study. \emph{BMC Medical Research Methodology}. 2001;1:6. doi:\href{https://doi.org/10.1186/1471-2288-1-6}{10.1186/1471-2288-1-6}}
+
+\bibitem[\citeproctext]{ref-henderson1975}
+\CSLLeftMargin{23. }%
+\CSLRightInline{Henderson CR. Best linear unbiased estimation and prediction under a selection model. \emph{Biometrics}. 1975;31(2):423-447. doi:\href{https://doi.org/10.2307/2529430}{10.2307/2529430}}
+
+\bibitem[\citeproctext]{ref-robinson1991}
+\CSLLeftMargin{24. }%
+\CSLRightInline{Robinson GK. That {BLUP} is a good thing: The estimation of random effects. \emph{Statistical Science}. 1991;6(1):15-32. doi:\href{https://doi.org/10.1214/ss/1177011926}{10.1214/ss/1177011926}}
+
+\end{CSLReferences}
 
 \vfill
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\emph{Rendered on 2026-06-23 at 18:51 PDT.}\\
-\emph{Source: \texttt{/Users/zenn/Library/CloudStorage/Dropbox/prj/res/04-runin-power-analysis/runinpower/analysis/report/04-gls-vs-ttest/report.Rmd}}
+\emph{Rendered on 2026-06-26 at 12:08 PDT.}\\
+\emph{Source: \texttt{\textasciitilde{}/prj/res/04-runin-power-analysis/runinpower/analysis/report/04-gls-vs-ttest/report.Rmd}}
 
 \end{document}

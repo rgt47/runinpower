@@ -26,14 +26,18 @@ abstract: |
   observation spacing $t$, enabling direct computation of
   required sample sizes.
 
-  **Results.** Numerical examples using parameters from
-  Alzheimer's disease neuroimaging trials demonstrate that
-  two run-in observations can reduce required sample sizes by
-  30-45\%, with additional gains from common close
-  observations. The closed-form expressions allow
-  sensitivity analysis with respect to the
-  signal-to-noise ratio $\sigma_b / \sigma$ without
-  re-running simulation.
+  **Results.** In a numerical example using parameters from
+  Alzheimer's disease neuroimaging trials, for which the
+  signal-to-noise ratio $\sigma_b / \sigma \approx 1.7$ is
+  favourable, two run-in observations reduce the required
+  sample size by 62\% (from 385 to 145 per group), and adding
+  two common close observations raises the reduction to 82\%.
+  The magnitude of the gain is governed by $\sigma_b / \sigma$:
+  across a representative range of slope variability the
+  reduction from two run-in observations spans roughly 14\% at
+  low ratios to 76\% at high ratios. The closed-form
+  expressions allow this sensitivity analysis with respect to
+  $\sigma_b / \sigma$ without re-running simulation.
 
   **Conclusions.** The Woodbury-based formulas are the simplest
   available closed-form expressions for the variance of the

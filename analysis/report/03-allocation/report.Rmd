@@ -101,7 +101,7 @@ library(runinpower)
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 The relative efficiency surface in Paper 1 (Figure 1)
 demonstrates diminishing returns from additional
 run-in observations: the first run-in observation
@@ -110,7 +110,7 @@ subsequent observations contribute progressively less.
 Similarly, common close observations improve efficiency
 but at a rate that depends on the number of treatment
 observations $J_1$.
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{The efficiency results motivate an allocation question left open by Paper 1.}
@@ -125,13 +125,13 @@ observations $J_1$.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 These observations raise a design question that Paper 1
 does not address: given operational constraints on the
 total number of visits or total trial duration, what is
 the optimal distribution of observations across the
 three phases?
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{Prior work addresses related design questions but not optimal allocation across run-in, treatment, and common close phases.}
@@ -146,7 +146,7 @@ three phases?
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 @winkens2005 calculated optimal time-point positions
 for linearly divergent treatment effects under compound
 symmetry, but did not consider the run-in setting.
@@ -162,7 +162,7 @@ The slopepower command [@nash2021] and the longpower
 R package [@iddi2022] implement power calculations
 for slope-comparison trials but do not optimize the
 allocation of observations across phases.
-\end{orig}
+:::
 
 
 # Problem formulation
@@ -182,7 +182,7 @@ allocation of observations across phases.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 Given $J$ total observations (excluding baseline),
 choose $(J_0^*, J_1^*, J_2^*)$ to minimize
 $\Var_1(\hat\gamma)$ subject to $J_0 + J_1 + J_2 = J$,
@@ -191,7 +191,7 @@ $J_0 \ge 0$, $J_1 \ge 1$, $J_2 \ge 0$.
 The objective function is
 $V(J_0, J_1, J_2) = [(X'\Sigma^{-1}X)^{-1}]_{\gamma\gamma}$
 computed via the Woodbury identity from Paper 1.
-\end{orig}
+:::
 
 ## Fixed total duration
 
@@ -208,14 +208,14 @@ computed via the Woodbury identity from Paper 1.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 Alternatively, fix the trial duration
 $T = (J_0 + J_1 + J_2) \cdot t$ and minimize
 $\Var_1(\hat\gamma)$ subject to
 $J_0 + J_1 + J_2 = T/t$, or more generally allow
 non-equally-spaced observations within each phase
 and minimize over the observation times as well.
-\end{orig}
+:::
 
 
 # Diminishing returns from run-in observations
@@ -269,7 +269,7 @@ knitr::kable(
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 An important non-monotonicity is visible in the table:
 $\Delta V_1 < \Delta V_2$ for moderate
 $\sigma_b / \sigma$. The first run-in observation is
@@ -279,7 +279,7 @@ adding a single run-in observation forces the model from
 ($\delta, \beta, \gamma$), consuming a degree of
 freedom. The second run-in observation does not increase
 the parameter count and provides pure information gain.
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{The single-run-in penalty parallels a known ANCOVA result and yields a clear design rule.}
@@ -294,14 +294,14 @@ the parameter count and provides pure information gain.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 This effect is analogous to @frison1992's finding that
 a single pre-treatment measurement used as an ANCOVA
 covariate can reduce power when the pre-post correlation
 is low. The practical implication is clear: **a trial
 designer should plan either zero or at least two run-in
 observations, not one.**
-\end{orig}
+:::
 
 
 ## Correlation structure governs diminishing returns
@@ -327,14 +327,14 @@ symmetry:
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 which is constant in $J_0$. The diminishing returns
 (for $J_0 \ge 2$) arise from the information matrix
 structure, not from declining correlation. Under AR(1)
 [@winkens2007], the correlation does decline with
 temporal distance, producing faster diminishing
 returns from distant run-in observations.
-\end{orig}
+:::
 
 
 # Optimal allocation for fixed $J$
@@ -399,13 +399,13 @@ knitr::kable(
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 The common close phase contributes information about
 the random slope $b_i$ without contributing to the
 treatment comparison directly. It is beneficial when
 the additional slope information sufficiently reduces
 the variance of $\hat\gamma$.
-\end{orig}
+:::
 
 ```{r common_close_threshold}
 ratio_grid <- seq(0.1, 5, by = 0.1)
@@ -468,13 +468,13 @@ $\sum t_i = 0$) is:
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 This is minimized when $t_1 t_2$ is minimized (most
 negative), i.e., when the two time points are
 maximally separated. This reproduces the known result
 that observations at the extremes of the follow-up
 period are optimal for slope estimation.
-\end{orig}
+:::
 
 ## Optimization over observation times within phases
 
@@ -502,7 +502,7 @@ period are optimal for slope estimation.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 The run-in mechanism averages multiple pre-randomization
 observations to reduce the contribution of measurement
 error $\sigma^2$ to the estimated baseline slope
@@ -515,7 +515,7 @@ with) two or three closely-spaced measurements, all
 under the same treatment condition, the measurement
 error on the endpoint assessment is reduced by
 averaging.
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{Replicating an endpoint or baseline visit scales down its residual variance while leaving the random-slope contribution intact.}
@@ -530,7 +530,7 @@ averaging.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 Concretely, if the last visit at time $J_1 t$ is replicated
 $n_{\text{rep}}$ times over a short interval (days to
 weeks, negligible relative to $t$), the effective
@@ -540,7 +540,7 @@ contribution $\sigma_b^2 t^2$ is essentially unchanged.
 Similarly, the baseline visit at $j = 0$ can be
 replicated to reduce $\sigma^2$ in the change-score
 covariance.
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{Replicated endpoints differ fundamentally from common close observations in timing and the information they provide.}
@@ -555,14 +555,14 @@ covariance.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 This is distinct from the common close design (Section
 4): common close observations are at \emph{new} time
 points after treatment stops, providing information
 about the off-treatment slope. Replicated endpoints are
 at the \emph{same} time point as the last treatment
 visit, providing only measurement-error reduction.
-\end{orig}
+:::
 
 ## Variance formula with replication
 
@@ -579,7 +579,7 @@ visit, providing only measurement-error reduction.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 The residual covariance matrix $R$ is modified so that
 the diagonal element corresponding to a replicated
 visit uses $\sigma^2 / n_{\text{rep}}$ instead of
@@ -587,7 +587,7 @@ $\sigma^2$, and the off-diagonal elements reflecting
 the shared baseline error use
 $\sigma^2 / n_{\text{rep,pre}}$. The Woodbury
 computation proceeds identically.
-\end{orig}
+:::
 
 ```{r replication-table}
 a <- 1.0
@@ -648,7 +648,7 @@ knitr::kable(
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 The table confirms that endpoint replication is most
 beneficial when measurement error dominates
 ($\sigma_b / \sigma$ small). When between-subject slope
@@ -656,7 +656,7 @@ variability is large ($\sigma_b / \sigma > 2$), the
 gain from replication is modest because the variance
 is dominated by $\sigma_b^2 t^2$, which replication
 cannot reduce.
-\end{orig}
+:::
 
 
 ## Replication vs additional run-in observations
@@ -674,13 +674,13 @@ cannot reduce.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 A natural question is whether a fixed budget of
 additional measurements should be spent on run-in
 observations (at distinct time points, separated by
 $t$) or on endpoint replicates (closely spaced,
 measurement-error reduction only).
-\end{orig}
+:::
 
 ```{r rep_vs_runin, fig.cap="Variance as a function of additional measurements allocated either to run-in (new time points) or endpoint replication (same time point). Baseline: $J_0=0$, $J_1=2$, $\\sigma^2=1$, $\\sigma_b^2=1$."}
 a <- 1.0
@@ -745,7 +745,7 @@ legend('topright',
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 When $\sigma_b / \sigma \ge 1$, run-in observations at
 new time points outperform endpoint replicates because
 they provide information about the individual slope
@@ -753,7 +753,7 @@ $b_i$, not just measurement-error reduction. When
 $\sigma_b / \sigma < 1$, endpoint replication can be
 competitive because measurement error is the dominant
 source of variance.
-\end{orig}
+:::
 
 
 ## Combined replication at both ends
@@ -771,10 +771,10 @@ source of variance.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 Replicating both the baseline and endpoint visits
 provides symmetric measurement-error reduction.
-\end{orig}
+:::
 
 ```{r both-ends}
 configs <- expand.grid(
@@ -829,13 +829,13 @@ knitr::kable(
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 Following @frost2008 (Section 2.3), dropout
 is handled via a pattern-mixture model
 [@dawson1993; @lu2008]. Participants
 are stratified by their observed visit pattern, and
 the overall variance is a weighted average:
-\end{orig}
+:::
 \begin{equation}
   N = \frac{1}{\sum_{s} p_s / N_s}
 \end{equation}
@@ -852,7 +852,7 @@ the overall variance is a weighted average:
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 where $p_s$ is the proportion with pattern $s$ and
 $N_s$ is the sample size that would be needed if all
 participants had pattern $s$. This approximation
@@ -865,7 +865,7 @@ estimability of the random slope variance. Their
 approach is more rigorous than the pattern-mixture
 approximation used here, which is conservative when
 dropout is informative about the random slope.
-\end{orig}
+:::
 
 ```{r dropout}
 # MIRIAD within-visit residual = between-visit (0.3338) +
@@ -945,12 +945,12 @@ knitr::kable(
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 Using MIRIAD parameters ($\sigma^2 = 0.3363$,
 $\sigma_b^2 = 0.9745$, $t = 1$ year), compare the
 optimal allocation for $J = 4, 5, 6$ total
 observations with and without dropout.
-\end{orig}
+:::
 
 ```{r ad-optimal, fig.cap="Variance across all allocations for $J=5$ total observations using MIRIAD parameters. Each point is one $(J_0, J_1, J_2)$ configuration."}
 # MIRIAD within-visit residual = between-visit (0.3338) +
@@ -1020,7 +1020,7 @@ knitr::kable(
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 The allocation results admit a simple summary. Across the
 range of signal-to-noise ratios examined, including the
 Alzheimer's neuroimaging regime, the optimal design places
@@ -1035,7 +1035,7 @@ reflects the diminishing returns established in Sections 3
 and 4: the first run-in observation pair recovers most of the
 attainable variance reduction, and the marginal value of
 additional pre- and post-treatment observations falls quickly.
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{The signal-to-noise ratio determines whether the common close phase is worth any allocation at all.}
@@ -1050,7 +1050,7 @@ additional pre- and post-treatment observations falls quickly.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 The decision to include a common close phase is more sensitive
 to the variance parameters than the decision to include a
 run-in phase. Because common close observations inform only
@@ -1064,7 +1064,7 @@ practical implication is that the common close should be
 treated as an optional refinement reserved for outcomes with
 high slope-to-noise ratios, such as neuroimaging endpoints,
 rather than as a default design element.
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{Two refinements, unequal spacing and endpoint replication, offer further efficiency without changing the phase counts.}
@@ -1079,7 +1079,7 @@ rather than as a default design element.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 Two refinements operate within a fixed phase allocation.
 First, when observation times within a phase are free,
 spacing them toward the extremes of the follow-up window
@@ -1095,7 +1095,7 @@ replicate: the former dominates once $\sigma_b / \sigma \ge 1$,
 because it contributes slope information and not merely
 measurement-error reduction, while the latter is competitive
 only when measurement error is the dominant variance source.
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{The allocation rules are derived under idealizing assumptions whose relaxation is the natural next step.}
@@ -1110,7 +1110,7 @@ only when measurement error is the dominant variance source.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 Several assumptions bound the scope of these recommendations.
 The allocation optima are computed under equally spaced
 observations, linear individual trajectories, and a
@@ -1123,7 +1123,7 @@ approximation of Section 7, which the exact monotone-dropout
 treatment of @hu2021 would refine. Extending the allocation
 optimization jointly over phase counts, within-phase timing,
 and the correlation structure remains the natural next step.
-\end{orig}
+:::
 
 # Conflict of interest
 
@@ -1140,9 +1140,9 @@ and the correlation structure remains the natural next step.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 The author declares no conflicts of interest.
-\end{orig}
+:::
 
 # Funding
 
@@ -1159,9 +1159,9 @@ The author declares no conflicts of interest.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 This work received no specific funding.
-\end{orig}
+:::
 
 # Data availability statement
 
@@ -1178,14 +1178,14 @@ This work received no specific funding.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 The `runinpower` R package implementing the
 optimal-allocation routines (`allocation.R`, `replicated.R`,
 `design.R`), validation tests, and the shared bibliography
 across the four-paper compendium are openly available in the
 project repository. Specific paths are listed in the
 Reproducibility section below.
-\end{orig}
+:::
 
 # Reproducibility
 
@@ -1202,12 +1202,12 @@ Reproducibility section below.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 This manuscript was rendered with R 4.4.x. Principal packages
 used are the in-package `runinpower` source, `tinytest`
 (testing harness), and `rmarkdown` plus `bookdown` for the
 manuscript build.
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{Results are deterministic, with seeding applied only where Monte Carlo benchmarking is used.}
@@ -1222,12 +1222,12 @@ manuscript build.
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 **Random-number generator.** Optimisation results are
 deterministic given fixed input parameters. Where Monte
 Carlo benchmarking is reported, the driver sets
 `set.seed(20260418)` at its entry point.
-\end{orig}
+:::
 
 \begin{bullets}
 \textbf{Source code, companion manuscripts, and the shared bibliography are located at documented repository paths.}
@@ -1242,14 +1242,14 @@ Carlo benchmarking is reported, the driver sets
 To be completed by rgt.
 \end{rgt}
 
-\begin{orig}
+::: {.orig data-latex=""}
 **Data and code availability.** The R package source is at
 `R/`. The companion manuscripts (Papers 1, 2, 4) are at
 `analysis/report/{01,02,04}-*/`. The manuscript source and
 shared bibliography (`references.bib`, a symlink to
 `../../references.bib`) are at
 `analysis/report/03-allocation/`.
-\end{orig}
+:::
 
 # References
 

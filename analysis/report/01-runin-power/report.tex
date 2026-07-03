@@ -181,6 +181,10 @@
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
 \hypersetup{
   pdftitle={Power Analysis for Longitudinal Clinical Trials with Run-In and Common Close Observations},
   pdfauthor={Ronald G. Thomas, Ph.D.},
@@ -190,7 +194,7 @@
 \title{Power Analysis for Longitudinal Clinical Trials
 with Run-In and Common Close Observations}
 \author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
-\date{June 23, 2026}
+\date{July 01, 2026}
 
 \begin{document}
 \maketitle
@@ -215,14 +219,18 @@ The formulas are expressed in terms of the residual variance
 observation spacing \(t\), enabling direct computation of
 required sample sizes.
 
-\textbf{Results.} Numerical examples using parameters from
-Alzheimer's disease neuroimaging trials demonstrate that
-two run-in observations can reduce required sample sizes by
-30-45\%, with additional gains from common close
-observations. The closed-form expressions allow
-sensitivity analysis with respect to the
-signal-to-noise ratio \(\sigma_b / \sigma\) without
-re-running simulation.
+\textbf{Results.} In a numerical example using parameters from
+Alzheimer's disease neuroimaging trials, for which the
+signal-to-noise ratio \(\sigma_b / \sigma \approx 1.7\) is
+favourable, two run-in observations reduce the required
+sample size by 62\% (from 385 to 145 per group), and adding
+two common close observations raises the reduction to 82\%.
+The magnitude of the gain is governed by \(\sigma_b / \sigma\):
+across a representative range of slope variability the
+reduction from two run-in observations spans roughly 14\% at
+low ratios to 76\% at high ratios. The closed-form
+expressions allow this sensitivity analysis with respect to
+\(\sigma_b / \sigma\) without re-running simulation.
 
 \textbf{Conclusions.} The Woodbury-based formulas are the simplest
 available closed-form expressions for the variance of the
@@ -2312,7 +2320,7 @@ bibliography (\texttt{../references.bib}) are at
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\emph{Rendered on 2026-06-23 at 18:32 PDT.}\\
-\emph{Source: \texttt{/Users/zenn/Library/CloudStorage/Dropbox/prj/res/04-runin-power-analysis/runinpower/analysis/report/01-runin-power/report.Rmd}}
+\emph{Rendered on 2026-07-01 at 15:37 PDT.}\\
+\emph{Source: \texttt{\textasciitilde{}/prj/res/04-runin-power-analysis/runinpower/analysis/report/01-runin-power/report.Rmd}}
 
 \end{document}
