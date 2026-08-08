@@ -11,7 +11,8 @@
       "mcp__zotero-mcp__search_library",
       "Bash(python3 -c ':*)",
       "mcp__zotero-mcp__get_item_abstract",
-      "Bash(ln -sf ../references.bib __TRACKED_VAR__/references.bib)"
+      "Bash(ln -sf ../references.bib __TRACKED_VAR__/references.bib)",
+      "Bash(git -C /Users/zenn/Library/CloudStorage/Dropbox/prj/res/04-runin-power-analysis/runinpower log --oneline --since=2026-06-13 -- analysis/report R tests)"
     ]
   }
 }

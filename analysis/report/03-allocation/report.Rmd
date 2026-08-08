@@ -97,10 +97,6 @@ library(runinpower)
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The relative efficiency surface in Paper 1 (Figure 1)
 demonstrates diminishing returns from additional
@@ -121,10 +117,6 @@ observations $J_1$.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 These observations raise a design question that Paper 1
 does not address: given operational constraints on the
@@ -141,10 +133,6 @@ three phases?
 \item Available software computes slope-comparison power but does not optimise the phase allocation.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 @winkens2005 calculated optimal time-point positions
@@ -178,10 +166,6 @@ allocation of observations across phases.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 Given $J$ total observations (excluding baseline),
 choose $(J_0^*, J_1^*, J_2^*)$ to minimize
@@ -203,10 +187,6 @@ computed via the Woodbury identity from Paper 1.
 \item A general version permits non-equally-spaced observations and optimises over the observation times.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 Alternatively, fix the trial duration
@@ -265,10 +245,6 @@ knitr::kable(
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 An important non-monotonicity is visible in the table:
 $\Delta V_1 < \Delta V_2$ for moderate
@@ -289,10 +265,6 @@ the parameter count and provides pure information gain.
 \item Designers should plan either zero or at least two run-in observations, never exactly one.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 This effect is analogous to @frison1992's finding that
@@ -322,10 +294,6 @@ symmetry:
 \item Under AR(1) the correlation falls with temporal distance, yielding faster diminishing returns from distant run-in observations.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 which is constant in $J_0$. The diminishing returns
@@ -395,10 +363,6 @@ knitr::kable(
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The common close phase contributes information about
 the random slope $b_i$ without contributing to the
@@ -464,10 +428,6 @@ $\sum t_i = 0$) is:
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 This is minimized when $t_1 t_2$ is minimized (most
 negative), i.e., when the two time points are
@@ -498,10 +458,6 @@ period are optimal for slope estimation.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The run-in mechanism averages multiple pre-randomization
 observations to reduce the contribution of measurement
@@ -526,10 +482,6 @@ averaging.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 Concretely, if the last visit at time $J_1 t$ is replicated
 $n_{\text{rep}}$ times over a short interval (days to
@@ -551,10 +503,6 @@ covariance.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 This is distinct from the common close design (Section
 4): common close observations are at \emph{new} time
@@ -574,10 +522,6 @@ visit, providing only measurement-error reduction.
 \item The remaining Woodbury computation proceeds identically.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 The residual covariance matrix $R$ is modified so that
@@ -644,10 +588,6 @@ knitr::kable(
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The table confirms that endpoint replication is most
 beneficial when measurement error dominates
@@ -669,10 +609,6 @@ cannot reduce.
 \item Replicates provide measurement-error reduction only, not slope information.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 A natural question is whether a fixed budget of
@@ -741,10 +677,6 @@ legend('topright',
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 When $\sigma_b / \sigma \ge 1$, run-in observations at
 new time points outperform endpoint replicates because
@@ -766,10 +698,6 @@ source of variance.
 \item Together they lower measurement error symmetrically at both ends.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 Replicating both the baseline and endpoint visits
@@ -825,10 +753,6 @@ knitr::kable(
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 Following @frost2008 (Section 2.3), dropout
 is handled via a pattern-mixture model
@@ -847,10 +771,6 @@ the overall variance is a weighted average:
 \item @hu2021 derive exact formulas under monotone dropout, more rigorous and less conservative when dropout is informative about the random slope.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 where $p_s$ is the proportion with pattern $s$ and
@@ -941,10 +861,6 @@ knitr::kable(
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 Using MIRIAD parameters ($\sigma^2 = 0.3363$,
 $\sigma_b^2 = 0.9745$, $t = 1$ year), compare the
@@ -1016,10 +932,6 @@ knitr::kable(
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The allocation results admit a simple summary. Across the
 range of signal-to-noise ratios examined, including the
@@ -1046,10 +958,6 @@ additional pre- and post-treatment observations falls quickly.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The decision to include a common close phase is more sensitive
 to the variance parameters than the decision to include a
@@ -1074,10 +982,6 @@ rather than as a default design element.
 \item Run-in observations at new time points dominate endpoint replicates once the slope-to-noise ratio exceeds one, because they also inform the individual slope.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 Two refinements operate within a fixed phase allocation.
@@ -1106,10 +1010,6 @@ only when measurement error is the dominant variance source.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 Several assumptions bound the scope of these recommendations.
 The allocation optima are computed under equally spaced
@@ -1136,10 +1036,6 @@ and the correlation structure remains the natural next step.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The author declares no conflicts of interest.
 :::
@@ -1155,10 +1051,6 @@ The author declares no conflicts of interest.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 This work received no specific funding.
 :::
@@ -1173,10 +1065,6 @@ This work received no specific funding.
 \item Specific paths appear in the Reproducibility section below.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 The `runinpower` R package implementing the
@@ -1198,10 +1086,6 @@ Reproducibility section below.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 This manuscript was rendered with R 4.4.x. Principal packages
 used are the in-package `runinpower` source, `tinytest`
@@ -1218,10 +1102,6 @@ manuscript build.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 **Random-number generator.** Optimisation results are
 deterministic given fixed input parameters. Where Monte
@@ -1237,10 +1117,6 @@ Carlo benchmarking is reported, the driver sets
 \item This manuscript source and the shared bibliography are under analysis/report/03-allocation/.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 **Data and code availability.** The R package source is at

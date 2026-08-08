@@ -65,7 +65,9 @@ var_gamma_ar1 <- function(r, k, f, sigma2, sigma_b2,
   Z <- des$Z
   G <- matrix(sigma_b2, 1, 1)
 
-  H <- solve(solve(G) + t(Z) %*% Ri %*% Z)
+  # push-through form remains valid when G is singular (sigma_b2 = 0)
+  A <- t(Z) %*% Ri %*% Z
+  H <- G %*% solve(diag(nrow(G)) + A %*% G)
 
   Xt <- des$X_trt
   Xp <- des$X_plc

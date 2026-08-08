@@ -19,29 +19,36 @@ abstract: |
   estimator under AR(1) via two routes: (i) the Woodbury
   identity applied to the AR(1) marginal covariance, and (ii)
   a moment-based approach using the cross-covariance between
-  run-in and treatment-period means. Both routes yield
-  identical results, providing internal validation. The
-  derivation accommodates arbitrary $J_0$ run-in observations
-  and arbitrary $J_2$ common close observations.
+  run-in and treatment-period means. The two routes target
+  different estimands: the GLS variance of the slope-difference
+  effect and the variance of the simple phase-mean difference.
+  The GLS derivation accommodates arbitrary $J_0$ run-in
+  observations and arbitrary $J_2$ common close observations.
 
   **Results.** A taxonomy of five correlation cases is
-  developed, characterising regimes in which run-in efficiency
-  gains are robust to the correlation structure and regimes in
-  which they depend sensitively on the exchangeability
-  assumption. Numerical comparisons using parameters from
-  Alzheimer's disease neuroimaging trials show that the
-  AR(1)-corrected sample-size estimate exceeds the
-  compound-symmetric estimate by 5-25\% across the cases,
-  with the largest deviation at small $J_0$ and small $\rho$.
+  presented, and change-score correlations are derived in
+  closed form under compound symmetry and AR(1). Numerical
+  comparisons using parameters from Alzheimer's disease
+  neuroimaging trials show that, when the two structures are
+  matched at a common nominal correlation parameter $\rho$,
+  the AR(1) sample-size estimate is smaller than the
+  compound-symmetric estimate (by 4-36\% at $\rho = 0.5$),
+  with the deviation growing as $\rho$ increases. A narrow
+  anticonservative regime exists at large $J_0$ and small
+  $\rho$, where compound symmetry understates the variance
+  by at most about 6\%.
 
-  **Conclusions.** The compound-symmetry assumption underlying
-  Paper 1 is a useful approximation for moderate $\rho$ but
-  understates the required sample size at low autocorrelation.
-  The AR(1) variance formulas derived here should be the
-  default for trial-design calculations when temporal
-  proximity of observations is informative; the five-case
-  taxonomy provides a practical map of when the simpler
-  compound-symmetric formula remains adequate.
+  **Conclusions.** At a matched nominal $\rho$, the
+  compound-symmetry assumption underlying Paper 1 is generally
+  conservative: it overstates the required sample size, and
+  increasingly so as the autocorrelation grows. The exception
+  is a narrow regime with many run-in observations and low
+  autocorrelation, where it is anticonservative by at most
+  about 6\%. The AR(1) formulas derived here quantify both
+  effects and should be used directly when serial correlation
+  is expected; this conclusion is specific to the
+  common-nominal-$\rho$ matching convention stated in the
+  text.
 output:
   bookdown::pdf_document2:
     latex_engine: xelatex
@@ -52,7 +59,7 @@ output:
     includes:
       in_header: claudecode.tex
 fontsize: 11pt
-geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
 bibliography: references.bib
 knit: (function(input, ...) { d <- dirname(input); while (!file.exists(file.path(d, 'tools', 'stamp-render.R')) && d != dirname(d)) d <- dirname(d); source(file.path(d, 'tools', 'stamp-render.R'))$value(input) })
 csl: statistics-in-medicine.csl
@@ -95,10 +102,6 @@ library(runinpower)
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The efficiency of run-in designs depends on the
 correlation structure of the repeated measurements.
@@ -120,10 +123,6 @@ depends on how far they are from the treatment period.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 Paper 1 [@frost2008] assumed $R = \sigma^2(I_J +
 \mathbf{1}_J\mathbf{1}_J')$, which arises from the
@@ -144,10 +143,6 @@ correlation, where $\Corr(e_{ij}, e_{ij'}) =
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 @winkens2007 studied optimal designs for autocorrelated
 longitudinal data but did not consider the run-in
@@ -166,10 +161,6 @@ a concern that is amplified under AR(1) correlation.
 \item Our AR(1) formula supplies the missing analytic case and reduces to longpower at the compound-symmetry limit.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 The `longpower` R package [@iddi2022] is the CRAN
@@ -260,10 +251,6 @@ for $j, l \ne 0$.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 This $R$ no longer has the rank-one-plus-identity
 structure, so the Sherman-Morrison formula does not
@@ -287,10 +274,6 @@ The computation proceeds identically to Paper 1:
 \item Equivalently it follows from the AR(1) tridiagonal inverse rather than Sherman-Morrison.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 with $H = (G^{-1} + Z'R^{-1}Z)^{-1}$ still scalar.
@@ -359,10 +342,6 @@ knitr::kable(
 \item The treatment-period mean averages the treatment-period observations.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 An alternative to the GLS approach computes the
@@ -448,10 +427,6 @@ cat('  (Moment-based ignores random slope.)\n')
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The GLS approach (Section 3) and the moment-based
 approach (Section 4) compute different quantities.
@@ -469,10 +444,6 @@ estimator $\bar{d}_1 - \bar{d}_0$.
 \item GLS weights observations through the full covariance, whereas the moment-based approach weights them equally within a phase.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 When $\sigma_b^2 = 0$ (no random slope), the two
@@ -493,10 +464,6 @@ observations within a phase equally.
 \item The ratio of the two variances quantifies the efficiency loss studied in Paper 4.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 The practical value of the moment-based computation is
@@ -639,10 +606,6 @@ legend('topright', legend = paste('J_0 =', r_values),
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The central practical question is when the compound-symmetry
 formulas of Paper 1 can be used in place of the AR(1)
@@ -666,10 +629,6 @@ becomes the leading determinant of efficiency.
 \item The resulting sample size is too small, with the discrepancy largest at small $\rho$ and small $J_0$.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 The direction of the error is important for trial design.
@@ -695,10 +654,6 @@ autocorrelation.
 \item When the correlation structure is uncertain, the AR(1) formula evaluated at a conservative (low) $\rho$ provides a safe default.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 For applied use we recommend the following. When pilot data
@@ -735,10 +690,6 @@ This work received no specific funding.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 The `runinpower` R package implementing the AR(1) variance
 formulas (`covariance-ar1.R`), validation tests, and the
@@ -758,10 +709,6 @@ are listed in the Reproducibility section below.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 This manuscript was rendered with R 4.4.x. Principal packages
 used are the in-package `runinpower` source (the AR(1)
@@ -779,10 +726,6 @@ build.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 ::: {.orig data-latex=""}
 **Random-number generator.** The AR(1) variance formulas are
 deterministic given fixed input parameters; no RNG is
@@ -798,10 +741,6 @@ driver sets `set.seed(20260418)` at its entry point.
 \item This manuscript source and the shared bibliography reside in the correlation-paper directory.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 ::: {.orig data-latex=""}
 **Data and code availability.** The R package source is at
