@@ -445,8 +445,13 @@ Paper 1 as the anchor.
   contrasts in Paper 4 estimate c times gamma with
   c = t(J1(J1+1)/2 + J1 J2)/(J1+J2), so the raw tabulated penalties
   overstate the equal-estimand penalty by c^2 (up to about 5x at
-  (4,3,1)); disclosed in the manuscript, rescaled tables deferred to
-  the author. Still open (author-level): common-close estimand
+  (4,3,1)); disclosed in the manuscript. Resolved later the same day:
+  all Paper 4 tables, figures, and the simulation were rescaled to
+  the equal-estimand gamma scale (verified by end-to-end chunk
+  execution); rescaled headlines are ANCOVA RE 0.64-0.81 at (2,2,0),
+  MIRIAD N_ancova about 2.6x and N_averaged about 45x N_GLS at
+  (4,3,1), and RE >= 0.95 in 12/115 cells in two characterized
+  families. Still open (author-level): common-close estimand
   derivation and r = 2 symbolic trail (Paper 1), taxonomy content and
   stratified-variance TODO (Paper 2), Section 6 spacing model and
   optimal-design citations (Paper 3), cLDA/SUR/feasible-GLS

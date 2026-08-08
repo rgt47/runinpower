@@ -34,24 +34,30 @@ abstract: |
   symmetry evaluates the estimators alongside a GLS analysis
   that misstates the random-slope variance.
 
-  **Results.** Under correct specification, GLS $\le$ ANCOVA
+  **Results.** All comparisons are made on the common
+  estimand scale, with the averaged and ANCOVA contrasts
+  rescaled to unbiasedness for the treatment effect
+  $\gamma$. Under correct specification, GLS $\le$ ANCOVA
   $\le$ averaged in variance, with no violations over a
   115-cell grid of designs and signal-to-noise ratios. The
   efficiency penalty of the simpler estimators is
-  substantial in the designs of practical interest: at
-  $(J_0, J_1, J_2) = (2, 2, 0)$ the tabulated relative
-  efficiency of ANCOVA versus GLS is 0.29 to 0.36 across
-  signal-to-noise ratios, and the penalty grows with $J_1$
-  and $\sigma_b/\sigma$. Relative efficiency above 0.95
-  occurs essentially only in single-post-visit designs
-  ($J_1 = 1$, $J_2 = 0$). In the MIRIAD-based example the
-  tabulated ANCOVA sample size exceeds the GLS sample size
-  by up to a factor of roughly 13 among run-in designs.
+  substantial in run-in designs with multiple
+  treatment-period visits: at
+  $(J_0, J_1, J_2) = (2, 2, 0)$ the relative efficiency of
+  ANCOVA versus GLS is 0.64 to 0.81 across signal-to-noise
+  ratios, an efficiency loss of 19\% to 36\%. Relative
+  efficiency above 0.95 occurs only in single-post-visit
+  run-in designs ($J_1 = 1$, $J_2 = 0$) and in designs
+  without run-in or common close ($J_0 = 0$, $J_2 = 0$) at
+  high signal-to-noise. In the MIRIAD-based example the
+  ANCOVA sample size exceeds the GLS sample size by up to
+  a factor of roughly 2.6 among run-in designs, and the
+  averaged sample size by up to a factor of roughly 45.
   Under the $G$ and $R$ misspecifications studied, GLS
-  retains a large efficiency margin over both simpler
-  estimators: the misspecified-GLS sandwich variance peaks
-  at 5.3 against an averaged-estimator variance of 20 at
-  the reference design.
+  never loses its advantage over the simpler estimators:
+  the misspecified-GLS sandwich variance peaks at 5.3
+  against an averaged-estimator variance of 8.9 at the
+  reference design.
 
   **Conclusions.** GLS is the efficient estimator under
   correct specification, and its advantage survives the
@@ -273,16 +279,28 @@ $d_{ik}$ as independent observations:
 \end{equation}
 
 The variance $\Var(d_{ik})$ depends on the correlation
-structure but does not require its estimation.
+structure but does not require its estimation. As an
+estimator of $\gamma$, the contrast is divided by the
+design constant $c$ derived in Section 3.1, and all
+variances, relative efficiencies, and sample sizes
+reported in this paper are on that common $\gamma$
+scale.
 
 ```{r avg_variance, echo=TRUE}
 a <- 1.0
 b <- 1.0
 tt <- 1.0
 
+# gamma-scale rescaling constant (Section 3.1):
+# mean accumulated effect over post-randomization visits
+cfac <- function(r, k, f, t_interval = 1) {
+  t_interval * (k * (k + 1) / 2 + k * f) / (k + f)
+}
+
 v_gls <- var_gamma_matrix(2, 2, 0, a, b, tt)
-v_avg <- var_gamma_avg(2, 2, 0, a, b, tt)
-re <- re_avg_vs_gls(2, 2, 0, a, b, tt)
+v_avg <- var_gamma_avg(2, 2, 0, a, b, tt) /
+  cfac(2, 2, 0, tt)^2
+re <- v_gls / v_avg
 
 cat(sprintf('J_0=2, J_1=2: GLS=%.4f, Avg=%.4f, RE=%.4f\n',
             v_gls, v_avg, re))
@@ -342,9 +360,10 @@ predictive value of the run-in observations
 :::
 
 ```{r ancova_demo, echo=TRUE}
+c220 <- cfac(2, 2, 0, tt)
 v_gls <- var_gamma_matrix(2, 2, 0, a, b, tt)
-v_anc <- var_gamma_ancova(2, 2, 0, a, b, tt)
-v_avg <- var_gamma_avg(2, 2, 0, a, b, tt)
+v_anc <- var_gamma_ancova(2, 2, 0, a, b, tt) / c220^2
+v_avg <- var_gamma_avg(2, 2, 0, a, b, tt) / c220^2
 
 cat(sprintf('J_0=2, J_1=2 (sigma_b/sigma = 1):\n'))
 cat(sprintf('  GLS:    %.4f\n', v_gls))
@@ -451,7 +470,7 @@ Section 4 examines whether model misspecification erodes
 the nominal optimality of GLS relative to these
 approximations, which depend on fewer variance
 components. In the $G$ and $R$ misspecifications studied
-there, the GLS variance increases but remains well below
+there, the GLS variance increases but remains below
 that of the averaged estimator; whether feasible GLS with
 estimated components loses its advantage in small samples
 is not studied here.
@@ -466,7 +485,7 @@ to GLS is:
 \begin{equation}
   \text{RE}_{\text{avg}} =
     \frac{\Var(\hat\gamma_{\text{GLS}})}
-         {\Var(\hat\gamma_{\text{avg}})}
+         {\Var(\hat\gamma_{\text{avg}}/c)}
     \le 1
 \end{equation}
 with equality when the averaged estimator happens
@@ -507,16 +526,14 @@ feasible ANCOVA estimates $\phi$ and carries the usual
 finite-sample inflation.) $\square$
 
 Numerically, the ordering holds with zero violations
-over the 115-cell grid of the tables below, both for the
-raw contrast variances as tabulated and after the $1/c^2$
-rescaling. The tables report the raw contrast variances;
-because $c \ge 1$ in every tabulated design, the raw
-ratios overstate the penalty of the simpler estimators
-relative to the rescaled, equal-estimand comparison by
-the factor $c^2$, and the sample sizes for the averaged
-and ANCOVA columns in the MIRIAD table carry the same
-conservative factor. Rescaled tables are deferred to a
-revision.
+over the 115-cell grid of the tables below. All tables,
+figures, and simulation results in this paper are on the
+equal-estimand $\gamma$ scale: the averaged and ANCOVA
+contrast variances are divided by $c^2$ before any
+comparison. For reference, the raw phase-mean contrasts
+carry variances larger by the factor $c^2$ ($c^2 = 2.25$
+at the $(2,2,0)$ design), so raw-contrast comparisons
+would overstate the penalty of the simpler estimators.
 
 ```{r re-table}
 configs <- expand.grid(
@@ -532,14 +549,17 @@ a <- 1.0
 
 for (ratio in ratio_levels) {
   b <- ratio^2 * a
+  # gamma-scale RE: multiply the raw contrast RE by c^2
   configs[[paste0('avg_', ratio)]] <- mapply(
     function(r, k, f)
-      re_avg_vs_gls(r, k, f, a, b, tt),
+      re_avg_vs_gls(r, k, f, a, b, tt) *
+        cfac(r, k, f, tt)^2,
     configs$r, configs$k, configs$f
   )
   configs[[paste0('anc_', ratio)]] <- mapply(
     function(r, k, f)
-      re_ancova_vs_gls(r, k, f, a, b, tt),
+      re_ancova_vs_gls(r, k, f, a, b, tt) *
+        cfac(r, k, f, tt)^2,
     configs$r, configs$k, configs$f
   )
 }
@@ -557,9 +577,9 @@ names(display_avg) <- c('$(J_0,J_1,J_2)$',
 knitr::kable(
   display_avg,
   caption = paste0(
-    'RE of averaged change-score vs GLS ',
-    '($\\Var_{\\text{GLS}} / ',
-    '\\Var_{\\text{avg}}$) by ',
+    'RE of averaged change-score vs GLS on the ',
+    '$\\gamma$ scale ($\\Var_{\\text{GLS}} / ',
+    '\\Var(\\hat\\gamma_{\\text{avg}}/c)$) by ',
     '$\\sigma_b/\\sigma$.'),
   booktabs = TRUE,
   escape = FALSE,
@@ -574,9 +594,9 @@ names(display_anc) <- c('$(J_0,J_1,J_2)$',
 knitr::kable(
   display_anc,
   caption = paste0(
-    'RE of ANCOVA vs GLS ',
+    'RE of ANCOVA vs GLS on the $\\gamma$ scale ',
     '($\\Var_{\\text{GLS}} / ',
-    '\\Var_{\\text{ANC}}$) by ',
+    '\\Var(\\hat\\gamma_{\\text{ANC}}/c)$) by ',
     '$\\sigma_b/\\sigma$.'),
   booktabs = TRUE,
   escape = FALSE,
@@ -599,35 +619,40 @@ gap <- do.call(rbind, lapply(ratio_levels, function(rr) {
 n_cells <- nrow(gap)
 hi_anc <- gap[gap$re_anc >= 0.95, ]
 n_hi_anc <- nrow(hi_anc)
-all_k1 <- all(hi_anc$k == 1 & hi_anc$f == 0)
+n_k1 <- sum(hi_anc$k == 1 & hi_anc$f == 0)
+n_r0 <- sum(hi_anc$r == 0 & hi_anc$f == 0 &
+              hi_anc$k >= 2)
+stopifnot(n_hi_anc == n_k1 + n_r0)
 n_hi_avg <- sum(gap$re_avg >= 0.95)
 re_220 <- gap$re_anc[gap$r == 2 & gap$k == 2 & gap$f == 0]
 ```
 
 The answer, computed over the full grid of the preceding
-tables, is: almost everywhere. Of the
-`r n_cells` design-by-ratio cells, only `r n_hi_anc`
+tables (all on the $\gamma$ scale), is: in most cells.
+Of the `r n_cells` design-by-ratio cells, `r n_hi_anc`
 have ANCOVA relative efficiency of at least 0.95 (an
-efficiency loss below 5%), and
-`r ifelse(all_k1, 'every one of them', 'most of them')`
-is a single-post-visit design with no common close
+efficiency loss below 5%), and they form exactly two
+families. The first (`r n_k1` cells) comprises
+single-post-visit run-in designs with no common close
 ($J_1 = 1$, $J_2 = 0$): the $(1,1,0)$ design at every
 tabulated ratio, plus $(2,1,0)$ at
-$\sigma_b/\sigma = 0.5$. With a single post-randomization
+$\sigma_b/\sigma = 0.5$; with a single post-randomization
 visit there is no within-period slope information for GLS
-to exploit, so the phase-mean contrast captures nearly
-all of the information. As soon as $J_1 \ge 2$, GLS uses
-the within-period slope and the ANCOVA loss is large: at
-the representative $(2,2,0)$ design the relative
-efficiency ranges from
+to exploit. The second (`r n_r0` cells) comprises
+designs without run-in or common close ($J_0 = 0$,
+$J_2 = 0$, $J_1 \in \{2, 3\}$) at
+$\sigma_b/\sigma \ge 2$, where ANCOVA reduces to the
+averaged estimator and the rescaled phase mean is nearly
+efficient. In run-in designs with $J_1 \ge 2$, the
+regime that motivates this paper, the loss is
+substantial: at the representative $(2,2,0)$ design the
+relative efficiency ranges from
 `r sprintf('%.2f', max(re_220))` at
 $\sigma_b/\sigma = 0.5$ down to
 `r sprintf('%.2f', min(re_220))` at
-$\sigma_b/\sigma = 20$, an efficiency loss of 64% to
-71%. The averaged estimator never reaches 0.95 in any
-cell (`r n_hi_avg` of `r n_cells`). These are the raw
-contrast ratios; the $1/c^2$ rescaling of the
-Proposition narrows but does not close the gap.
+$\sigma_b/\sigma = 20$, an efficiency loss of 19% to
+36%. The averaged estimator reaches 0.95 only in the
+second family (`r n_hi_avg` of `r n_cells` cells).
 
 
 # Robustness to misspecification
@@ -640,7 +665,7 @@ Proposition narrows but does not close the gap.
 \item An incorrect random-slope variance renders the assumed-covariance GLS no longer minimum-variance.
 \item The error enters through the inverse-covariance weighting of GLS.
 \item The averaged change-score estimator's definition does not use this variance component, so its variance does not depend on the assumed value.
-\item In the sweep below, however, the misspecified GLS variance peaks at 5.30 while the averaged variance is 20.0: the GLS margin is eroded, not eliminated.
+\item In the sweep below, however, the misspecified GLS variance peaks at 5.30 while the averaged variance on the $\gamma$ scale is 8.89: the GLS margin is eroded, not eliminated.
 \end{itemize}
 \end{bullets}
 
@@ -652,13 +677,13 @@ definition does not depend on the assumed value, so its
 variance is constant across the sweep. Note the scale of
 the comparison: over assumed $\sigma_b^2 \in [0.01, 5]$
 with true $\sigma_b^2 = 1$, the misspecified GLS
-sandwich variance never exceeds 5.30, far below the
-averaged-estimator variance of 20.0. The studied
-misspecification erodes but does not overturn the GLS
-advantage.
+sandwich variance never exceeds 5.30, still below the
+averaged-estimator variance of 8.89 on the $\gamma$
+scale. The studied misspecification erodes but does not
+overturn the GLS advantage.
 :::
 
-```{r misspec_G, fig.cap="Effect of misspecifying $\\sigma_b^2$ on GLS variance. True $\\sigma_b^2 = 1$. The GLS estimator uses an assumed value on the x-axis. The averaged estimator's definition does not use $\\sigma_b^2$, so its variance (horizontal line) does not depend on the assumed value. Note that the misspecified GLS variance remains well below the averaged variance throughout."}
+```{r misspec_G, fig.cap="Effect of misspecifying $\\sigma_b^2$ on GLS variance. True $\\sigma_b^2 = 1$. The GLS estimator uses an assumed value on the x-axis. The averaged estimator's definition does not use $\\sigma_b^2$, so its $\\gamma$-scale variance (horizontal line) does not depend on the assumed value. The misspecified GLS variance remains below the averaged variance throughout."}
 b_true <- 1.0
 a <- 1.0
 r <- 2
@@ -709,7 +734,8 @@ v_misspec <- sapply(b_assumed, function(ba) {
   var_misspec_gls(r, k, f, a, b_true, ba, tt)
 })
 
-v_avg <- var_gamma_avg(r, k, f, a, b_true, tt)
+v_avg <- var_gamma_avg(r, k, f, a, b_true, tt) /
+  cfac(r, k, f, tt)^2
 v_correct <- var_gamma_matrix(r, k, f, a, b_true, tt)
 
 plot(b_assumed, v_misspec, type = 'l', lwd = 2,
@@ -718,7 +744,7 @@ plot(b_assumed, v_misspec, type = 'l', lwd = 2,
      ylab = expression(Var(hat(gamma))),
      main = 'Misspecified random slope variance',
      ylim = c(min(v_correct, v_avg) * 0.9,
-              max(v_misspec) * 1.1))
+              max(v_misspec, v_avg) * 1.1))
 abline(h = v_avg, col = 'red', lwd = 2, lty = 2)
 abline(v = b_true, col = 'gray', lty = 3)
 points(b_true, v_correct, pch = 16, cex = 1.5)
@@ -740,8 +766,8 @@ legend('topright',
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item Assuming compound symmetry when the truth is AR(1) is a representative misspecification.
 \item Both the GLS variance formula and the Woodbury correction become biased.
-\item The averaged estimator's definition does not depend on the assumed correlation, although its variance still changes with the true $R$ (18.9 to 20.5 over the plotted range).
-\item The misspecified GLS sandwich variance stays roughly tenfold below the averaged variance at every $\rho$.
+\item The averaged estimator's definition does not depend on the assumed correlation, although its $\gamma$-scale variance still changes with the true $R$ (8.4 to 9.1 over the plotted range).
+\item The misspecified GLS sandwich variance stays four- to elevenfold below the averaged variance across the sweep.
 \end{itemize}
 \end{bullets}
 
@@ -751,15 +777,15 @@ When the residual correlation structure is wrong
 both the GLS variance formula and the Woodbury
 correction are biased. The averaged estimator's
 definition does not depend on the assumed model, though
-its variance does change with the true $R$ (18.9 to 20.5
-across $\rho \in [0, 0.9]$ in the figure). The GLS
-sandwich variance ranges from 0.74 to 2.16 over the same
-sweep, so the studied $R$ misspecification leaves GLS
-roughly an order of magnitude more efficient than the
-averaged estimator throughout.
+its $\gamma$-scale variance does change with the true
+$R$ (8.4 to 9.1 across $\rho \in [0, 0.9]$ in the
+figure). The GLS sandwich variance ranges from 0.74 to
+2.16 over the same sweep, so the studied $R$
+misspecification leaves GLS four to eleven times more
+efficient than the averaged estimator throughout.
 :::
 
-```{r misspec_R, fig.cap="Effect of analyzing under compound symmetry when the true correlation is AR(1). Sandwich variance of GLS (solid) vs averaged change-score (dashed) as a function of $\\rho$. The averaged estimator's definition does not use the assumed correlation, but its variance varies with the true $R$; GLS remains roughly tenfold more efficient at every $\\rho$."}
+```{r misspec_R, fig.cap="Effect of analyzing under compound symmetry when the true correlation is AR(1). Sandwich variance of GLS (solid) vs averaged change-score on the $\\gamma$ scale (dashed) as a function of $\\rho$. The averaged estimator's definition does not use the assumed correlation, but its variance varies with the true $R$; GLS remains at least fourfold more efficient at every $\\rho$."}
 rho_grid <- seq(0, 0.9, by = 0.05)
 r <- 2
 k <- 2
@@ -824,7 +850,8 @@ v_avg_ar1 <- sapply(rho_grid, function(rho) {
   }
   Z <- des$Z
   Sigma_true <- R_true + Z %*% matrix(b) %*% t(Z)
-  2 * as.numeric(t(w) %*% Sigma_true %*% w)
+  2 * as.numeric(t(w) %*% Sigma_true %*% w) /
+    cfac(r, k, f, tt)^2
 })
 
 plot(rho_grid, v_sandwich, type = 'l', lwd = 2,
@@ -976,8 +1003,12 @@ analyze_avg <- function(trial) {
   d_plc <- apply(trial$Y_plc, 2, avg_score)
   m <- length(d_trt)
 
-  gamma_hat <- mean(d_trt) - mean(d_plc)
-  se <- sqrt(var(d_trt) / m + var(d_plc) / m)
+  # rescale the contrast to the gamma scale (Section 3.1)
+  gcol <- des$X_trt[, des$ncol_X]
+  cc <- mean(gcol[(r + 1):p])
+
+  gamma_hat <- (mean(d_trt) - mean(d_plc)) / cc
+  se <- sqrt(var(d_trt) / m + var(d_plc) / m) / cc
   list(estimate = gamma_hat, se = se,
        z = gamma_hat / se)
 }
@@ -989,8 +1020,8 @@ analyze_avg <- function(trial) {
 \textbf{The simulation confirms the analytic ordering and quantifies the cost of misspecifying the random-slope variance.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item The empirical standard deviation of the GLS estimator is the smallest of the three under correct specification.
-\item The averaged change-score estimator is stable but far less efficient, with the gap widening as the slope-to-noise ratio grows.
-\item Misspecifying the random-slope variance at most roughly doubles the GLS standard deviation, which remains well below that of the averaged estimator in every cell.
+\item On the $\gamma$ scale the averaged estimator is nearly as efficient as GLS in the no-run-in design, but carries two to three times the GLS standard deviation in the run-in designs at $\sigma_b/\sigma = 1$, growing to eight to fifteen times at $\sigma_b/\sigma = 5$.
+\item Misspecifying the random-slope variance at most roughly doubles the GLS standard deviation, which remains well below that of the averaged estimator in every run-in cell.
 \end{itemize}
 \end{bullets}
 
@@ -999,11 +1030,12 @@ We simulate the factorial design described above under
 compound symmetry, comparing the correctly specified GLS
 estimator, a GLS estimator that misstates the random-slope
 variance (it assumes $\sigma_b^2 = \sigma^2$ regardless of the
-truth), and the averaged change-score estimator. For each cell
-we report the empirical standard deviation of $\hat\gamma$ and
-the empirical power from 1000 replicates; the Monte Carlo
-standard error of a tabulated power estimate is at most
-$\sqrt{0.25/1000} \approx 0.016$.
+truth), and the averaged change-score estimator, the latter
+rescaled to the $\gamma$ scale by dividing the contrast by
+$c$. For each cell we report the empirical standard deviation
+of $\hat\gamma$ and the empirical power from 1000 replicates;
+the Monte Carlo standard error of a tabulated power estimate
+is at most $\sqrt{0.25/1000} \approx 0.016$.
 :::
 
 ```{r simulation-study}
@@ -1059,7 +1091,9 @@ knitr::kable(
     'estimator under compound symmetry (', nsim,
     ' replicates, $\\Delta=0.5$, two-sided $\\alpha=0.05$). ',
     'Columns report the empirical standard deviation of ',
-    '$\\hat\\gamma$ and the empirical power.'),
+    '$\\hat\\gamma$ and the empirical power. The averaged ',
+    'estimator is rescaled to the $\\gamma$ scale ',
+    '(contrast divided by $c$).'),
   booktabs = TRUE, escape = FALSE, digits = 3,
   row.names = FALSE)
 ```
@@ -1109,14 +1143,16 @@ configs$v_gls <- mapply(
 configs$v_anc <- mapply(
   function(r, k, f)
     var_gamma_ancova(r, k, f, sigma2_ad,
-                     sigma_b2_ad, 1.0),
+                     sigma_b2_ad, 1.0) /
+      cfac(r, k, f, 1.0)^2,
   configs$r, configs$k, configs$f
 )
 
 configs$v_avg <- mapply(
   function(r, k, f)
     var_gamma_avg(r, k, f, sigma2_ad,
-                  sigma_b2_ad, 1.0),
+                  sigma_b2_ad, 1.0) /
+      cfac(r, k, f, 1.0)^2,
   configs$r, configs$k, configs$f
 )
 
@@ -1143,7 +1179,9 @@ knitr::kable(
   caption = paste0(
     'Sample size per group: GLS, ANCOVA, and ',
     'averaged estimators (MIRIAD parameters, ',
-    '$\\Delta=', delta_ad, '$, 90\\% power).'),
+    '$\\Delta=', delta_ad, '$, 90\\% power). All ',
+    'variances are on the $\\gamma$ scale (ANCOVA ',
+    'and averaged contrasts divided by $c$).'),
   booktabs = TRUE,
   escape = FALSE,
   row.names = FALSE
@@ -1158,8 +1196,8 @@ feasible-GLS simulation described in the Discussion and
 is deferred to a revision. The results above support
 only the narrower statement that, with variance
 components taken as known, GLS dominates and the
-penalty of the simpler estimators is largest for
-$J_1 \ge 2$ and high $\sigma_b/\sigma$.
+penalty of the simpler estimators is largest in run-in
+designs with $J_1 \ge 2$ and high $\sigma_b/\sigma$.
 
 
 # Discussion
@@ -1189,7 +1227,7 @@ covariance model, GLS is the appropriate default.
 \textbf{The misspecifications studied here erode the GLS advantage without overturning it; the open robustness question concerns feasible GLS with estimated components.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item GLS weights observations by the assumed inverse covariance, so errors in $G$ or $R$ propagate into its sampling variance.
-\item In the sweeps of Section 4 the misspecified GLS sandwich variance peaks at 5.30 against an averaged-estimator variance of 20.0, and in the simulation the misspecified GLS standard deviation never approaches that of the averaged estimator.
+\item In the sweeps of Section 4 the misspecified GLS sandwich variance peaks at 5.30 against a $\gamma$-scale averaged-estimator variance of 8.89, and in the simulation the misspecified GLS standard deviation remains well below the averaged standard deviation in every run-in cell.
 \item Whether feasible GLS, with variance components estimated from small samples, retains this margin is not studied here.
 \end{itemize}
 \end{bullets}
@@ -1202,8 +1240,9 @@ feed into its sampling variance, and the sandwich-variance
 calculations quantify the inflation. In the settings studied,
 however, the inflation never closes the gap: the misspecified
 GLS variance peaks at 5.30 in the $G$ sweep and at 2.16 in the
-$R$ sweep, against averaged-estimator variances near 20 at the
-same design. The averaged change-score estimator avoids the
+$R$ sweep, against $\gamma$-scale averaged-estimator variances
+of 8.4 to 9.1 at the same design. The averaged change-score
+estimator avoids the
 variance components entirely, and ANCOVA estimates the run-in
 coefficient from the data, but under the misspecifications
 examined neither robustness property is enough to overcome
