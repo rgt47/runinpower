@@ -417,6 +417,41 @@ Paper 1 as the anchor.
   4 both abstract headlines; phantom validation claims in Papers 1-3.
   Repository action this session: removed all 119 "To be completed by
   rgt." placeholder blocks from the four manuscripts.
+- 2026-08-08: Remediation pass (not a fresh review). Applied and
+  verified against the package source: Paper 1 false J0 = 1 theorem
+  replaced, phantom Monte Carlo replaced by a real seeded validation
+  chunk (direct GLS vs Woodbury, 396 configurations including f > 0),
+  abstract superlative removed, MATLAB/Mathematica and mechanical
+  fixes. Paper 2 abstract and Discussion re-signed to the verified
+  direction (AR(1) generally smaller than CS at matched nominal rho;
+  anticonservative corner at most about 6%), two-route equivalence
+  claim withdrawn and non-coincidence at sigma_b^2 = 0 documented,
+  CS-limit and longpower positioning corrected, Section 2.2
+  change-score convention fixed and the AR(1) correlation derivation
+  completed and numerically verified. Paper 3 rewritten around the
+  verified zero-run-in headline, threshold artifact replaced by a
+  computed fixed-budget crossover table, closed-form language removed,
+  J0 = 1 anomaly restricted to its verified band (0.53-1.51), dropout
+  strata rebuilt as genuine monotone-truncation patterns. Paper 4
+  abstract re-signed (GLS dominates; RE >= 0.95 essentially only at
+  J1 = 1), ordering proposition stated and proved, gap
+  characterization chunk added, misspecification captions and
+  simulation design description made honest, seeding/nlme
+  misstatements fixed. Shared fixes: var_gamma_ar1 rewritten in
+  push-through form (valid at sigma_b^2 = 0; all 61 package tests
+  pass), duplicate zhao2022 bibliography entry removed. Papers 2-4
+  additionally pass an end-to-end purled-chunk execution. Newly
+  identified during remediation (open): the averaged and ANCOVA
+  contrasts in Paper 4 estimate c times gamma with
+  c = t(J1(J1+1)/2 + J1 J2)/(J1+J2), so the raw tabulated penalties
+  overstate the equal-estimand penalty by c^2 (up to about 5x at
+  (4,3,1)); disclosed in the manuscript, rescaled tables deferred to
+  the author. Still open (author-level): common-close estimand
+  derivation and r = 2 symbolic trail (Paper 1), taxonomy content and
+  stratified-variance TODO (Paper 2), Section 6 spacing model and
+  optimal-design citations (Paper 3), cLDA/SUR/feasible-GLS
+  simulation and Frison-Pocock citations (Paper 4), scaffold collapse
+  to final prose and compendium-internal cross-references (all).
 
 ---
 *Rendered on 2026-08-07 at 18:05 PDT.*<br>
