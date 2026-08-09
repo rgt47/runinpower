@@ -837,7 +837,7 @@ shared bibliography (`references.bib`, a symlink to
 :::
 
 ```{r footer, echo=FALSE, results='asis'}
-src <- sub("^/Users/zenn/Dropbox/prj/", "~/prj/",
+src <- sub("^/Users/zenn/(Library/CloudStorage/)?Dropbox/prj/", "~/prj/",
            knitr::current_input(dir = TRUE))
 cat(sprintf(
   "\n\\vfill\n\n---\n\n*Rendered on %s.*  \n*Source: `%s`*\n",
