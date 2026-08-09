@@ -455,8 +455,35 @@ Paper 1 as the anchor.
   derivation and r = 2 symbolic trail (Paper 1), taxonomy content and
   stratified-variance TODO (Paper 2), Section 6 spacing model and
   optimal-design citations (Paper 3), cLDA/SUR/feasible-GLS
-  simulation and Frison-Pocock citations (Paper 4), scaffold collapse
-  to final prose and compendium-internal cross-references (all).
+  simulation (Paper 4), scaffold collapse to final prose and
+  compendium-internal cross-references (all).
+- 2026-08-08 (continued): Literature-positioning pass, closing Major
+  Issue 8. Verified by web search and added to the shared
+  bibliography: tekle2008 (D-optimal cohort designs for linear
+  mixed-effects models, Stat Med 27(14)), mentre1997 (optimal design
+  in random-effects regression models, Biometrika 84(2)), munoz1992
+  (damped-exponential correlation family, Biometrics 48(3)),
+  atkinson1992 and fedorov1997 (optimum experimental design texts).
+  Wired into the manuscripts: Paper 1 now cites nash2021
+  (slopepower, with a stated scope difference), liuseifert2015 (a
+  delayed-start contrast for the common-close phase, with the
+  estimand comparison explicitly deferred), and galbraith2002; Paper
+  2 cites munoz1992 as the family containing compound symmetry and
+  AR(1) as boundary members; Paper 3 gained a paragraph positioning
+  the allocation problem against the optimum-design literature and
+  naming three features that distinguish it (constrained partition
+  rather than free time points, a phase carrying its own nuisance
+  parameter, and a c-optimality rather than D-optimality criterion);
+  Paper 4 now cites frison1992 and frison1997 in the Introduction and
+  at the Proposition with an explicit delimitation of what is new,
+  liang1986 at the sandwich construction, and hu2021 in the run-in
+  positioning. Also confirmed resolved: all four papers now symlink a
+  single shared references.bib, closing the two-bibliography and
+  two-key-scheme finding. Verified: every citation key in all four
+  manuscripts resolves, no duplicate bib keys remain, and all four
+  manuscripts execute end-to-end from purled chunks. Remaining open
+  items are unchanged from the entry above, less the Frison-Pocock
+  and optimal-design citation gaps now closed.
 
 ---
 *Rendered on 2026-08-07 at 18:05 PDT.*<br>

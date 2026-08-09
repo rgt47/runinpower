@@ -180,6 +180,7 @@ visit schedule, and serve as the baseline case that we extend here.
 \textbf{The CRAN longpower package is the reference implementation of the baseline formulae, and our general result reduces to its routines at the appropriate boundaries.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item longpower provides edland, diggle, and liu.liang routines for slope-comparison trials.
+\item The Stata package slopepower offers a complementary simulation-based route to the same class of calculations.
 \item Our formula reduces to the Ard-Edland slope variance at $J_0 = J_2 = 0$, and to the Diggle compound-symmetry form when also $\sigma_b^2 = 0$.
 \item The generalization thus embeds the existing longpower formulae as the baseline against which run-in and common-close gains are measured.
 \end{itemize}
@@ -191,6 +192,13 @@ the `longpower` package [@iddi2022], which provides the
 routines `edland.linear.power()`, `diggle.linear.power()`, and
 `liu.liang.linear.power()` for slope-comparison trials with
 random intercepts and slopes [@ard2011; @diggle2002; @liuliang1997].
+A complementary implementation is the Stata package `slopepower`
+[@nash2021], which obtains power for slope-comparison trials by
+simulating from a fitted mixed model rather than by evaluating a
+closed form; it addresses the same design question but does not
+cover run-in or common close phases, and its simulation route
+does not expose the variance as an explicit function of the
+design counts.
 We show in Section 3.3 that the closed-form result derived below
 reduces to the Ard-Edland slope-variance formula implemented in
 `edland.linear.power()` at the boundary $J_0 = J_2 = 0$, and
@@ -224,7 +232,19 @@ designs aimed at distinguishing symptomatic from
 disease-modifying effects [@sperling2014],
 but the contribution of the common close to statistical
 efficiency within the GLS framework has not been formally
-characterized.
+characterized. The delayed-start design [@liuseifert2015]
+is the closest relative: it also observes participants after
+the initial randomized period, but it does so in order to
+test whether an early-treatment group retains an advantage
+over a late-start group, so the post-randomization phase
+carries its own treatment contrast and its own estimand. The
+common close considered here serves the different purpose of
+sharpening the estimate of each participant's underlying
+slope, with all participants off treatment and no contrast
+attached to the phase itself. A formal comparison of the two
+estimands, and of the assumptions each requires about
+post-cessation trajectories, is beyond the scope of this
+paper.
 :::
 
 \begin{bullets}
@@ -1403,7 +1423,14 @@ the cost of estimating $\delta$. A single run-in
 observation is therefore never harmful to the precision of
 $\hat\gamma$, although the gain it provides should be
 quantified with the formulas above before committing to a
-longer trial.
+longer trial. This is an instance of the general design
+principle set out by @galbraith2002, that the value of an
+additional measurement occasion in a longitudinal trial
+depends jointly on the variance components and on the
+parameters the enlarged model must estimate, so that the
+number and placement of visits should be chosen by direct
+evaluation of the resulting precision rather than by a
+fixed rule.
 :::
 
 

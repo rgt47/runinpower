@@ -140,6 +140,7 @@ three phases?
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item Existing optima target time-point positioning or general design guidelines, not the run-in setting.
 \item Multiple pre-treatment measurements are known to benefit ANCOVA-analyzed designs.
+\item A substantial optimal-design literature treats measurement schedules for mixed models through the Fisher information matrix, but does not address a phase structure in which one phase carries its own nuisance parameter.
 \item Available software computes slope-comparison power but does not optimize the phase allocation.
 \end{itemize}
 \end{bullets}
@@ -156,6 +157,37 @@ analyzed via ANCOVA. @overall1994 provided sample size
 formulas for repeated measurement designs.
 @galbraith2002 developed general guidelines for the
 design of clinical trials with longitudinal outcomes.
+
+The question posed here is a design-optimization problem
+and belongs to a well-developed tradition. The general
+theory of optimum experimental design, in which a design
+is chosen to optimize a functional of the Fisher
+information matrix, is set out by @atkinson1992 and
+@fedorov1997. @mentre1997 extended the theory to
+random-effects regression models, the model class used
+here, giving an algorithm that maximizes the determinant
+of the population information matrix. Closest in setting
+is @tekle2008, who constructed D-optimal cohort designs
+for linear mixed-effects models with a cost function for
+repeated measurements, and found that concentrating
+measurements at optimally chosen time points in a single
+cohort is efficient. Three features distinguish the
+present problem from that literature. First, the design
+space is not a set of time points to be placed freely
+but a partition of a fixed count of equally spaced
+visits into three phases with a prescribed ordering.
+Second, the run-in phase introduces its own nuisance
+parameter, the pre-randomization slope $\delta$, so
+enlarging that phase both adds information and consumes
+a degree of freedom; the optimal-design literature
+usually holds the parameter vector fixed as the design
+varies. Third, the criterion here is the variance of a
+single scalar contrast, a $c$-optimality criterion,
+rather than the D-optimality that most of this
+literature adopts. The results below are accordingly
+numerical rather than an application of the general
+equivalence theory.
+
 The slopepower command [@nash2021] and the longpower
 R package [@iddi2022] implement power calculations
 for slope-comparison trials but do not optimize the

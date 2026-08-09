@@ -160,6 +160,7 @@ prose and table headers use $(J_0, J_1, J_2)$.
 \textbf{The relative merits of change-score and ANCOVA analyses have been studied extensively across several methodological traditions.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item Formal efficiency comparisons for pretest-posttest designs trace back to @brogan1980 and @yang2001.
+\item @frison1992 and @frison1997 established the efficiency ordering among post-treatment, change-score, and ANCOVA analyses with multiple baseline measurements, the closest antecedent of the present comparison.
 \item Subsequent work contrasted baseline-as-covariate with baseline-as-response and developed semiparametric covariate adjustment.
 \item Later contributions clarified when longitudinal models gain power over ANCOVA and adapted these ideas to run-in trials.
 \end{itemize}
@@ -169,7 +170,30 @@ prose and table headers use $(J_0, J_1, J_2)$.
 The debate between change-score and ANCOVA analyses has
 a long history [@senn2006; @vanbreukelen2006;
 @crager1987]. @yang2001 provided a formal efficiency
-comparison for pretest-posttest designs. @liu2009 and
+comparison for pretest-posttest designs. The closest
+antecedent of the present work is @frison1992, who
+derived the relative efficiency of post-treatment,
+change-score, and ANCOVA analyses when several baseline
+measurements are available, and @frison1997, who
+extended the treatment to repeated post-treatment
+measurements. Their ordering, that ANCOVA on the mean of
+the available baselines dominates the change score which
+in turn dominates the raw post-treatment comparison, is
+the qualitative result that the ordering established in
+Section 3.1 specializes. What is new here is not the
+ordering itself but the closed-form relative
+efficiencies in the run-in random-slope parameterization:
+the efficiency margins are obtained as explicit
+functions of the design counts $(J_0, J_1, J_2)$ and the
+signal-to-noise ratio $\sigma_b/\sigma$, they cover a
+post-treatment common close phase absent from the
+Frison-Pocock setting, and the estimand is a difference
+of slopes rather than a difference of means. Within the
+run-in literature, @hu2021 derived GLS power formulas
+for trials with pre-randomization observations, which
+the present comparison takes as the efficient benchmark
+against which the simpler estimators are measured.
+@liu2009 and
 @lu2010 compared baseline-as-covariate against
 baseline-as-response (constrained longitudinal data
 analysis). @tsiatis2008 developed a semiparametric
@@ -525,6 +549,19 @@ dividing both by $c^2$ preserves the inequality. (The
 feasible ANCOVA estimates $\phi$ and carries the usual
 finite-sample inflation.) $\square$
 
+The ordering itself is not new. @frison1992 established
+the same qualitative ranking for repeated-measures
+designs with several baseline measurements, and
+@frison1997 extended it to repeated post-treatment
+measurements; the argument above is the specialization
+of that result to the run-in random-slope model, where
+the run-in mean plays the role of their baseline mean.
+The contribution of the following sections is the
+closed-form magnitude of the two gaps as functions of
+$(J_0, J_1, J_2)$ and $\sigma_b/\sigma$, which the
+Frison-Pocock parameterization does not deliver for a
+slope estimand or for designs with a common close phase.
+
 Numerically, the ordering holds with zero violations
 over the 115-cell grid of the tables below. All tables,
 figures, and simulation results in this paper are on the
@@ -672,9 +709,17 @@ second family (`r n_hi_avg` of `r n_cells` cells).
 ::: {.orig data-latex=""}
 When $\sigma_b^2$ is misestimated (e.g., too large
 or too small), the GLS analysis that assumes it is no
-longer optimal. The averaged change-score estimator's
-definition does not depend on the assumed value, so its
-variance is constant across the sweep. Note the scale of
+longer optimal. Its sampling variance is then the
+sandwich form
+$(X'\Sigma_a^{-1}X)^{-1}
+ X'\Sigma_a^{-1}\Sigma\Sigma_a^{-1}X
+ (X'\Sigma_a^{-1}X)^{-1}$,
+with $\Sigma_a$ the assumed and $\Sigma$ the true
+covariance, which is the model-robust variance of
+@liang1986 evaluated at a known working covariance
+rather than an estimated one. The averaged change-score
+estimator's definition does not depend on the assumed
+value, so its variance is constant across the sweep. Note the scale of
 the comparison: over assumed $\sigma_b^2 \in [0.01, 5]$
 with true $\sigma_b^2 = 1$, the misspecified GLS
 sandwich variance never exceeds 5.30, still below the

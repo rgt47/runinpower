@@ -139,6 +139,7 @@ correlation, where $\Corr(e_{ij}, e_{ij'}) =
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item Winkens (2007) studied optimal designs for autocorrelated data outside the run-in context.
 \item Diggle and Verbeke give general treatments of longitudinal correlation structures.
+\item Munoz et al. (1992) embedded compound symmetry and AR(1) in a single damped-exponential family, the natural generalization of the two structures contrasted here.
 \item Chambless (1993) addressed intra-individual variation in change scores, a concern amplified under AR(1).
 \end{itemize}
 \end{bullets}
@@ -148,7 +149,14 @@ correlation, where $\Corr(e_{ij}, e_{ij'}) =
 longitudinal data but did not consider the run-in
 setting. @diggle2002 and @verbeke2000 provide general
 treatments of correlation structures in longitudinal
-models. @chambless1993 addressed the effect of
+models. @munoz1992 proposed a damped-exponential family
+of correlation structures with $\Corr(e_{ij}, e_{ij'}) =
+\rho^{|j-j'|^{\theta}}$, which contains compound symmetry
+($\theta = 0$) and AR(1) ($\theta = 1$) as the two
+boundary members; the comparison developed here is thus a
+comparison of the two ends of that family, and the
+intermediate members offer a route to relaxing the binary
+choice. @chambless1993 addressed the effect of
 intra-individual variation on change-score analyses,
 a concern that is amplified under AR(1) correlation.
 :::
