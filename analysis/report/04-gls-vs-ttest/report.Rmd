@@ -624,6 +624,9 @@ knitr::kable(
   row.names = FALSE
 )
 
+```
+
+```{r re-table-anc}
 display_anc <- configs[, c('label', anc_cols)]
 names(display_anc) <- c('$(J_0,J_1,J_2)$',
   paste0('$', ratio_levels, '$'))

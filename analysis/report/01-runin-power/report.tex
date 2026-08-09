@@ -79,6 +79,8 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
 \newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -167,6 +169,41 @@
 
 % backward compat alias
 \newenvironment{claudecode}{\begin{orig}}{\end{orig}}
+%% tools/stamp.tex
+%% Provenance footer for PDFs rendered from this project.
+%% Vendored by zzcollab; this file is not project-specific. The
+%% footer prints the source document, the time of rendering, and
+%% the git version. All three values are supplied at render time
+%% by tools/stamp-render.R, which writes a small generated file
+%% that redefines the macros below. The \providecommand defaults
+%% keep a bare LaTeX compile working when the document is built
+%% without the wrapper.
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\providecommand{\stampsource}{\detokenize{(source not recorded)}}
+\providecommand{\stamptime}{(time not recorded)}
+\providecommand{\stampversion}{\detokenize{(version not recorded)}}
+\setlength{\footskip}{40pt}
+\newcommand{\stampfootcontent}{%
+  \footnotesize\color{gray}%
+  \parbox[b]{\textwidth}{%
+    \stamptime\hfill\thepage\\[2pt]%
+    \ttfamily\raggedright\stampsource}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\stampfootcontent}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+%% The title page uses the `plain` page style; redefine it so the
+%% stamp appears there too.
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\stampfootcontent}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}}
+\renewcommand{\stampsource}{\textasciitilde{}/\allowbreak{}prj/\allowbreak{}res/\allowbreak{}04-runin-power-analysis/\allowbreak{}runinpower/\allowbreak{}analysis/\allowbreak{}report/\allowbreak{}01-runin-power/\allowbreak{}report.Rmd}
+\renewcommand{\stamptime}{2026-08-08 18:05 PDT}
+\renewcommand{\stampversion}{\detokenize{d88a11d}}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{lineno}
@@ -194,13 +231,13 @@
 \title{Power Analysis for Longitudinal Clinical Trials
 with Run-In and Common Close Observations}
 \author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
-\date{July 01, 2026}
+\date{August 08, 2026}
 
 \begin{document}
 \maketitle
 \begin{abstract}
 \textbf{Background.} Longitudinal clinical trials often
-incorporate pre-randomisation (run-in) and post-treatment
+incorporate pre-randomization (run-in) and post-treatment
 (common close) observations to improve estimator efficiency.
 Closed-form power and sample-size formulas for these
 augmented designs under linear mixed-effects models with
@@ -213,7 +250,7 @@ formulas for three nested cases: (i) two run-in observations,
 (ii) an arbitrary number \(J_0\) of run-in observations, and
 (iii) \(J_0\) run-in plus \(J_2\) common close observations. All
 derivations proceed via the Woodbury matrix identity applied
-to the GLS estimator under change-score parameterisation.
+to the GLS estimator under change-score parameterization.
 The formulas are expressed in terms of the residual variance
 \(\sigma^2\), the random-slope variance \(\sigma_b^2\), and the
 observation spacing \(t\), enabling direct computation of
@@ -222,7 +259,7 @@ required sample sizes.
 \textbf{Results.} In a numerical example using parameters from
 Alzheimer's disease neuroimaging trials, for which the
 signal-to-noise ratio \(\sigma_b / \sigma \approx 1.7\) is
-favourable, two run-in observations reduce the required
+favorable, two run-in observations reduce the required
 sample size by 62\% (from 385 to 145 per group), and adding
 two common close observations raises the reduction to 82\%.
 The magnitude of the gain is governed by \(\sigma_b / \sigma\):
@@ -232,8 +269,8 @@ low ratios to 76\% at high ratios. The closed-form
 expressions allow this sensitivity analysis with respect to
 \(\sigma_b / \sigma\) without re-running simulation.
 
-\textbf{Conclusions.} The Woodbury-based formulas are the simplest
-available closed-form expressions for the variance of the
+\textbf{Conclusions.} The Woodbury-based formulas give
+closed-form expressions for the variance of the
 treatment-effect estimator under random-slopes
 longitudinal-trial designs with run-in and common close
 observations. They serve as a foundation for the AR(1)
@@ -257,10 +294,6 @@ estimator comparison (Paper 4) in this compendium.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 The run-in period has served multiple purposes in clinical trial
 design, from identifying compliant participants to washing out
@@ -280,10 +313,6 @@ model, substantially increase statistical power.
 \item In Alzheimer's neuroimaging trials, where that ratio is favorable, they reported sample-size reductions of 30 to 45 percent.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 \textsuperscript{\citeproc{ref-frost2008}{2}} established the theoretical
@@ -309,10 +338,6 @@ sample size reductions of 30--45\%.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 \textsuperscript{\citeproc{ref-wang2019}{3}} extended this framework by proposing
 two-period linear mixed effects models that jointly model
@@ -334,10 +359,6 @@ information for all participants.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 A parallel literature has developed closed-form variance and
 sample size formulae for the random coefficient regression
@@ -358,14 +379,11 @@ visit schedule, and serve as the baseline case that we extend here.
 \textbf{The CRAN longpower package is the reference implementation of the baseline formulae, and our general result reduces to its routines at the appropriate boundaries.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item longpower provides edland, diggle, and liu.liang routines for slope-comparison trials.
+\item The Stata package slopepower offers a complementary simulation-based route to the same class of calculations.
 \item Our formula reduces to the Ard-Edland slope variance at $J_0 = J_2 = 0$, and to the Diggle compound-symmetry form when also $\sigma_b^2 = 0$.
 \item The generalization thus embeds the existing longpower formulae as the baseline against which run-in and common-close gains are measured.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 The CRAN reference implementation of the \(J_0=0\) formulae is
@@ -373,6 +391,12 @@ the \texttt{longpower} package\textsuperscript{\citeproc{ref-iddi2022}{7}}, whic
 routines \texttt{edland.linear.power()}, \texttt{diggle.linear.power()}, and
 \texttt{liu.liang.linear.power()} for slope-comparison trials with
 random intercepts and slopes\textsuperscript{\citeproc{ref-ard2011}{8}--\citeproc{ref-liuliang1997}{10}}.
+A complementary implementation is the Stata package \texttt{slopepower}\textsuperscript{\citeproc{ref-nash2021}{11}}, which obtains power for slope-comparison trials by
+simulating from a fitted mixed model rather than by evaluating a
+closed form; it addresses the same design question but does not
+cover run-in or common close phases, and its simulation route
+does not expose the variance as an explicit function of the
+design counts.
 We show in Section 3.3 that the closed-form result derived below
 reduces to the Ard-Edland slope-variance formula implemented in
 \texttt{edland.linear.power()} at the boundary \(J_0 = J_2 = 0\), and
@@ -393,10 +417,6 @@ close observations are measured.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 Despite these advances, no general closed-form power formula
 has been derived that simultaneously accounts for an arbitrary
@@ -408,10 +428,22 @@ additional information about individual trajectories at no
 cost to the treatment comparison. Post-treatment observation
 periods appear in delayed-start and randomized withdrawal
 designs aimed at distinguishing symptomatic from
-disease-modifying effects\textsuperscript{\citeproc{ref-sperling2014}{11}},
+disease-modifying effects\textsuperscript{\citeproc{ref-sperling2014}{12}},
 but the contribution of the common close to statistical
 efficiency within the GLS framework has not been formally
-characterized.
+characterized. The delayed-start design\textsuperscript{\citeproc{ref-liuseifert2015}{13}}
+is the closest relative: it also observes participants after
+the initial randomized period, but it does so in order to
+test whether an early-treatment group retains an advantage
+over a late-start group, so the post-randomization phase
+carries its own treatment contrast and its own estimand. The
+common close considered here serves the different purpose of
+sharpening the estimate of each participant's underlying
+slope, with all participants off treatment and no contrast
+attached to the phase itself. A formal comparison of the two
+estimands, and of the assumptions each requires about
+post-cessation trajectories, is beyond the scope of this
+paper.
 
 \end{orig}
 
@@ -423,10 +455,6 @@ characterized.
 \item All expressions are in terms of $\sigma^2$, $\sigma_b^2$, and spacing $t$, with numerical examples from Alzheimer's neuroimaging studies (Section 5).
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 We present three results. First, we derive a simple
@@ -459,10 +487,6 @@ neuroimaging studies.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 Consider a two-arm longitudinal clinical trial in which \(N\)
 participants are observed at equally spaced time points across
@@ -488,6 +512,12 @@ participant \(i\) at time point \(j\). The observation schedule is:
   participants off-treatment)
 \end{itemize}
 
+Throughout, the phase counts \((J_0, J_1, J_2)\) correspond
+one-to-one to the arguments \texttt{r} (run-in), \texttt{k}
+(post-randomization), and \texttt{f} (common close) of the
+accompanying \texttt{runinpower} package functions used in the code
+chunks below.
+
 We model the outcome as
 \begin{equation}
   Y_{ij} = \alpha + a_i +
@@ -504,10 +534,6 @@ We model the outcome as
 \item We therefore define the total within-visit residual $w_{ij} = u_{ij} + \varepsilon_{ij}$ with variance $\sigma^2$.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 where \(\alpha\) is the overall intercept, \(a_i \sim N(0,
@@ -540,10 +566,6 @@ within-visit residual, with
 \item This reduction simplifies all subsequent variance expressions.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 The two within-visit components are separately identifiable
@@ -581,10 +603,6 @@ and the treatment group indicator is
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 The fixed effects are: \(\delta\), the rate of change during the
 run-in period (common to all participants); \(\beta\), the rate
@@ -603,10 +621,6 @@ change. We assume equally spaced observations with interval
 \item Equivalently, the treatment indicator is replaced with $g_i \cdot I(1 \le j \le J_1)$ in the model.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 For the common close phase (\(j > J_1\)), both treatment and
@@ -637,24 +651,20 @@ change scores relative to the randomization visit:
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 This eliminates the intercept \(\alpha\) and the random
 intercept \(a_i\). We note that the change-score approach
 is algebraically equivalent to constrained longitudinal
 data analysis (cLDA) under compound symmetry, where the
 baseline is included in the response vector with a
-common-mean constraint across treatment groups\textsuperscript{\citeproc{ref-laird1982}{12},\citeproc{ref-wang2022}{13}}.
+common-mean constraint across treatment groups\textsuperscript{\citeproc{ref-laird1982}{14},\citeproc{ref-wang2022}{15}}.
 The variance formulas derived below therefore apply
 to both change-score and cLDA analyses of run-in
 designs. Because the change-score eliminates \(a_i\),
 the resulting formulas depend on only two variance
 components (\(\sigma^2, \sigma_b^2\)) rather than the
 three (\(\sigma^2, \sigma_a^2, \sigma_b^2\)) required
-by the raw-outcome model.\textsuperscript{\citeproc{ref-zhao2022}{14}} show that
+by the raw-outcome model.\textsuperscript{\citeproc{ref-zhao2022}{16}} show that
 ignoring the intercept-slope correlation in the
 three-component model can produce anticonservative
 sample sizes; the change-score approach avoids this
@@ -705,10 +715,6 @@ The residual covariance has the structure
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 since \(w_{ij} = u_{ij} + \varepsilon_{ij}\) are independent
 across visits with common variance
@@ -743,10 +749,6 @@ is
 \item The target $\mathop{\mathrm{Var}}(\hat{\gamma})$ is the diagonal entry corresponding to $\gamma$.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 with \(\mathop{\mathrm{Var}}(\hat{\boldsymbol{\beta}}) = (X' \Sigma^{-1} X)^{-1}\),
@@ -834,10 +836,6 @@ the GLS information matrix is
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 and the total information is \(X' \Sigma^{-1} X = \sum_i
 X_i' \Sigma_i^{-1} X_i\), with \(\mathop{\mathrm{Var}}(\hat{\boldsymbol{\beta}})
@@ -862,10 +860,6 @@ by summing (\ref{eq:perpt_info}) over the relevant strata.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 This case reproduces the result in\textsuperscript{\citeproc{ref-frost2008}{2}}, Section 3.1.1, and
 is the \(J_0 = 0\) baseline of the random coefficient regression
@@ -882,10 +876,6 @@ verification for our framework.
 \item The remaining fixed effects are the placebo slope $\beta$ and the treatment effect $\gamma$.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 With \(J_0=0\) and \(J_1=2\), there are \(J = 2\) change scores
@@ -960,10 +950,6 @@ participant pair) is the \((2,2)\) element:
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 This agrees with Frost et al.~(2008), Section 3.1.1. For
 \(m\) participants per group:
@@ -984,13 +970,10 @@ run-in designs are compared.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 We now have \(J = 3\) change scores \((c_{i,-2},\, c_{i,-1},\,
-c_{i,1})\) at times \((-2t,\, -t,\, 0,\, t)\). The fixed effects
+c_{i,1})\) at times \((-2t,\, -t,\, t)\), the baseline visit at
+time \(0\) having been differenced away. The fixed effects
 design matrix separates the run-in slope \(\delta\) from the
 post-randomization slopes:
 
@@ -1014,13 +997,8 @@ post-randomization slopes:
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
-The random effects design is \(Z = t(1,\, 1,\, 1)' \cdot
-(-2,\, -1,\, 1)' \cdot b_i\). However, since the random
+Since the random
 slope applies uniformly to all time points, \(Z = t(-2,\, -1,
 \, 1)'\) for the random effect \(b_i\). We note that the
 change scores at times \(-2t\) and \(-t\) relative to baseline
@@ -1205,10 +1183,6 @@ Therefore
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 To find \(\mathop{\mathrm{Var}}(\hat{\gamma})\), we need the \((3,3)\) element
 of \((X'\Sigma^{-1}X)^{-1}\). We compute this numerically in
@@ -1224,10 +1198,6 @@ the R code below and verify against the closed-form result.
 \item Dividing the cofactor by the determinant gives the boxed variance below.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 Carrying through the algebra, define \(D = a + 5bt^2 =
@@ -1261,10 +1231,6 @@ gives:
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 Unlike the Frost formula \eqref{eq:var_r0k2}, the run-in
 variance depends on \(\sigma^2\) both in the numerator and
@@ -1283,10 +1249,6 @@ from pre-randomization observations.
 \item The total number of change scores is $J = J_0 + J_1$.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 We now derive the variance for arbitrary \(J_0\) run-in
@@ -1313,10 +1275,6 @@ The change scores are
 \item $\mathbf{d}_{J_1}$ collects the positive post-randomization times scaled by $t$.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 The fixed effects design matrix has columns for
@@ -1357,10 +1315,6 @@ The residual covariance remains \(R = a(\mathbf{I}_J +
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 We proceed through the Woodbury identity. Define
 \(S_{J_0} = \sum_{s=1}^{J_0} s^2 = J_0(J_0+1)(2J_0+1)/6\) and
@@ -1381,10 +1335,13 @@ The key intermediate quantities are:
 \end{equation}
 where \(\sum d_j = -J_0(J_0+1)/2 + J_1(J_1+1)/2\).
 
-\textbf{\((G^{-1} + Z'R^{-1}Z)^{-1}\):} From \eqref{eq:ZRZ_general}:
+\textbf{\((G^{-1} + Z'R^{-1}Z)^{-1}\):} With \(Z'R^{-1}Z\) given by
+\eqref{eq:ZRZ_general},
 \[
-  H = \frac{ab}{a + t^2 b \cdot Z'R^{-1}Z \cdot a/t^2}
+  H = \bigl(G^{-1} + Z'R^{-1}Z\bigr)^{-1}
+  = \frac{b}{1 + b\, Z'R^{-1}Z},
 \]
+the general analogue of \(b/\eta_J\) in \eqref{eq:eta}.
 
 \textbf{\(X'R^{-1}X\):} This \(3 \times 3\) matrix has elements
 computed from the block structure of \(X\). Letting
@@ -1418,10 +1375,6 @@ summed over one treatment and one placebo participant is:
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 The factor of 2 appears on entries involving both groups,
 while \(\gamma\)-related entries lack this factor since
@@ -1453,10 +1406,6 @@ which is generally rank 2 (not rank 1), so
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 The variance \(\mathop{\mathrm{Var}}(\hat{\gamma})\) for general \(J_0\) and \(J_1\)
 does not admit a simple closed-form expression. The
@@ -1477,10 +1426,6 @@ expressions.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 We therefore implement the computation via the matrix-based
 Woodbury identity in R code, which evaluates the exact
@@ -1500,10 +1445,6 @@ closed-form expressions for \(J_0=0\) (\ref{eq:var_r0k2}) and
 \item The result is the per-arm variance of the treatment-effect estimator for $n$ participants.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 At \(J_0 = 0\), the \(\delta\) column of \(X\) is empty and the
@@ -1532,10 +1473,6 @@ per arm becomes
 \item The Frost formula is the two-visit specialization, so the general result quantifies gains accruing only from run-in or common-close observations.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 where the baseline visit at \(t_0 = 0\) enters through the
@@ -1566,10 +1503,6 @@ contributed by \(J_0 > 0\) or \(J_2 > 0\).
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 We now extend to include \(J_2\) common close observations after
 the treatment period. The total dimension is \(J = J_0 + J_1 + J_2\).
@@ -1593,10 +1526,6 @@ are:
 \item The $\gamma$ column therefore equals $J_1 t$ for all common-close observations in the treatment group.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 The treatment effect \(\gamma\) enters the common close change
@@ -1632,10 +1561,6 @@ The fixed effects design matrix becomes:
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 The \(\beta\) column contains the post-randomization time for
 the placebo slope: \(0,\ldots,0,1,\ldots,J_1,J_1+1,\ldots,J_1+J_2\).
@@ -1659,10 +1584,6 @@ The residual covariance is still
 \item The elements of the random-effects vector $Z$ are extended accordingly.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 The Woodbury computation proceeds identically, with the only
@@ -1713,30 +1634,39 @@ Values greater than 1 indicate that the run-in/common close
 design requires fewer participants.
 
 \begin{bullets}
-\textbf{A single run-in observation can be counterproductive because the extra slope parameter it introduces may offset the information it contributes.}
+\textbf{A single run-in observation never worsens precision, but the extra slope parameter it introduces can absorb nearly all of the information it contributes.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item Adding one run-in observation introduces the parameter $\delta$, enlarging the fixed-effect dimension.
-\item This added degree of freedom can make the one-run-in variance exceed the no-run-in variance for some parameters.
-\item Designers should therefore plan either zero or at least two run-in observations, never exactly one.
+\item Adding one run-in observation introduces the parameter $\delta$, enlarging the fixed-effect dimension from 2 to 3.
+\item Across a wide numerical grid, $\mathop{\mathrm{Var}}(\hat\gamma)|_{J_0=1}$ never exceeds $\mathop{\mathrm{Var}}(\hat\gamma)|_{J_0=0}$.
+\item At some parameter values the gain is negligible, so the benefit of a single run-in observation should be quantified before extending trial duration.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 A practical caveat: adding a single run-in observation
 (\(J_0=1\)) introduces the run-in slope parameter \(\delta\)
-into the model, increasing the dimension of \(\beta\) from
-2 to 3. This additional degree of freedom can offset the
-information gained from the run-in observation, so that
-\(\mathop{\mathrm{Var}}(\hat\gamma)|_{J_0=1}\) may exceed
-\(\mathop{\mathrm{Var}}(\hat\gamma)|_{J_0=0}\) for some parameter
-configurations. This effect, noted in a different context
-by\textsuperscript{\citeproc{ref-frison1997}{15}}, implies that
-trial designers should plan either zero or at least two
-run-in observations, not one.
+into the model, increasing the fixed-effect dimension from
+2 to 3. This additional parameter absorbs part of the
+information contributed by the run-in observation.
+Numerical evaluation over a wide grid of configurations
+(\(J_1 = 2, \ldots, 6\); \(\sigma_b^2/\sigma^2\) from \(10^{-4}\)
+to \(10^{3}\); \(t\) from \(0.25\) to \(4\)) shows that
+\(\mathop{\mathrm{Var}}(\hat\gamma)|_{J_0=1}\) never exceeds
+\(\mathop{\mathrm{Var}}(\hat\gamma)|_{J_0=0}\), but the improvement can be
+negligible: at some parameter values the information from
+the single run-in observation is almost exactly offset by
+the cost of estimating \(\delta\). A single run-in
+observation is therefore never harmful to the precision of
+\(\hat\gamma\), although the gain it provides should be
+quantified with the formulas above before committing to a
+longer trial. This is an instance of the general design
+principle set out by\textsuperscript{\citeproc{ref-galbraith2002}{17}}, that the value of an
+additional measurement occasion in a longitudinal trial
+depends jointly on the variance components and on the
+parameters the enlarged model must estimate, so that the
+number and placement of visits should be chosen by direct
+evaluation of the resulting precision rather than by a
+fixed rule.
 
 \end{orig}
 
@@ -1752,10 +1682,6 @@ run-in observations, not one.
 \item The two-run-in case exercises the three-parameter model.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 We verify that the closed-form expressions agree with
@@ -1887,6 +1813,136 @@ The \(J_0=2\), \(J_1=1\) case uses the three-parameter model.
 ##   r=4, k=2: Var = 1.2651
 \end{verbatim}
 
+\subsection{Validation of the general routine}\label{validation-of-the-general-routine}
+
+\begin{bullets}
+\textbf{The Woodbury routine is validated against a direct GLS computation and a seeded Monte Carlo benchmark that both exercise the common-close path.}
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item A direct computation assembles and inverts $\Sigma$ without the Woodbury identity over a grid of designs including $J_2 > 0$.
+\item Agreement with the Woodbury routine is at the level of numerical round-off.
+\item A seeded Monte Carlo at $(J_0, J_1, J_2) = (2, 2, 2)$ confirms that the empirical variance of $\hat\gamma$ matches the analytic value.
+\end{itemize}
+\end{bullets}
+
+\begin{orig}
+The closed-form checkpoints above both have \(J_2 = 0\), so
+they do not exercise the common-close path. We therefore
+validate the general routine in two ways. First, we compare
+the Woodbury computation with a direct GLS evaluation in
+which \(\Sigma = R + \sigma_b^2 Z Z'\) is assembled and
+inverted without the Woodbury identity, over a grid of
+designs that includes configurations with \(J_2 > 0\).
+Second, we run a seeded Monte Carlo benchmark at
+\((J_0, J_1, J_2) = (2, 2, 2)\): change-score vectors are
+simulated from the generative model, \(\hat\gamma\) is
+computed by GLS in each replicate, and the empirical
+variance is compared with the analytic value.
+
+\end{orig}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{var\_gamma\_direct }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(r, k, f, sigma2, sigma\_b2,}
+\NormalTok{                             t\_interval) \{}
+\NormalTok{  p }\OtherTok{\textless{}{-}}\NormalTok{ r }\SpecialCharTok{+}\NormalTok{ k }\SpecialCharTok{+}\NormalTok{ f}
+\NormalTok{  R }\OtherTok{\textless{}{-}}\NormalTok{ sigma2 }\SpecialCharTok{*}\NormalTok{ (}\FunctionTok{diag}\NormalTok{(p) }\SpecialCharTok{+} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{, p, p))}
+\NormalTok{  des }\OtherTok{\textless{}{-}} \FunctionTok{build\_design}\NormalTok{(r, k, f, t\_interval)}
+\NormalTok{  Sigma }\OtherTok{\textless{}{-}}\NormalTok{ R }\SpecialCharTok{+}\NormalTok{ sigma\_b2 }\SpecialCharTok{*}\NormalTok{ des}\SpecialCharTok{$}\NormalTok{Z }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(des}\SpecialCharTok{$}\NormalTok{Z)}
+\NormalTok{  Si }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{(Sigma)}
+\NormalTok{  info }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(des}\SpecialCharTok{$}\NormalTok{X\_trt) }\SpecialCharTok{\%*\%}\NormalTok{ Si }\SpecialCharTok{\%*\%}\NormalTok{ des}\SpecialCharTok{$}\NormalTok{X\_trt }\SpecialCharTok{+}
+    \FunctionTok{t}\NormalTok{(des}\SpecialCharTok{$}\NormalTok{X\_plc) }\SpecialCharTok{\%*\%}\NormalTok{ Si }\SpecialCharTok{\%*\%}\NormalTok{ des}\SpecialCharTok{$}\NormalTok{X\_plc}
+  \FunctionTok{solve}\NormalTok{(info)[des}\SpecialCharTok{$}\NormalTok{ncol\_X, des}\SpecialCharTok{$}\NormalTok{ncol\_X]}
+\NormalTok{\}}
+
+\NormalTok{grid }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}\AttributeTok{r =} \DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{k =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\AttributeTok{f =} \DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{,}
+                    \AttributeTok{sigma\_b2 =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{5}\NormalTok{),}
+                    \AttributeTok{t\_int =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\NormalTok{grid }\OtherTok{\textless{}{-}}\NormalTok{ grid[grid}\SpecialCharTok{$}\NormalTok{r }\SpecialCharTok{+}\NormalTok{ grid}\SpecialCharTok{$}\NormalTok{k }\SpecialCharTok{+}\NormalTok{ grid}\SpecialCharTok{$}\NormalTok{f }\SpecialCharTok{\textgreater{}=} \DecValTok{3}\NormalTok{, ]}
+\NormalTok{diffs }\OtherTok{\textless{}{-}} \FunctionTok{mapply}\NormalTok{(}
+  \ControlFlowTok{function}\NormalTok{(r, k, f, sb2, tt) \{}
+    \FunctionTok{abs}\NormalTok{(}\FunctionTok{var\_gamma\_matrix}\NormalTok{(r, k, f, }\FloatTok{1.0}\NormalTok{, sb2, tt) }\SpecialCharTok{{-}}
+          \FunctionTok{var\_gamma\_direct}\NormalTok{(r, k, f, }\FloatTok{1.0}\NormalTok{, sb2, tt))}
+\NormalTok{  \},}
+\NormalTok{  grid}\SpecialCharTok{$}\NormalTok{r, grid}\SpecialCharTok{$}\NormalTok{k, grid}\SpecialCharTok{$}\NormalTok{f, grid}\SpecialCharTok{$}\NormalTok{sigma\_b2, grid}\SpecialCharTok{$}\NormalTok{t\_int}
+\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}Direct GLS vs Woodbury routine over\textquotesingle{}}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(grid),}
+    \StringTok{\textquotesingle{}configurations (including f \textgreater{} 0):}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Direct GLS vs Woodbury routine over 396 configurations (including f > 0):
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}  Maximum absolute difference:\textquotesingle{}}\NormalTok{,}
+    \FunctionTok{format}\NormalTok{(}\FunctionTok{max}\NormalTok{(diffs), }\AttributeTok{digits =} \DecValTok{3}\NormalTok{), }\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Maximum absolute difference: 3.38e-14
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{20260418}\NormalTok{)}
+\NormalTok{r\_v }\OtherTok{\textless{}{-}} \DecValTok{2}\NormalTok{; k\_v }\OtherTok{\textless{}{-}} \DecValTok{2}\NormalTok{; f\_v }\OtherTok{\textless{}{-}} \DecValTok{2}
+\NormalTok{s2\_v }\OtherTok{\textless{}{-}} \DecValTok{1}\NormalTok{; sb2\_v }\OtherTok{\textless{}{-}} \DecValTok{1}\NormalTok{; t\_v }\OtherTok{\textless{}{-}} \DecValTok{1}
+\NormalTok{m\_v }\OtherTok{\textless{}{-}} \DecValTok{200}\NormalTok{; n\_sim }\OtherTok{\textless{}{-}} \DecValTok{2000}
+\NormalTok{des }\OtherTok{\textless{}{-}} \FunctionTok{build\_design}\NormalTok{(r\_v, k\_v, f\_v, t\_v)}
+\NormalTok{p\_v }\OtherTok{\textless{}{-}}\NormalTok{ r\_v }\SpecialCharTok{+}\NormalTok{ k\_v }\SpecialCharTok{+}\NormalTok{ f\_v}
+\NormalTok{Sigma }\OtherTok{\textless{}{-}}\NormalTok{ s2\_v }\SpecialCharTok{*}\NormalTok{ (}\FunctionTok{diag}\NormalTok{(p\_v) }\SpecialCharTok{+} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{, p\_v, p\_v)) }\SpecialCharTok{+}
+\NormalTok{  sb2\_v }\SpecialCharTok{*}\NormalTok{ des}\SpecialCharTok{$}\NormalTok{Z }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(des}\SpecialCharTok{$}\NormalTok{Z)}
+\NormalTok{Si }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{(Sigma)}
+\NormalTok{cR }\OtherTok{\textless{}{-}} \FunctionTok{chol}\NormalTok{(Sigma)}
+\NormalTok{info }\OtherTok{\textless{}{-}}\NormalTok{ m\_v }\SpecialCharTok{*}\NormalTok{ (}\FunctionTok{t}\NormalTok{(des}\SpecialCharTok{$}\NormalTok{X\_trt) }\SpecialCharTok{\%*\%}\NormalTok{ Si }\SpecialCharTok{\%*\%}\NormalTok{ des}\SpecialCharTok{$}\NormalTok{X\_trt }\SpecialCharTok{+}
+                 \FunctionTok{t}\NormalTok{(des}\SpecialCharTok{$}\NormalTok{X\_plc) }\SpecialCharTok{\%*\%}\NormalTok{ Si }\SpecialCharTok{\%*\%}\NormalTok{ des}\SpecialCharTok{$}\NormalTok{X\_plc)}
+\NormalTok{theta }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\FloatTok{0.3}\NormalTok{)}
+\NormalTok{gamma\_hat }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(n\_sim)}
+\ControlFlowTok{for}\NormalTok{ (s }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(n\_sim)) \{}
+\NormalTok{  xty }\OtherTok{\textless{}{-}} \DecValTok{0}
+  \ControlFlowTok{for}\NormalTok{ (X }\ControlFlowTok{in} \FunctionTok{list}\NormalTok{(des}\SpecialCharTok{$}\NormalTok{X\_trt, des}\SpecialCharTok{$}\NormalTok{X\_plc)) \{}
+\NormalTok{    mu }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(X }\SpecialCharTok{\%*\%}\NormalTok{ theta)}
+\NormalTok{    Y }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(mu, m\_v), m\_v, p\_v, }\AttributeTok{byrow =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+      \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rnorm}\NormalTok{(m\_v }\SpecialCharTok{*}\NormalTok{ p\_v), m\_v, p\_v) }\SpecialCharTok{\%*\%}\NormalTok{ cR}
+\NormalTok{    xty }\OtherTok{\textless{}{-}}\NormalTok{ xty }\SpecialCharTok{+} \FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ Si }\SpecialCharTok{\%*\%} \FunctionTok{colSums}\NormalTok{(Y)}
+\NormalTok{  \}}
+\NormalTok{  gamma\_hat[s] }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{(info, xty)[}\DecValTok{3}\NormalTok{]}
+\NormalTok{\}}
+\FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}Monte Carlo at (J0, J1, J2) = (2, 2, 2), m =\textquotesingle{}}\NormalTok{, m\_v,}
+    \StringTok{\textquotesingle{}per group,\textquotesingle{}}\NormalTok{, n\_sim, }\StringTok{\textquotesingle{}replicates:}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Monte Carlo at (J0, J1, J2) = (2, 2, 2), m = 200 per group, 2000 replicates:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}  Empirical  m * Var(gamma\_hat):\textquotesingle{}}\NormalTok{,}
+    \FunctionTok{round}\NormalTok{(m\_v }\SpecialCharTok{*} \FunctionTok{var}\NormalTok{(gamma\_hat), }\DecValTok{4}\NormalTok{), }\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Empirical  m * Var(gamma_hat): 1.1039
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}  Theoretical (Woodbury):       \textquotesingle{}}\NormalTok{,}
+    \FunctionTok{round}\NormalTok{(}\FunctionTok{var\_gamma\_matrix}\NormalTok{(r\_v, k\_v, f\_v, s2\_v, sb2\_v,}
+\NormalTok{                           t\_v), }\DecValTok{4}\NormalTok{), }\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Theoretical (Woodbury):        1.1344
+\end{verbatim}
+
 \subsection{Sample size as a function of run-in observations}\label{sample-size-as-a-function-of-run-in-observations}
 
 \begin{table}
@@ -1947,10 +2003,6 @@ $J_2$ & Low & Medium & High\\
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 Using variance parameters estimated from the MIRIAD dataset\textsuperscript{\citeproc{ref-frost2008}{2}}: \(\sigma_b^2 = 0.9745\)
 (between-subject slope variance) and a combined within-visit
@@ -1973,7 +2025,7 @@ orders of magnitude and yields degenerate sample sizes.
 
 \begin{table}
 
-\caption{\label{tab:ad-example}Sample size per group for AD imaging trial ($J_1=2$ post-randomization visits, $\Delta = 0.25$, 90\% power). Top 15 configurations by sample size.}
+\caption{\label{tab:ad-example}Sample size per group for AD imaging trial ($J_1=2$ post-randomization visits, $\Delta = 0.25$, 90\% power). All $J_1=2$ configurations ordered by sample size; the $(0, 2, 0)$ row is the standard-design baseline.}
 \centering
 \begin{tabular}[t]{rrrrr}
 \toprule
@@ -1995,6 +2047,7 @@ $J_0$ & $J_1$ & $J_2$ & $m$ per group & Total visits\\
 2 & 2 & 0 & 145 & 5\\
 0 & 2 & 1 & 150 & 4\\
 1 & 2 & 0 & 247 & 4\\
+0 & 2 & 0 & 385 & 3\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2026,10 +2079,6 @@ $J_0$ & $J_1$ & $J_2$ & $m$ per group & Total visits\\
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 The results presented here formalize and extend the framework
 of\textsuperscript{\citeproc{ref-frost2008}{2}} by providing explicit
@@ -2047,10 +2096,6 @@ Three points merit discussion.
 \item For cognitive outcomes with a less favorable ratio, gains are modest and must be weighed against longer study duration.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 \textbf{When run-in observations are most beneficial.} The
@@ -2073,10 +2118,6 @@ must be weighed against the sample size reduction.
 \item Marginal benefit diminishes, but the first one or two visits give meaningful reductions when the slope-to-noise ratio is large.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 \textbf{Common close as a low-cost efficiency gain.} The common
@@ -2102,10 +2143,6 @@ large.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 \textbf{Relationship to the two-period model.} The formulas
 derived here are consistent with the two-period linear mixed
@@ -2127,10 +2164,6 @@ optimization of the number of observations in each phase.
 \item No dropout is assumed, though the Dawson-Lagakos pattern-mixture approach can adjust for anticipated attrition.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 \textbf{Limitations.} The derivations assume equally spaced
@@ -2157,21 +2190,17 @@ This work received no specific funding.
 \section{Data availability statement}\label{data-availability-statement}
 
 \begin{bullets}
-\textbf{All artefacts supporting the paper are openly available in the project repository.}
+\textbf{All materials supporting the paper are openly available in the project repository.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item These include the R package, the four companion manuscripts, and the MATLAB derivation scripts.
+\item These include the R package, the four companion manuscripts, and the Mathematica derivation scripts.
 \item The shared bibliography is likewise available.
 \item Specific paths are enumerated in the Reproducibility section.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 The \texttt{runinpower} R package, the four companion manuscripts
-of this compendium, the MATLAB symbolic-derivation scripts,
+of this compendium, the Mathematica symbolic-derivation scripts,
 and the shared bibliography are openly available in the
 project repository. Specific paths are listed in the
 Reproducibility section below.
@@ -2185,13 +2214,9 @@ Reproducibility section below.
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item Rendering used R version 4.4.x.
 \item The principal dependencies are the in-package source plus tinytest, rmarkdown, and bookdown.
-\item Supporting MATLAB symbolic derivations reside in the analysis scripts directory.
+\item Supporting Mathematica symbolic derivations reside in the analysis scripts directory.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 This manuscript was rendered with R 4.4.x. Principal packages
@@ -2199,50 +2224,49 @@ used are the in-package \texttt{runinpower} source (nine source
 files: allocation, ancova, averaged, covariance,
 covariance-ar1, design, power, replicated, variance),
 \texttt{tinytest} (testing harness), and \texttt{rmarkdown} plus
-\texttt{bookdown} for the manuscript build. MATLAB symbolic
+\texttt{bookdown} for the manuscript build. Mathematica symbolic
 derivations supporting the Woodbury-based variance formulas
 are at \texttt{analysis/scripts/}.
 
 \end{orig}
 
 \begin{bullets}
-\textbf{The variance results are deterministic, and any Monte Carlo benchmarking uses a fixed seed for reproducibility.}
+\textbf{The variance results are deterministic, and the Monte Carlo benchmark reported in the validation subsection uses a fixed seed.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item Given fixed input parameters the formulas exercise no random-number generation.
-\item Monte Carlo benchmarking against the analytic formulas is the only stochastic component.
-\item That benchmarking driver fixes the seed at its entry point.
+\item The validation subsection compares the Woodbury routine with a direct GLS computation over a grid that includes common-close configurations.
+\item Its Monte Carlo benchmark at $(J_0, J_1, J_2) = (2, 2, 2)$ sets the seed 20260418 at its entry point.
 \end{itemize}
 \end{bullets}
-
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
 
 \begin{orig}
 \textbf{Random-number generator.} The variance formulas are
 deterministic given fixed input parameters; no RNG is
-exercised. Where Monte Carlo benchmarking against the
-analytic formulas is reported, the driver sets
-\texttt{set.seed(20260418)} at its entry point.
+exercised in their evaluation. The validation chunk in the
+Numerical Examples section first compares the Woodbury
+routine with a direct GLS computation, in which \(\Sigma\) is
+assembled and inverted without the Woodbury identity, over
+a grid of designs that includes common-close configurations
+(\(J_2 > 0\)). It then runs a Monte Carlo benchmark at
+\((J_0, J_1, J_2) = (2, 2, 2)\) with 2000 replicates of
+\(m = 200\) participants per group, setting
+\texttt{set.seed(20260418)} at its entry point and comparing the
+empirical variance of \(\hat\gamma\) with the analytic value.
 
 \end{orig}
 
 \begin{bullets}
 \textbf{The repository organizes the package source, derivation scripts, companion manuscripts, and bibliography into well-defined locations.}
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item The R package source and the MATLAB scripts each have a dedicated directory.
+\item The R package source and the Mathematica scripts each have a dedicated directory.
 \item The three companion manuscripts share a report subtree.
 \item This manuscript source and the shared bibliography sit in the run-in power report directory.
 \end{itemize}
 \end{bullets}
 
-\begin{rgt}
-To be completed by rgt.
-\end{rgt}
-
 \begin{orig}
 \textbf{Data and code availability.} The R package source is at
-\texttt{R/}. MATLAB scripts are at \texttt{analysis/scripts/}. The
+\texttt{R/}. Mathematica scripts are at \texttt{analysis/scripts/}. The
 companion manuscripts are at
 \texttt{analysis/report/\{02,03,04\}-*/}. The manuscript source and shared
 bibliography (\texttt{../references.bib}) are at
@@ -2294,25 +2318,33 @@ bibliography (\texttt{../references.bib}) are at
 \CSLLeftMargin{10. }%
 \CSLRightInline{Liu G, Liang KY. Sample size calculations for studies with correlated observations. \emph{Biometrics}. 1997;53:937-947. doi:\href{https://doi.org/10.2307/2533554}{10.2307/2533554}}
 
-\bibitem[\citeproctext]{ref-sperling2014}
+\bibitem[\citeproctext]{ref-nash2021}
 \CSLLeftMargin{11. }%
+\CSLRightInline{Nash S, Morgan KE, Frost C, Mulick A. Power and sample-size calculations for trials that compare slopes over time: Introducing the slopepower command. \emph{The Stata Journal}. 2021;21:572-601. doi:\href{https://doi.org/10.1177/1536867X211045512}{10.1177/1536867X211045512}}
+
+\bibitem[\citeproctext]{ref-sperling2014}
+\CSLLeftMargin{12. }%
 \CSLRightInline{Sperling RA, Rentz DM, Johnson KA, et al. The {A4} study: Stopping {AD} before symptoms begin? \emph{Science Translational Medicine}. 2014;6(228):228fs13. doi:\href{https://doi.org/10.1126/scitranslmed.3007941}{10.1126/scitranslmed.3007941}}
 
+\bibitem[\citeproctext]{ref-liuseifert2015}
+\CSLLeftMargin{13. }%
+\CSLRightInline{Liu-Seifert H, Andersen SW, Lipkovich I, Holdridge KC, Siemers E. A novel approach to delayed-start analyses for demonstrating disease-modifying effects in {Alzheimer's} disease. \emph{PLoS One}. 2015;10:e0119632.}
+
 \bibitem[\citeproctext]{ref-laird1982}
-\CSLLeftMargin{12. }%
+\CSLLeftMargin{14. }%
 \CSLRightInline{Laird NM, Ware JH. Random-effects models for longitudinal data. \emph{Biometrics}. 1982;38(4):963-974. doi:\href{https://doi.org/10.2307/2529876}{10.2307/2529876}}
 
 \bibitem[\citeproctext]{ref-wang2022}
-\CSLLeftMargin{13. }%
+\CSLLeftMargin{15. }%
 \CSLRightInline{Wang G, Liu L, Li Y, et al. Proportional constrained longitudinal data analysis models for clinical trials in sporadic {Alzheimer's} disease. \emph{Alzheimer's \& Dementia: Translational Research \& Clinical Interventions}. 2022;8(1):e12286. doi:\href{https://doi.org/10.1002/trc2.12286}{10.1002/trc2.12286}}
 
 \bibitem[\citeproctext]{ref-zhao2022}
-\CSLLeftMargin{14. }%
+\CSLLeftMargin{16. }%
 \CSLRightInline{Zhao Y, Edland SD. Power formulas for mixed effects models with random slope and intercept comparing rate of change across groups. \emph{The International Journal of Biostatistics}. 2022;18(1):173-182. doi:\href{https://doi.org/10.1515/ijb-2020-0107}{10.1515/ijb-2020-0107}}
 
-\bibitem[\citeproctext]{ref-frison1997}
-\CSLLeftMargin{15. }%
-\CSLRightInline{Frison L, Pocock SJ. Linearly divergent treatment effects in clinical trials with repeated measures: Efficient analysis using summary statistics. \emph{Statistics in Medicine}. 1997;16(24):2855-2872. doi:\href{https://doi.org/10.1002/(SICI)1097-0258(19971230)16:24\%3C2855::AID-SIM749\%3E3.0.CO;2-2}{10.1002/(SICI)1097-0258(19971230)16:24\textless2855::AID-SIM749\textgreater3.0.CO;2-2}}
+\bibitem[\citeproctext]{ref-galbraith2002}
+\CSLLeftMargin{17. }%
+\CSLRightInline{Galbraith S, Marschner IC. Guidelines for the design of clinical trials with longitudinal outcomes. \emph{Controlled Clinical Trials}. 2002;23(3):257-273. doi:\href{https://doi.org/10.1016/S0197-2456(02)00205-2}{10.1016/S0197-2456(02)00205-2}}
 
 \end{CSLReferences}
 
@@ -2320,7 +2352,7 @@ bibliography (\texttt{../references.bib}) are at
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\emph{Rendered on 2026-07-01 at 15:37 PDT.}\\
-\emph{Source: \texttt{\textasciitilde{}/prj/res/04-runin-power-analysis/runinpower/analysis/report/01-runin-power/report.Rmd}}
+\emph{Rendered on 2026-08-08 at 18:05 PDT.}\\
+\emph{Source: \texttt{/Users/zenn/Library/CloudStorage/Dropbox/prj/res/04-runin-power-analysis/runinpower/analysis/report/01-runin-power/report.Rmd}}
 
 \end{document}
