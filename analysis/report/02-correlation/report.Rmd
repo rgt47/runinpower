@@ -835,13 +835,3 @@ shared bibliography (`references.bib`, a symlink to
 
 ::: {#refs}
 :::
-
-```{r footer, echo=FALSE, results='asis'}
-src <- sub("^/Users/zenn/(Library/CloudStorage/)?Dropbox/prj/", "~/prj/",
-           knitr::current_input(dir = TRUE))
-cat(sprintf(
-  "\n\\vfill\n\n---\n\n*Rendered on %s.*  \n*Source: `%s`*\n",
-  format(Sys.time(), "%Y-%m-%d at %H:%M %Z"),
-  src
-))
-```

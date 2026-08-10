@@ -132,12 +132,15 @@
 %% tools/stamp.tex
 %% Provenance footer for PDFs rendered from this project.
 %% Vendored by zzcollab; this file is not project-specific. The
-%% footer prints the source document, the time of rendering, and
-%% the git version. All three values are supplied at render time
-%% by tools/stamp-render.R, which writes a small generated file
-%% that redefines the macros below. The \providecommand defaults
-%% keep a bare LaTeX compile working when the document is built
-%% without the wrapper.
+%% footer prints the source document and the time of rendering.
+%% The git version is defined here too, and so is available to a
+%% project that wants it on the page, but it is left off the
+%% default footer: it already names the staged copy in share/ and
+%% appears in its manifest row. All values are supplied at render
+%% time by tools/stamp-render.R, which writes a small generated
+%% file that redefines the macros below. The \providecommand
+%% defaults keep a bare LaTeX compile working when the document is
+%% built without the wrapper.
 \usepackage{fancyhdr}
 \usepackage{xcolor}
 \providecommand{\stampsource}{\detokenize{(source not recorded)}}
@@ -162,8 +165,8 @@
   \renewcommand{\headrulewidth}{0pt}%
   \renewcommand{\footrulewidth}{0.4pt}}
 \renewcommand{\stampsource}{\textasciitilde{}/\allowbreak{}prj/\allowbreak{}res/\allowbreak{}04-runin-power-analysis/\allowbreak{}runinpower/\allowbreak{}analysis/\allowbreak{}report/\allowbreak{}03-allocation/\allowbreak{}report.Rmd}
-\renewcommand{\stamptime}{2026-08-08 18:05 PDT}
-\renewcommand{\stampversion}{\detokenize{d88a11d-wip}}
+\renewcommand{\stamptime}{2026-08-10 12:01 PDT}
+\renewcommand{\stampversion}{\detokenize{b8ad4f3-wip}}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{lineno}
@@ -192,7 +195,7 @@
 Treatment, and Common Close Phases in Longitudinal
 Clinical Trials}
 \author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
-\date{August 08, 2026}
+\date{August 10, 2026}
 
 \begin{document}
 \maketitle
@@ -1360,12 +1363,5 @@ shared bibliography (\texttt{references.bib}, a symlink to
 \CSLRightInline{Hu N, Mackey H, Thomas R. Power and sample size for random coefficient regression models in randomized experiments with monotone missing data. \emph{Biometrical Journal}. 2021;63(4):806-824. doi:\href{https://doi.org/10.1002/bimj.202000184}{10.1002/bimj.202000184}}
 
 \end{CSLReferences}
-
-\vfill
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\emph{Rendered on 2026-08-08 at 18:06 PDT.}\\
-\emph{Source: \texttt{/Users/zenn/Library/CloudStorage/Dropbox/prj/res/04-runin-power-analysis/runinpower/analysis/report/03-allocation/report.Rmd}}
 
 \end{document}
