@@ -4,8 +4,7 @@ title: |
   Treatment, and Common Close Phases in Longitudinal
   Clinical Trials
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
-date: "`r format(Sys.Date(), '%B %d, %Y')`"
-affiliation: "University of California, San Diego"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
 abstract: |
   **Background.** Trial designers planning a longitudinal
   study with a fixed total observation budget face an
@@ -15,7 +14,6 @@ abstract: |
   treatment-effect estimator? Existing guidance is heuristic;
   the optimum has not been characterized for the three-phase
   run-in setting.
-
   **Methods.** We formulate the allocation question as a
   discrete optimization problem over the Woodbury-based
   variance formula derived in Paper 1 of this compendium and
@@ -28,7 +26,6 @@ abstract: |
   run-in averaging applied at the post-treatment end) and
   pattern-mixture handling of monotone dropout following the
   Frost-Kenward-Fox (2008) framework.
-
   **Results.** Under a fixed total budget the optimal design
   places zero observations in the run-in phase in every
   configuration examined; the budget is split between the
@@ -46,7 +43,6 @@ abstract: |
   reduces the treatment-effect variance by up to 31\% at
   $\sigma_b / \sigma = 0.5$ (five replicates) but by at most
   5\% at $\sigma_b / \sigma = 2$.
-
   **Conclusions.** The numerical allocation results give
   trial designers a simple decision procedure driven by the
   signal-to-noise ratio and the visit budget. The procedure
@@ -56,29 +52,30 @@ output:
   bookdown::pdf_document2:
     latex_engine: xelatex
     toc: true
+    toc_depth: 2
     number_sections: true
     keep_tex: true
     highlight: tango
     includes:
       in_header: claudecode.tex
 fontsize: 11pt
-geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
+linestretch: 1.1
+geometry: 'left=3cm,right=3cm,top=2.5cm,bottom=2.5cm'
 bibliography: references.bib
-knit: (function(input, ...) { d <- dirname(input); while (!file.exists(file.path(d, 'tools', 'stamp-render.R')) && d != dirname(d)) d <- dirname(d); source(file.path(d, 'tools', 'stamp-render.R'))$value(input) })
 csl: statistics-in-medicine.csl
 link-citations: true
 header-includes:
   - \usepackage{amsmath}
   - \usepackage{amssymb}
-  - \usepackage{lineno}
-  - \linenumbers
   - \usepackage{booktabs}
+  - \usepackage{longtable}
   - \usepackage{float}
+  - \usepackage[mathlines]{lineno}
+  - \linenumbers
   - \DeclareMathOperator{\Var}{Var}
   - \DeclareMathOperator{\Cov}{Cov}
   - \DeclareMathOperator{\Corr}{Corr}
-  - \usepackage{setspace}
-  - \setstretch{1.1}
+knit: (function(input, ...) { d <- dirname(input); while (!file.exists(file.path(d, 'tools', 'stamp-render.R')) && d != dirname(d)) d <- dirname(d); source(file.path(d, 'tools', 'stamp-render.R'))$value(input) })
 ---
 
 ```{r setup, include=FALSE}

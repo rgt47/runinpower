@@ -3,8 +3,7 @@ title: |
   Power Analysis for Run-In Clinical Trials under
   AR(1) and General Correlation Structures
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
-date: "`r format(Sys.Date(), '%B %d, %Y')`"
-affiliation: "University of California, San Diego"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
 abstract: |
   **Background.** The companion Paper 1 of this compendium
   derived closed-form power formulas for run-in and common
@@ -14,7 +13,6 @@ abstract: |
   that is empirically rejected in most longitudinal-trial data.
   AR(1), $\Corr(Y_{ijk}, Y_{ijk'}) = \rho^{|k-k'|}$, is the
   natural alternative.
-
   **Methods.** We derive the variance of the treatment-effect
   estimator under AR(1) via two routes: (i) the Woodbury
   identity applied to the AR(1) marginal covariance, and (ii)
@@ -24,7 +22,6 @@ abstract: |
   effect and the variance of the simple phase-mean difference.
   The GLS derivation accommodates arbitrary $J_0$ run-in
   observations and arbitrary $J_2$ common close observations.
-
   **Results.** A taxonomy of five correlation cases is
   presented, and change-score correlations are derived in
   closed form under compound symmetry and AR(1). Numerical
@@ -37,7 +34,6 @@ abstract: |
   anticonservative regime exists at large $J_0$ and small
   $\rho$, where compound symmetry understates the variance
   by at most about 6\%.
-
   **Conclusions.** At a matched nominal $\rho$, the
   compound-symmetry assumption underlying Paper 1 is generally
   conservative: it overstates the required sample size, and
@@ -53,30 +49,31 @@ output:
   bookdown::pdf_document2:
     latex_engine: xelatex
     toc: true
+    toc_depth: 2
     number_sections: true
     keep_tex: true
     highlight: tango
     includes:
       in_header: claudecode.tex
 fontsize: 11pt
-geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
+linestretch: 1.1
+geometry: 'left=3cm,right=3cm,top=2.5cm,bottom=2.5cm'
 bibliography: references.bib
-knit: (function(input, ...) { d <- dirname(input); while (!file.exists(file.path(d, 'tools', 'stamp-render.R')) && d != dirname(d)) d <- dirname(d); source(file.path(d, 'tools', 'stamp-render.R'))$value(input) })
 csl: statistics-in-medicine.csl
 link-citations: true
 header-includes:
   - \usepackage{amsmath}
   - \usepackage{amssymb}
-  - \usepackage{lineno}
-  - \linenumbers
   - \usepackage{booktabs}
+  - \usepackage{longtable}
   - \usepackage{float}
+  - \usepackage[mathlines]{lineno}
+  - \linenumbers
   - \DeclareMathOperator{\Var}{Var}
   - \DeclareMathOperator{\Cov}{Cov}
   - \DeclareMathOperator{\Corr}{Corr}
   - \DeclareMathOperator{\tr}{tr}
-  - \usepackage{setspace}
-  - \setstretch{1.1}
+knit: (function(input, ...) { d <- dirname(input); while (!file.exists(file.path(d, 'tools', 'stamp-render.R')) && d != dirname(d)) d <- dirname(d); source(file.path(d, 'tools', 'stamp-render.R'))$value(input) })
 ---
 
 ```{r setup, include=FALSE}

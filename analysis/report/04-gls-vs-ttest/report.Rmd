@@ -3,8 +3,7 @@ title: |
   GLS versus Averaged Change-Score Estimators for
   Clinical Trials with Run-In Observations
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
-date: "`r format(Sys.Date(), '%B %d, %Y')`"
-affiliation: "University of California, San Diego"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
 abstract: |
   **Background.** Three estimators of the treatment effect in
   longitudinal trials with run-in observations are in routine
@@ -19,7 +18,6 @@ abstract: |
   relative efficiency of these estimators under correct and
   misspecified models has not been comprehensively
   characterized.
-
   **Methods.** We derive the variance of the three
   estimators as a function of the trial design
   $(J_0, J_1, J_2)$ and the variance parameters
@@ -33,7 +31,6 @@ abstract: |
   variances, and a Monte Carlo simulation under compound
   symmetry evaluates the estimators alongside a GLS analysis
   that misstates the random-slope variance.
-
   **Results.** All comparisons are made on the common
   estimand scale, with the averaged and ANCOVA contrasts
   rescaled to unbiasedness for the treatment effect
@@ -58,7 +55,6 @@ abstract: |
   the misspecified-GLS sandwich variance peaks at 5.3
   against an averaged-estimator variance of 8.9 at the
   reference design.
-
   **Conclusions.** GLS is the efficient estimator under
   correct specification, and its advantage survives the
   covariance misspecifications examined here. The averaged
@@ -71,29 +67,30 @@ output:
   bookdown::pdf_document2:
     latex_engine: xelatex
     toc: true
+    toc_depth: 2
     number_sections: true
     keep_tex: true
     highlight: tango
     includes:
       in_header: claudecode.tex
 fontsize: 11pt
-geometry: "left=3cm,right=5cm,top=2cm,bottom=2cm"
+linestretch: 1.1
+geometry: 'left=3cm,right=3cm,top=2.5cm,bottom=2.5cm'
 bibliography: references.bib
-knit: (function(input, ...) { d <- dirname(input); while (!file.exists(file.path(d, 'tools', 'stamp-render.R')) && d != dirname(d)) d <- dirname(d); source(file.path(d, 'tools', 'stamp-render.R'))$value(input) })
 csl: statistics-in-medicine.csl
 link-citations: true
 header-includes:
   - \usepackage{amsmath}
   - \usepackage{amssymb}
-  - \usepackage{lineno}
-  - \linenumbers
   - \usepackage{booktabs}
+  - \usepackage{longtable}
   - \usepackage{float}
+  - \usepackage[mathlines]{lineno}
+  - \linenumbers
   - \DeclareMathOperator{\Var}{Var}
   - \DeclareMathOperator{\Cov}{Cov}
   - \DeclareMathOperator{\E}{E}
-  - \usepackage{setspace}
-  - \setstretch{1.1}
+knit: (function(input, ...) { d <- dirname(input); while (!file.exists(file.path(d, 'tools', 'stamp-render.R')) && d != dirname(d)) d <- dirname(d); source(file.path(d, 'tools', 'stamp-render.R'))$value(input) })
 ---
 
 ```{r setup, include=FALSE}
