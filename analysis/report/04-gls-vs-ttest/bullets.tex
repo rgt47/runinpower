@@ -1,0 +1,358 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  11pt,
+]{article}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage{setspace}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+%% tools/stamp.tex
+%% Provenance footer for PDFs rendered from this project.
+%% Vendored by zzcollab; this file is not project-specific. The
+%% footer prints the source document and the time of rendering.
+%% The git version is defined here too, and so is available to a
+%% project that wants it on the page, but it is left off the
+%% default footer: it already names the staged copy in share/ and
+%% appears in its manifest row. All values are supplied at render
+%% time by tools/stamp-render.R, which writes a small generated
+%% file that redefines the macros below. The \providecommand
+%% defaults keep a bare LaTeX compile working when the document is
+%% built without the wrapper.
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\providecommand{\stampsource}{\detokenize{(source not recorded)}}
+\providecommand{\stamptime}{(time not recorded)}
+\providecommand{\stampversion}{\detokenize{(version not recorded)}}
+\setlength{\footskip}{40pt}
+\newcommand{\stampfootcontent}{%
+  \footnotesize\color{gray}%
+  \parbox[b]{\textwidth}{%
+    \stamptime\hfill\thepage\\[2pt]%
+    \ttfamily\raggedright\stampsource}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\stampfootcontent}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+%% The title page uses the `plain` page style; redefine it so the
+%% stamp appears there too.
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\stampfootcontent}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}}
+\renewcommand{\stampsource}{\textasciitilde{}/\allowbreak{}prj/\allowbreak{}res/\allowbreak{}04-runin-power-analysis/\allowbreak{}runinpower/\allowbreak{}analysis/\allowbreak{}report/\allowbreak{}04-gls-vs-ttest/\allowbreak{}bullets.Rmd}
+\renewcommand{\stamptime}{2026-08-15 16:32 PDT}
+\renewcommand{\stampversion}{\detokenize{455c889-wip}}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage[mathlines]{lineno}
+\linenumbers
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  pdftitle={Structured summary: \textbar{} GLS versus Averaged Change-Score Estimators for Clinical Trials with Run-In Observations},
+  pdfauthor={Ronald G. Thomas, Ph.D.},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Structured summary: \textbar{} GLS versus Averaged Change-Score Estimators for Clinical Trials with Run-In Observations}
+\author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
+\date{August 15, 2026}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\setstretch{1.1}
+\emph{This document is a structured, section-by-section summary of the key points argued in the companion manuscript, ``| GLS versus Averaged Change-Score Estimators for Clinical Trials with Run-In Observations.'' It is provided as a supplementary reading aid and does not stand on its own; all notation, derivations, simulation detail, and citations are in the main manuscript.}
+
+\bigskip\noindent
+
+\rule{\textwidth}{0.4pt}\bigskip
+
+\section{Introduction}\label{introduction}
+
+\textbf{The optimality of GLS is contingent on knowing the covariance, which in practice must be estimated and may be unstable in small samples.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item GLS is the best linear unbiased estimator (BLUE) only when the covariance matrix is known.
+\item Feasible GLS substitutes estimated variance components, so its efficiency depends on estimation accuracy.
+\item Small samples or short follow-up yield unstable estimates that can erode the theoretical advantage of GLS.
+\end{itemize}
+
+\textbf{The relative merits of change-score and ANCOVA analyses have been studied extensively across several methodological traditions.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Formal efficiency comparisons for pretest-posttest designs trace back to @brogan1980 and @yang2001.
+\item @frison1992 and @frison1997 established the efficiency ordering among post-treatment, change-score, and ANCOVA analyses with multiple baseline measurements, the closest antecedent of the present comparison.
+\item Subsequent work contrasted baseline-as-covariate with baseline-as-response and developed semiparametric covariate adjustment.
+\item Later contributions clarified when longitudinal models gain power over ANCOVA and adapted these ideas to run-in trials.
+\end{itemize}
+
+\textbf{The averaged change-score estimator is distinct from and less efficient than the constrained longitudinal data analysis estimator, which is excluded from the present comparison.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The cLDA estimator places baseline in the response vector under a common-mean constraint.
+\item It exploits the full covariance structure without specifying the random-effects distribution, ranking between the averaged estimator and GLS.
+\item A full comparison including cLDA lies beyond the present scope but constitutes a natural extension.
+\end{itemize}
+
+\textbf{The longpower package implements the GLS baseline but omits the simpler estimators and the misspecification analysis developed here.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item It is the CRAN reference for slope-comparison power calculations under the Liu-Liang, Diggle, and Edland formulations.
+\item Its routines correspond to the GLS estimator under correct specification, matching the Paper 1 baseline.
+\item It does not cover ANCOVA, the averaged change-score test, or the efficiency loss from misspecified covariance.
+\end{itemize}
+
+\subsection{GLS under the mixed model}\label{gls-under-the-mixed-model}
+
+\textbf{The GLS variance for the treatment effect follows from the relevant diagonal element of the inverse information matrix under the marginal covariance.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The per-pair variance is the treatment-effect element of $(X'\Sigma^{-1}X)^{-1}$.
+\item The marginal covariance decomposes as residual plus random-effects components.
+\item The inverse is obtained efficiently via the Woodbury identity.
+\end{itemize}
+
+\subsection{ANCOVA with run-in mean as covariate}\label{ancova-with-run-in-mean-as-covariate}
+
+\textbf{The ANCOVA variance is governed by the run-in to post-randomization correlation, which determines the magnitude of the variance reduction.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The factor $(1 - \rho^2)$ scales the variance by the squared marginal correlation between the phase means.
+\item With no run-in observations the covariate vanishes and ANCOVA reduces to the averaged estimator.
+\item A large correlation, arising when the random-slope variance dominates the residual, yields substantial variance reduction.
+\end{itemize}
+
+\textbf{ANCOVA occupies a middle ground by estimating the baseline coefficient from the data while still using the predictive run-in observations.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Unlike GLS, the coefficient on the run-in mean is estimated empirically rather than derived from assumed variance components.
+\item Unlike the averaged estimator, it exploits the predictive value of the run-in observations.
+\item It therefore reduces variance without committing to a full random-effects specification.
+\end{itemize}
+
+\subsection{BLUP as theoretical benchmark}\label{blup-as-theoretical-benchmark}
+
+\textbf{The three estimators are linear functions of the change scores and admit a common benchmark in the best linear unbiased predictor of the random slopes.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Each estimator can be viewed as a linear combination of the observed change scores.
+\item The BLUP of the subject-specific random slope provides the natural reference predictor.
+\item It weights the residuals by the inverse marginal covariance using the GLS fixed-effect estimate.
+\end{itemize}
+
+\textbf{GLS attains the minimum variance among linear unbiased estimators when the covariance is correct, while the simpler estimators are specific approximations to this benchmark.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The group-specific slope estimators inherit the variance of the treatment-effect fixed effect.
+\item GLS is optimal among linear unbiased estimators under a correctly specified marginal covariance.
+\item The averaged and ANCOVA estimators are particular linear approximations to this optimal benchmark.
+\end{itemize}
+
+\textbf{Misspecification erodes but, in the settings studied here, does not eliminate the GLS efficiency advantage over the simpler approximations.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item GLS propagates errors in the assumed covariance through its inverse weighting.
+\item The averaged and ANCOVA estimators depend on fewer assumed variance components.
+\item Section 4 quantifies the resulting erosion; in the misspecifications examined, GLS retains a large margin.
+\end{itemize}
+
+\subsection{\texorpdfstring{Misspecified \(G\)}{Misspecified G}}\label{misspecified-g}
+
+\textbf{Misestimating the random-slope variance forfeits the optimality of GLS while leaving the averaged estimator unchanged.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item An incorrect random-slope variance renders the assumed-covariance GLS no longer minimum-variance.
+\item The error enters through the inverse-covariance weighting of GLS.
+\item The averaged change-score estimator's definition does not use this variance component, so its variance does not depend on the assumed value.
+\item In the sweep below, however, the misspecified GLS variance peaks at 5.30 while the averaged variance on the $\gamma$ scale is 8.89: the GLS margin is eroded, not eliminated.
+\end{itemize}
+
+\subsection{\texorpdfstring{Misspecified \(R\)}{Misspecified R}}\label{misspecified-r}
+
+\textbf{Misspecifying the residual correlation biases the GLS variance machinery but again leaves the averaged estimator intact.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Assuming compound symmetry when the truth is AR(1) is a representative misspecification.
+\item Both the GLS variance formula and the Woodbury correction become biased.
+\item The averaged estimator's definition does not depend on the assumed correlation, although its $\gamma$-scale variance still changes with the true $R$ (8.4 to 9.1 over the plotted range).
+\item The misspecified GLS sandwich variance stays four- to elevenfold below the averaged variance across the sweep.
+\end{itemize}
+
+\subsection{Design}\label{design}
+
+\textbf{A factorial Monte Carlo design complements the analytical results by varying sample size, design, signal-to-noise, and analysis method under a compound-symmetric truth.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Sample size and the run-in design configuration are crossed.
+\item The signal-to-noise ratio is varied; the true correlation is compound symmetric throughout.
+\item Three analysis methods are compared: correctly specified GLS, misspecified GLS, and the averaged change-score test.
+\end{itemize}
+
+\textbf{Each configuration is replicated 1000 times and evaluated on empirical variance and power; coverage is not assessed.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item One thousand trials are simulated per configuration.
+\item Empirical standard deviation and empirical power are recorded for each estimator.
+\item Coverage of nominal 95\% confidence intervals, empirical size at $\Delta = 0$, larger sample sizes, higher ratios, an AR(1) truth arm, and 5000 replicates remain future work.
+\end{itemize}
+
+\subsection{Results}\label{results}
+
+\textbf{The simulation confirms the analytic ordering and quantifies the cost of misspecifying the random-slope variance.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The empirical standard deviation of the GLS estimator is the smallest of the three under correct specification.
+\item On the $\gamma$ scale the averaged estimator is nearly as efficient as GLS in the no-run-in design, but carries two to three times the GLS standard deviation in the run-in designs at $\sigma_b/\sigma = 1$, growing to eight to fifteen times at $\sigma_b/\sigma = 5$.
+\item Misspecifying the random-slope variance at most roughly doubles the GLS standard deviation, which remains well below that of the averaged estimator in every run-in cell.
+\end{itemize}
+
+\section{Discussion}\label{discussion}
+
+\textbf{GLS is the efficient choice under a correctly specified, adequately estimated model, which in practice means moderate-to-large samples.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item GLS attains the minimum variance among linear unbiased estimators when the covariance is known.
+\item Its advantage is realized only when the variance components are estimated accurately, which requires sufficient sample size and follow-up.
+\item In small samples the instability of the estimated covariance can erase the theoretical gain.
+\end{itemize}
+
+\textbf{The misspecifications studied here erode the GLS advantage without overturning it; the open robustness question concerns feasible GLS with estimated components.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item GLS weights observations by the assumed inverse covariance, so errors in $G$ or $R$ propagate into its sampling variance.
+\item In the sweeps of Section 4 the misspecified GLS sandwich variance peaks at 5.30 against a $\gamma$-scale averaged-estimator variance of 8.89, and in the simulation the misspecified GLS standard deviation remains well below the averaged standard deviation in every run-in cell.
+\item Whether feasible GLS, with variance components estimated from small samples, retains this margin is not studied here.
+\end{itemize}
+
+\textbf{The efficiency gap between GLS and the simpler estimators narrows as the design grows, so the choice matters most in small, information-poor designs.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item With many run-in and treatment observations the phase means become near-sufficient for the random slope.
+\item The averaged and ANCOVA estimators then recover most of the information GLS extracts, and the relative efficiency approaches one.
+\item The estimator choice is therefore most consequential when observations are few and the slope-to-noise ratio is high.
+\end{itemize}
+
+\textbf{Two extensions, the seemingly unrelated regression estimator and the constrained longitudinal data analysis estimator, would complete the efficiency picture.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The SUR formulation offers a middle ground between the averaged estimator and full GLS but adds implementation complexity.
+\item The cLDA estimator exploits the full covariance without specifying the random-effects distribution and is expected to rank between ANCOVA and GLS.
+\item A full comparison including both, and a feasible-GLS simulation under estimated components, is the natural continuation of this work.
+\end{itemize}
+
+\section{Data availability statement}\label{data-availability-statement}
+
+\textbf{The package implementing all three estimators, the simulation drivers, and the shared bibliography are openly available in the project repository.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The estimator implementations reside in the package source files.
+\item The simulation drivers and shared compendium bibliography are included.
+\item Specific paths appear in the Reproducibility section below.
+\end{itemize}
+
+\section{Reproducibility}\label{reproducibility}
+
+\textbf{The manuscript was rendered with R 4.4.x using the package source and a small set of standard analysis and build packages.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The in-package source supplies the estimator implementations.
+\item The GLS comparator in the simulation is implemented directly in the manuscript source (the analyze functions of the simulation chunk); tinytest is the testing harness.
+\item The manuscript is built with rmarkdown and bookdown.
+\end{itemize}
+
+\textbf{The simulation sets a single fixed seed before the replicate loop, which makes the run exactly reproducible.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item A single seed is set once at the entry point of the Monte Carlo comparison.
+\item No per-replicate reseeding is performed; the replicate stream follows from the single seed.
+\item Re-running the chunk therefore reproduces the tabulated results exactly.
+\end{itemize}
+
+\textbf{All code, drivers, companion manuscripts, and the shared bibliography are located at documented paths within the compendium.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The package source and simulation drivers reside in their respective directories.
+\item The three companion manuscripts are stored alongside this paper in the compendium.
+\item The manuscript source and shared bibliography are co-located in the paper directory.
+\end{itemize}
+
+\end{document}

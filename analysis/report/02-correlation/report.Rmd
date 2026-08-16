@@ -75,7 +75,6 @@ header-includes:
   - \DeclareMathOperator{\tr}{tr}
 knit: (function(input, ...) { d <- dirname(input); while (!file.exists(file.path(d, 'tools', 'stamp-render.R')) && d != dirname(d)) d <- dirname(d); source(file.path(d, 'tools', 'stamp-render.R'))$value(input) })
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -90,15 +89,6 @@ library(runinpower)
 
 # Introduction
 
-\begin{bullets}
-\textbf{The efficiency of run-in designs is governed by the correlation structure of the repeated measurements.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item Under compound symmetry the correlation between change scores is constant.
-\item Run-in observations then inform the random slope through simple averaging.
-\item Under AR(1) the correlation decays with separation, so run-in information depends on distance from the treatment period.
-\end{itemize}
-\end{bullets}
-
 ::: {.orig data-latex=""}
 The efficiency of run-in designs depends on the
 correlation structure of the repeated measurements.
@@ -111,15 +101,6 @@ and the information content of run-in observations
 depends on how far they are from the treatment period.
 :::
 
-\begin{bullets}
-\textbf{This paper extends prior compound-symmetric run-in frameworks to AR(1) residual correlation.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item Paper 1 assumed the rank-one-plus-identity change-score covariance from independent errors.
-\item Wang (2019) extended run-in to two-period mixed models but kept compound symmetry.
-\item We instead adopt AR(1) residual correlation with geometric decay in lag.
-\end{itemize}
-\end{bullets}
-
 ::: {.orig data-latex=""}
 Paper 1 [@frost2008] assumed $R = \sigma^2(I_J +
 \mathbf{1}_J\mathbf{1}_J')$, which arises from the
@@ -130,16 +111,6 @@ assumption. We extend here to AR(1) residual
 correlation, where $\Corr(e_{ij}, e_{ij'}) =
 \rho^{|j-j'|}$ for $0 < \rho < 1$.
 :::
-
-\begin{bullets}
-\textbf{Existing literature treats autocorrelation and change-score variation but not the run-in setting.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item Winkens (2007) studied optimal designs for autocorrelated data outside the run-in context.
-\item Diggle and Verbeke give general treatments of longitudinal correlation structures.
-\item Munoz et al. (1992) embedded compound symmetry and AR(1) in a single damped-exponential family, the natural generalization of the two structures contrasted here.
-\item Chambless (1993) addressed intra-individual variation in change scores, a concern amplified under AR(1).
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 @winkens2007 studied optimal designs for autocorrelated
@@ -158,15 +129,6 @@ intra-individual variation on change-score analyses,
 a concern that is amplified under AR(1) correlation.
 :::
 
-\begin{bullets}
-\textbf{The closed-form AR(1) derivation covers a design case the reference longpower toolkit does not.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item Its slope-based closed-form routines assume independent or compound-symmetric residuals.
-\item Its \texttt{power.mmrm.ar1()} routine implements the analytic AR(1) formula of Lu, Luo, and Chen (2008), but without run-in or common close observations under a random slope.
-\item Our formula supplies that case and collapses to the compound-symmetric structure of Paper 1 as $\rho \to 0$.
-\end{itemize}
-\end{bullets}
-
 ::: {.orig data-latex=""}
 The `longpower` R package [@iddi2022] is the CRAN
 reference implementation for longitudinal-trial power
@@ -184,7 +146,6 @@ AR(1) change-score covariance collapses to the
 compound-symmetric structure of Paper 1, so the present
 formulas contain the Paper 1 results as a special case.
 :::
-
 
 # Correlation structures for longitudinal trials
 
@@ -215,7 +176,6 @@ raw outcomes $Y_{ijk}$:
 Throughout, the design quantities $J_0$, $J_1$, and
 $J_2$ correspond to the arguments `r`, `k`, and `f` of
 the implementing `runinpower` functions.
-
 
 ## Change-score correlations under each structure
 
@@ -258,7 +218,6 @@ These expressions hold for arbitrary $(J_0, J_1, J_2)$
 because they depend only on the lag $m$; at $\rho = 0$
 they reduce to the compound-symmetry formulas above.
 
-
 # Variance under AR(1): GLS approach
 
 ## Marginal covariance
@@ -272,15 +231,6 @@ The change-score residual covariance becomes:
   = \sigma^2(\rho^{|j-l|} - \rho^{|j|} - \rho^{|l|} + 1)
 \end{equation}
 for $j, l \ne 0$.
-
-\begin{bullets}
-\textbf{The AR(1) change-score covariance loses rank-one structure but the Woodbury reduction survives.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item The matrix $R$ is no longer rank-one-plus-identity, so Sherman-Morrison does not apply.
-\item The Woodbury identity still reduces the inverse covariance to a scalar inversion.
-\item This holds because the random-effects covariance $G$ remains scalar.
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 This $R$ no longer has the rank-one-plus-identity
@@ -297,14 +247,6 @@ The computation proceeds identically to Paper 1:
   \Sigma^{-1} = R^{-1} - R^{-1}Z
     (G^{-1} + Z'R^{-1}Z)^{-1} Z'R^{-1}
 \end{equation}
-\begin{bullets}
-\textbf{The Woodbury scalar term persists, but the residual inverse must now be computed differently.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item The correction term $H$ remains a scalar as in Paper 1.
-\item The residual inverse $R^{-1}$ must be obtained numerically.
-\item Equivalently it follows from the AR(1) tridiagonal inverse rather than Sherman-Morrison.
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 with $H = (G^{-1} + Z'R^{-1}Z)^{-1}$ still scalar.
@@ -358,20 +300,9 @@ knitr::kable(
 )
 ```
 
-
 # Variance under AR(1): moment-based approach
 
 ## Cross-covariance between phase means
-
-\begin{bullets}
-\textbf{A moment-based alternative derives the pre-post variance directly from the phase means.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item It computes the variance of the test statistic from the moments of the phase means.
-\item The run-in mean averages the run-in observations.
-\item The treatment-period mean averages the treatment-period observations.
-\item The construction follows the summary-measures approach of Frison and Pocock (1992).
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 An alternative to the GLS approach computes the
@@ -457,17 +388,7 @@ cat(sprintf('  GLS slope difference (sigma_b2=%.0f):  %.4f\n',
 cat('  (Different estimands; see next section.)\n')
 ```
 
-
 # Relationship between the two approaches
-
-\begin{bullets}
-\textbf{The GLS and moment-based approaches target distinct variance quantities.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item The GLS variance is the minimum-variance bound under the assumed model.
-\item The moment-based variance is that of the simple averaged change-score estimator.
-\item The two therefore answer different efficiency questions.
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 The GLS approach (Section 3) and the moment-based
@@ -477,15 +398,6 @@ the assumed model, while the moment-based variance
 is the variance of the simple averaged change-score
 estimator $\bar{d}_1 - \bar{d}_0$.
 :::
-
-\begin{bullets}
-\textbf{The two approaches do not coincide even without a random slope.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item At $\sigma_b^2 = 0$ the GLS estimator still weights observations through the AR(1) residual covariance and targets the slope difference.
-\item The moment-based quantity is the variance of the unweighted phase-mean difference, a different estimand.
-\item Numerically, at $J_0 = 2$, $J_1 = 2$, $\rho = 0.5$, $\sigma^2 = 1$, $\sigma_b^2 = 0$: GLS 0.636 versus moment-based 1.219.
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 The two approaches do not coincide even when
@@ -502,15 +414,6 @@ additionally exploits the random-slope structure of
 $\Sigma = R + ZGZ'$.
 :::
 
-\begin{bullets}
-\textbf{The moment-based computation serves the simple pre-post estimator, not as a bound on the GLS variance.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item It requires no specification of the random-slope variance.
-\item It is the exact variance of the unweighted pre-post difference an analyst might report without fitting a mixed model.
-\item Because the estimands differ, its ratio to the GLS variance is descriptive, not an efficiency bound.
-\end{itemize}
-\end{bullets}
-
 ::: {.orig data-latex=""}
 The practical value of the moment-based computation is
 that it requires no specification of $\sigma_b^2$ and
@@ -525,7 +428,6 @@ describes the cost of abandoning the mixed model rather
 than an efficiency ordering within it. The
 relative-efficiency question is taken up in Paper 4.
 :::
-
 
 # Robustness to correlation misspecification
 
@@ -561,7 +463,6 @@ legend('bottomleft', legend = paste('J_0 =', r_values),
        col = cols, lwd = 2, bty = 'n')
 ```
 
-
 # Stratified variance for unequal visit patterns
 
 When participants have different numbers of run-in
@@ -574,7 +475,6 @@ total variance is a weighted sum across strata:
 
 <!-- TODO: develop stratified computation for -->
 <!-- both CS and AR(1) -->
-
 
 # Numerical examples
 
@@ -658,17 +558,7 @@ legend('topright', legend = paste('J_0 =', r_values),
        col = cols, lwd = 2, bty = 'n')
 ```
 
-
 # Discussion
-
-\begin{bullets}
-\textbf{The autocorrelation structure matters for run-in designs only when the autocorrelation is weak relative to the random-slope signal.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item When the slope-to-noise ratio is large, the random-slope term dominates the change-score covariance and the residual correlation structure is second order.
-\item The AR(1) and compound-symmetry variances then differ negligibly, and the simpler Paper 1 formula suffices.
-\item The two structures diverge most when the slope-to-noise ratio is small and run-in observations are distant from randomization.
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 The central practical question is when the compound-symmetry
@@ -684,15 +574,6 @@ compound-symmetric $R$ is immaterial. When the ratio is small,
 the residual term dominates and the correlation structure
 becomes the leading determinant of efficiency.
 :::
-
-\begin{bullets}
-\textbf{At a matched nominal $\rho$, compound symmetry is generally conservative, with a narrow anticonservative corner.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item Positive serial correlation reduces the residual variance of every change score, so the AR(1) variance falls below the compound-symmetric value for most designs.
-\item The discrepancy grows with $\rho$; near $\rho = 0.95$ the AR(1) variance can fall below one tenth of the compound-symmetric value.
-\item The exception is large $J_0$ at small $\rho$, where distant run-in observations lose information and compound symmetry understates the variance by at most about 6\%.
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 The direction of the error is important for trial design.
@@ -717,15 +598,6 @@ common-nominal-$\rho$ matching convention; matching the
 structures on, for example, a common lag-one
 change-score correlation would alter the comparison.
 :::
-
-\begin{bullets}
-\textbf{The numerical comparisons give a practical decision rule for when the simpler formula is safe.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item At a matched nominal $\rho$, the compound-symmetry formula of Paper 1 is a conservative and convenient default for most designs.
-\item With many run-in observations and low expected autocorrelation, the AR(1) formula should be used directly; the compound-symmetric formula can understate the variance by up to about 6\% there.
-\item When $\rho$ is uncertain, evaluating the AR(1) formula over a plausible range of $\rho$ and taking the largest variance is a safe default.
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 For applied use we recommend the following. At a matched
@@ -756,15 +628,6 @@ This work received no specific funding.
 
 # Data availability statement
 
-\begin{bullets}
-\textbf{The implementing package, tests, and bibliography are openly available in the project repository.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item The package implements the AR(1) variance formulas.
-\item Validation tests and the shared four-paper bibliography are included.
-\item Specific paths appear in the Reproducibility section below.
-\end{itemize}
-\end{bullets}
-
 ::: {.orig data-latex=""}
 The `runinpower` R package implementing the AR(1) variance
 formulas (`covariance-ar1.R`), validation tests, and the
@@ -775,15 +638,6 @@ are listed in the Reproducibility section below.
 
 # Reproducibility
 
-\begin{bullets}
-\textbf{The manuscript was rendered with R 4.4.x using a small set of principal packages.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item The in-package source supplies the AR(1) machinery.
-\item Testing uses the tinytest harness.
-\item The manuscript build uses rmarkdown and bookdown.
-\end{itemize}
-\end{bullets}
-
 ::: {.orig data-latex=""}
 This manuscript was rendered with R 4.4.x. Principal packages
 used are the in-package `runinpower` source (the AR(1)
@@ -792,15 +646,6 @@ harness), and `rmarkdown` plus `bookdown` for the manuscript
 build.
 :::
 
-\begin{bullets}
-\textbf{All reported quantities are deterministic.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item Given fixed inputs the variance formulas exercise no random-number generator.
-\item No Monte Carlo computation appears in this manuscript.
-\item Re-running the chunks therefore reproduces every table and figure exactly.
-\end{itemize}
-\end{bullets}
-
 ::: {.orig data-latex=""}
 **Random-number generator.** The AR(1) variance formulas
 are deterministic given fixed input parameters; no
@@ -808,15 +653,6 @@ random-number generation is used anywhere in this
 manuscript, and re-running the code chunks reproduces
 every table and figure exactly.
 :::
-
-\begin{bullets}
-\textbf{All source, companion manuscripts, and bibliography reside at documented repository paths.}
-\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item The R package source is in the package source directory.
-\item The companion manuscripts for Papers 1, 3, and 4 have their own analysis subdirectories.
-\item This manuscript source and the shared bibliography reside in the correlation-paper directory.
-\end{itemize}
-\end{bullets}
 
 ::: {.orig data-latex=""}
 **Data and code availability.** The R package source is at
@@ -828,7 +664,6 @@ shared bibliography (`references.bib`, a symlink to
 :::
 
 # References
-
 
 ::: {#refs}
 :::

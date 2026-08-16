@@ -1,0 +1,303 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  11pt,
+]{article}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage{setspace}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+%% tools/stamp.tex
+%% Provenance footer for PDFs rendered from this project.
+%% Vendored by zzcollab; this file is not project-specific. The
+%% footer prints the source document and the time of rendering.
+%% The git version is defined here too, and so is available to a
+%% project that wants it on the page, but it is left off the
+%% default footer: it already names the staged copy in share/ and
+%% appears in its manifest row. All values are supplied at render
+%% time by tools/stamp-render.R, which writes a small generated
+%% file that redefines the macros below. The \providecommand
+%% defaults keep a bare LaTeX compile working when the document is
+%% built without the wrapper.
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\providecommand{\stampsource}{\detokenize{(source not recorded)}}
+\providecommand{\stamptime}{(time not recorded)}
+\providecommand{\stampversion}{\detokenize{(version not recorded)}}
+\setlength{\footskip}{40pt}
+\newcommand{\stampfootcontent}{%
+  \footnotesize\color{gray}%
+  \parbox[b]{\textwidth}{%
+    \stamptime\hfill\thepage\\[2pt]%
+    \ttfamily\raggedright\stampsource}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\stampfootcontent}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+%% The title page uses the `plain` page style; redefine it so the
+%% stamp appears there too.
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\stampfootcontent}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}}
+\renewcommand{\stampsource}{\textasciitilde{}/\allowbreak{}prj/\allowbreak{}res/\allowbreak{}04-runin-power-analysis/\allowbreak{}runinpower/\allowbreak{}analysis/\allowbreak{}report/\allowbreak{}02-correlation/\allowbreak{}bullets.Rmd}
+\renewcommand{\stamptime}{2026-08-15 16:07 PDT}
+\renewcommand{\stampversion}{\detokenize{455c889-wip}}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage[mathlines]{lineno}
+\linenumbers
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  pdftitle={Structured summary: \textbar{} Power Analysis for Run-In Clinical Trials under AR(1) and General Correlation Structures},
+  pdfauthor={Ronald G. Thomas, Ph.D.},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Structured summary: \textbar{} Power Analysis for Run-In Clinical Trials under AR(1) and General Correlation Structures}
+\author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
+\date{August 15, 2026}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\setstretch{1.1}
+\emph{This document is a structured, section-by-section summary of the key points argued in the companion manuscript, ``| Power Analysis for Run-In Clinical Trials under AR(1) and General Correlation Structures.'' It is provided as a supplementary reading aid and does not stand on its own; all notation, derivations, simulation detail, and citations are in the main manuscript.}
+
+\bigskip\noindent
+
+\rule{\textwidth}{0.4pt}\bigskip
+
+\section{Introduction}\label{introduction}
+
+\textbf{The efficiency of run-in designs is governed by the correlation structure of the repeated measurements.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Under compound symmetry the correlation between change scores is constant.
+\item Run-in observations then inform the random slope through simple averaging.
+\item Under AR(1) the correlation decays with separation, so run-in information depends on distance from the treatment period.
+\end{itemize}
+
+\textbf{This paper extends prior compound-symmetric run-in frameworks to AR(1) residual correlation.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Paper 1 assumed the rank-one-plus-identity change-score covariance from independent errors.
+\item Wang (2019) extended run-in to two-period mixed models but kept compound symmetry.
+\item We instead adopt AR(1) residual correlation with geometric decay in lag.
+\end{itemize}
+
+\textbf{Existing literature treats autocorrelation and change-score variation but not the run-in setting.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Winkens (2007) studied optimal designs for autocorrelated data outside the run-in context.
+\item Diggle and Verbeke give general treatments of longitudinal correlation structures.
+\item Munoz et al. (1992) embedded compound symmetry and AR(1) in a single damped-exponential family, the natural generalization of the two structures contrasted here.
+\item Chambless (1993) addressed intra-individual variation in change scores, a concern amplified under AR(1).
+\end{itemize}
+
+\textbf{The closed-form AR(1) derivation covers a design case the reference longpower toolkit does not.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Its slope-based closed-form routines assume independent or compound-symmetric residuals.
+\item Its \texttt{power.mmrm.ar1()} routine implements the analytic AR(1) formula of Lu, Luo, and Chen (2008), but without run-in or common close observations under a random slope.
+\item Our formula supplies that case and collapses to the compound-symmetric structure of Paper 1 as $\rho \to 0$.
+\end{itemize}
+
+\subsection{Marginal covariance}\label{marginal-covariance}
+
+\textbf{The AR(1) change-score covariance loses rank-one structure but the Woodbury reduction survives.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The matrix $R$ is no longer rank-one-plus-identity, so Sherman-Morrison does not apply.
+\item The Woodbury identity still reduces the inverse covariance to a scalar inversion.
+\item This holds because the random-effects covariance $G$ remains scalar.
+\end{itemize}
+
+\subsection{Woodbury computation}\label{woodbury-computation}
+
+\textbf{The Woodbury scalar term persists, but the residual inverse must now be computed differently.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The correction term $H$ remains a scalar as in Paper 1.
+\item The residual inverse $R^{-1}$ must be obtained numerically.
+\item Equivalently it follows from the AR(1) tridiagonal inverse rather than Sherman-Morrison.
+\end{itemize}
+
+\subsection{Cross-covariance between phase means}\label{cross-covariance-between-phase-means}
+
+\textbf{A moment-based alternative derives the pre-post variance directly from the phase means.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item It computes the variance of the test statistic from the moments of the phase means.
+\item The run-in mean averages the run-in observations.
+\item The treatment-period mean averages the treatment-period observations.
+\item The construction follows the summary-measures approach of Frison and Pocock (1992).
+\end{itemize}
+
+\section{Relationship between the two approaches}\label{relationship-between-the-two-approaches}
+
+\textbf{The GLS and moment-based approaches target distinct variance quantities.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The GLS variance is the minimum-variance bound under the assumed model.
+\item The moment-based variance is that of the simple averaged change-score estimator.
+\item The two therefore answer different efficiency questions.
+\end{itemize}
+
+\textbf{The two approaches do not coincide even without a random slope.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item At $\sigma_b^2 = 0$ the GLS estimator still weights observations through the AR(1) residual covariance and targets the slope difference.
+\item The moment-based quantity is the variance of the unweighted phase-mean difference, a different estimand.
+\item Numerically, at $J_0 = 2$, $J_1 = 2$, $\rho = 0.5$, $\sigma^2 = 1$, $\sigma_b^2 = 0$: GLS 0.636 versus moment-based 1.219.
+\end{itemize}
+
+\textbf{The moment-based computation serves the simple pre-post estimator, not as a bound on the GLS variance.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item It requires no specification of the random-slope variance.
+\item It is the exact variance of the unweighted pre-post difference an analyst might report without fitting a mixed model.
+\item Because the estimands differ, its ratio to the GLS variance is descriptive, not an efficiency bound.
+\end{itemize}
+
+\section{Discussion}\label{discussion}
+
+\textbf{The autocorrelation structure matters for run-in designs only when the autocorrelation is weak relative to the random-slope signal.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item When the slope-to-noise ratio is large, the random-slope term dominates the change-score covariance and the residual correlation structure is second order.
+\item The AR(1) and compound-symmetry variances then differ negligibly, and the simpler Paper 1 formula suffices.
+\item The two structures diverge most when the slope-to-noise ratio is small and run-in observations are distant from randomization.
+\end{itemize}
+
+\textbf{At a matched nominal $\rho$, compound symmetry is generally conservative, with a narrow anticonservative corner.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Positive serial correlation reduces the residual variance of every change score, so the AR(1) variance falls below the compound-symmetric value for most designs.
+\item The discrepancy grows with $\rho$; near $\rho = 0.95$ the AR(1) variance can fall below one tenth of the compound-symmetric value.
+\item The exception is large $J_0$ at small $\rho$, where distant run-in observations lose information and compound symmetry understates the variance by at most about 6\%.
+\end{itemize}
+
+\textbf{The numerical comparisons give a practical decision rule for when the simpler formula is safe.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item At a matched nominal $\rho$, the compound-symmetry formula of Paper 1 is a conservative and convenient default for most designs.
+\item With many run-in observations and low expected autocorrelation, the AR(1) formula should be used directly; the compound-symmetric formula can understate the variance by up to about 6\% there.
+\item When $\rho$ is uncertain, evaluating the AR(1) formula over a plausible range of $\rho$ and taking the largest variance is a safe default.
+\end{itemize}
+
+\section{Data availability statement}\label{data-availability-statement}
+
+\textbf{The implementing package, tests, and bibliography are openly available in the project repository.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The package implements the AR(1) variance formulas.
+\item Validation tests and the shared four-paper bibliography are included.
+\item Specific paths appear in the Reproducibility section below.
+\end{itemize}
+
+\section{Reproducibility}\label{reproducibility}
+
+\textbf{The manuscript was rendered with R 4.4.x using a small set of principal packages.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The in-package source supplies the AR(1) machinery.
+\item Testing uses the tinytest harness.
+\item The manuscript build uses rmarkdown and bookdown.
+\end{itemize}
+
+\textbf{All reported quantities are deterministic.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item Given fixed inputs the variance formulas exercise no random-number generator.
+\item No Monte Carlo computation appears in this manuscript.
+\item Re-running the chunks therefore reproduces every table and figure exactly.
+\end{itemize}
+
+\textbf{All source, companion manuscripts, and bibliography reside at documented repository paths.}
+
+\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\item The R package source is in the package source directory.
+\item The companion manuscripts for Papers 1, 3, and 4 have their own analysis subdirectories.
+\item This manuscript source and the shared bibliography reside in the correlation-paper directory.
+\end{itemize}
+
+\end{document}
