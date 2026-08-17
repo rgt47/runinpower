@@ -8,6 +8,8 @@ Description: Power analysis methodology for clinical trials with one or more
     in longitudinal designs, particularly for Alzheimer's disease trials where
     the outcome is a rate of change.
 License: GPL-3
+URL: https://github.com/rgt47/runinpower
+BugReports: https://github.com/rgt47/runinpower/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0

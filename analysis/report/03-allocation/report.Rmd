@@ -509,13 +509,15 @@ carries over to the change-score model of the preceding
 sections has not been established here.
 :::
 
-## Optimization over observation times within phases
-
-<!-- TODO: extend to the general (J_0, J_1, J_2) case -->
-<!-- where observation times within each phase are -->
-<!-- also free parameters. This connects to -->
-<!-- Winkens et al 2005 on optimal time-point -->
-<!-- positioning. -->
+::: {.orig data-latex=""}
+**Scope.** The general $(J_0, J_1, J_2)$ optimization in
+which observation times within each phase are also free
+parameters, rather than fixed and equally spaced, is not
+addressed in this paper; it connects to the optimal
+time-point positioning literature (e.g., Winkens et al.
+2005) and is left as future work rather than developed
+here.
+:::
 
 # Replicated endpoint observations
 
@@ -1024,8 +1026,10 @@ optimal-allocation routines (`allocation.R` and
 `replicated.R`, with the design matrices they rely on built
 in `design.R`), validation tests, and the shared
 bibliography across the four-paper compendium are openly
-available in the project repository. Specific paths are
-listed in the Reproducibility section below.
+available in the project repository at
+[https://github.com/rgt47/runinpower](https://github.com/rgt47/runinpower).
+Specific paths are listed in the Reproducibility section
+below.
 :::
 
 # Reproducibility

@@ -463,19 +463,6 @@ legend('bottomleft', legend = paste('J_0 =', r_values),
        col = cols, lwd = 2, bty = 'n')
 ```
 
-# Stratified variance for unequal visit patterns
-
-When participants have different numbers of run-in
-($J_{0,i}$) or common close ($J_{2,i}$) observations, the
-total variance is a weighted sum across strata:
-\begin{equation}
-  \frac{1}{n^2}\sum_{s=1}^{S} n_s\,
-    \Var(X_K - X_0)\big|_{J_0 = J_{0,s},\, J_2 = J_{2,s}}
-\end{equation}
-
-<!-- TODO: develop stratified computation for -->
-<!-- both CS and AR(1) -->
-
 # Numerical examples
 
 ## Comparison across correlation structures
@@ -618,6 +605,25 @@ simple pre-post estimator and is not a bound on the GLS
 variance.
 :::
 
+::: {.orig data-latex=""}
+**Scope: balanced designs only.** All results above assume
+every participant contributes the same number of run-in
+($J_0$) and common close ($J_2$) observations. When
+participants differ in $J_{0,i}$ or $J_{2,i}$ (e.g., staggered
+enrollment with a fixed calendar close date), the total
+variance is a weighted sum across strata,
+$n^{-2}\sum_{s=1}^{S} n_s\,\Var(X_K-X_0)\vert_{J_0=J_{0,s},\,
+J_2=J_{2,s}}$, evaluated stratum-by-stratum with the
+compound-symmetry or AR(1) formulas derived above and combined
+by the delta method. This stratified extension is
+straightforward in principle for the compound-symmetry route
+(each stratum uses the moment-based formula of Section 4
+directly) but has not been derived or numerically verified
+here for either correlation structure, and we do not claim it
+in the results above. Unbalanced-visit designs are left to
+future work.
+:::
+
 # Conflict of interest
 
 The author declares no conflicts of interest.
@@ -632,7 +638,9 @@ This work received no specific funding.
 The `runinpower` R package implementing the AR(1) variance
 formulas (`covariance-ar1.R`), validation tests, and the
 shared bibliography across the four-paper compendium are
-openly available in the project repository. Specific paths
+openly available in the project repository at
+[https://github.com/rgt47/runinpower](https://github.com/rgt47/runinpower).
+Specific paths
 are listed in the Reproducibility section below.
 :::
 

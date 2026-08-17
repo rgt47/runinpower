@@ -1,5 +1,5 @@
 ---
-title: 'Structured summary: | GLS versus Averaged Change-Score Estimators for Clinical Trials with Run-In Observations'
+title: 'Structured summary: | GLS, ANCOVA, and Averaged Change-Score Estimators for Clinical Trials with Run-In Observations'
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
@@ -24,6 +24,9 @@ header-includes:
   - \usepackage{float}
   - \usepackage[mathlines]{lineno}
   - \linenumbers
+  - \DeclareMathOperator{\Var}{Var}
+  - \DeclareMathOperator{\Cov}{Cov}
+  - \DeclareMathOperator{\E}{E}
 knit: (function(input, ...) { d <- dirname(input); while (!file.exists(file.path(d, 'tools', 'stamp-render.R')) && d != dirname(d)) d <- dirname(d); source(file.path(d, 'tools', 'stamp-render.R'))$value(input) })
 ---
 
@@ -35,7 +38,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-\emph{This document is a structured, section-by-section summary of the key points argued in the companion manuscript, ``| GLS versus Averaged Change-Score Estimators for Clinical Trials with Run-In Observations.'' It is provided as a supplementary reading aid and does not stand on its own; all notation, derivations, simulation detail, and citations are in the main manuscript.}
+\emph{This document is a structured, section-by-section summary of the key points argued in the companion manuscript, ``| GLS, ANCOVA, and Averaged Change-Score Estimators for Clinical Trials with Run-In Observations.'' It is provided as a supplementary reading aid and does not stand on its own; all notation, derivations, simulation detail, and citations are in the main manuscript.}
 
 \bigskip\noindent\rule{\textwidth}{0.4pt}\bigskip
 

@@ -20,3 +20,7 @@
 | `03-allocation-2026-08-15-1632-455c889-wip.pdf` | `~/prj/res/04-runin-power-analysis/runinpower/analysis/report/03-allocation/report.Rmd` | `455c889-wip` | 2026-08-15 16:32 PDT |
 | `bullets-2026-08-15-1632-455c889-wip.pdf` | `~/prj/res/04-runin-power-analysis/runinpower/analysis/report/04-gls-vs-ttest/bullets.Rmd` | `455c889-wip` | 2026-08-15 16:32 PDT |
 | `04-gls-vs-ttest-2026-08-15-1632-455c889-wip.pdf` | `~/prj/res/04-runin-power-analysis/runinpower/analysis/report/04-gls-vs-ttest/report.Rmd` | `455c889-wip` | 2026-08-15 16:32 PDT |
+| `bullets-2026-08-16-1612-276ac7f-wip.pdf` | `~/prj/res/04-runin-power-analysis/runinpower/analysis/report/01-runin-power/bullets.Rmd` | `276ac7f-wip` | 2026-08-16 16:12 PDT |
+| `bullets-2026-08-16-1612-276ac7f-wip.pdf` | `~/prj/res/04-runin-power-analysis/runinpower/analysis/report/03-allocation/bullets.Rmd` | `276ac7f-wip` | 2026-08-16 16:12 PDT |
+| `bullets-2026-08-16-1615-276ac7f-wip.pdf` | `~/prj/res/04-runin-power-analysis/runinpower/analysis/report/02-correlation/bullets.Rmd` | `276ac7f-wip` | 2026-08-16 16:15 PDT |
+| `bullets-2026-08-16-1615-276ac7f-wip.pdf` | `~/prj/res/04-runin-power-analysis/runinpower/analysis/report/04-gls-vs-ttest/bullets.Rmd` | `276ac7f-wip` | 2026-08-16 16:15 PDT |

@@ -106,8 +106,8 @@
   \renewcommand{\headrulewidth}{0pt}%
   \renewcommand{\footrulewidth}{0.4pt}}
 \renewcommand{\stampsource}{\textasciitilde{}/\allowbreak{}prj/\allowbreak{}res/\allowbreak{}04-runin-power-analysis/\allowbreak{}runinpower/\allowbreak{}analysis/\allowbreak{}report/\allowbreak{}01-runin-power/\allowbreak{}bullets.Rmd}
-\renewcommand{\stamptime}{2026-08-15 16:31 PDT}
-\renewcommand{\stampversion}{\detokenize{455c889-wip}}
+\renewcommand{\stamptime}{2026-08-16 16:12 PDT}
+\renewcommand{\stampversion}{\detokenize{276ac7f-wip}}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{booktabs}
@@ -115,6 +115,9 @@
 \usepackage{float}
 \usepackage[mathlines]{lineno}
 \linenumbers
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\tr}{tr}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -130,7 +133,7 @@
 
 \title{Structured summary: \textbar{} Power Analysis for Longitudinal Clinical Trials with Run-In and Common Close Observations}
 \author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
-\date{August 15, 2026}
+\date{August 16, 2026}
 
 \begin{document}
 \maketitle
@@ -274,7 +277,7 @@
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item The GLS estimator has covariance $(X' \Sigma^{-1} X)^{-1}$.
 \item $X$ is the fixed-effects design matrix and $\mathbf{c}$ is the stacked change-score vector.
-\item The target $\Var(\hat{\gamma})$ is the diagonal entry corresponding to $\gamma$.
+\item The target $\mathop{\mathrm{Var}}(\hat{\gamma})$ is the diagonal entry corresponding to $\gamma$.
 \end{itemize}
 
 \subsubsection{Per-participant information, compact form}\label{per-participant-information-compact-form}
@@ -334,7 +337,7 @@
 \textbf{The treatment-effect variance is the relevant diagonal element of the inverted information matrix, obtained numerically and checked against the closed form.}
 
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
-\item $\Var(\hat{\gamma})$ is the $(3,3)$ element of $(X'\Sigma^{-1}X)^{-1}$.
+\item $\mathop{\mathrm{Var}}(\hat{\gamma})$ is the $(3,3)$ element of $(X'\Sigma^{-1}X)^{-1}$.
 \item It is evaluated numerically in the accompanying R code.
 \item The numerical value is verified against the derived closed-form result.
 \end{itemize}
@@ -467,7 +470,7 @@
 
 \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
 \item Adding one run-in observation introduces the parameter $\delta$, enlarging the fixed-effect dimension from 2 to 3.
-\item Across a wide numerical grid, $\Var(\hat\gamma)|_{J_0=1}$ never exceeds $\Var(\hat\gamma)|_{J_0=0}$.
+\item Across a wide numerical grid, $\mathop{\mathrm{Var}}(\hat\gamma)|_{J_0=1}$ never exceeds $\mathop{\mathrm{Var}}(\hat\gamma)|_{J_0=0}$.
 \item At some parameter values the gain is negligible, so the benefit of a single run-in observation should be quantified before extending trial duration.
 \end{itemize}
 

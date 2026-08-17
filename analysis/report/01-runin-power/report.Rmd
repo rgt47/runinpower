@@ -185,7 +185,11 @@ slope, with all participants off treatment and no contrast
 attached to the phase itself. A formal comparison of the two
 estimands, and of the assumptions each requires about
 post-cessation trajectories, is beyond the scope of this
-paper.
+paper. The common close construction's own assumption (a
+frozen, non-decaying treatment offset carried through the
+common close phase) is stated explicitly where the change
+score is defined below, in the "General formula with common
+close" subsection ("Carryover assumption" paragraph).
 :::
 
 ::: {.orig data-latex=""}
@@ -989,6 +993,25 @@ treatment period ($\gamma g_i \cdot J_1 \cdot t$), not through
 the slope during the common close. This means the $\gamma$
 column in the design matrix has the value $J_1 t$ for all common
 close observations in the treatment group.
+
+**Carryover assumption.** This encodes an explicit modeling
+choice: the between-group offset acquired during treatment is
+held constant (frozen) through the common close phase, neither
+growing nor decaying once treatment stops. Equivalently, the
+common close slope is assumed equal between arms, so the two
+groups' trajectories run parallel after treatment ends and the
+gap opened during the treatment period is carried forward
+unchanged. This is the same assumption distinguished from the
+delayed-start estimand in the Introduction's discussion of
+@liuseifert2015 above; it is not derived from a biological
+mechanism and should be treated as a design simplification
+rather than an empirical finding. If post-cessation trajectories
+converge (loss of
+treatment benefit) or diverge (continued divergence after
+cessation), the variance and power expressions below remain
+correct algebraically but the estimand they target -- the
+end-of-common-close group difference under a frozen offset --
+would no longer match the quantity of clinical interest.
 :::
 
 The fixed effects design matrix becomes:
@@ -1460,9 +1483,18 @@ spacing, nonlinear progression, and more complex random
 effects structures (e.g., random intercept-slope correlation)
 are possible within the same Woodbury identity framework but
 yield more complex expressions that may not admit simple
-closed forms. The formulas also assume no dropout; in
-practice, the Dawson-Lagakos pattern-mixture approach
-[@frost2008] can be applied to adjust
+closed forms. The general $(J_0, J_1, J_2)$ result, and the
+$J_0 = 2$ case, are established via the package's numerical
+Woodbury routine, validated against a direct GLS computation
+and a Monte Carlo benchmark, rather than via an independent
+symbolic derivation; the Mathematica symbolic trail in this
+repository (`analysis/scripts/woodbury_variance.m`) covers
+only $J_0 \in \{0, 1\}$. Extending the symbolic derivation to
+$J_0 = 2$ and the general case is future work and is not
+required for the numerical results reported here, which do
+not depend on the symbolic route. The formulas also assume no
+dropout; in practice, the Dawson-Lagakos pattern-mixture
+approach [@frost2008] can be applied to adjust
 for anticipated attrition.
 :::
 
@@ -1480,7 +1512,9 @@ This work received no specific funding.
 The `runinpower` R package, the four companion manuscripts
 of this compendium, the Mathematica symbolic-derivation scripts,
 and the shared bibliography are openly available in the
-project repository. Specific paths are listed in the
+project repository at
+[https://github.com/rgt47/runinpower](https://github.com/rgt47/runinpower).
+Specific paths are listed in the
 Reproducibility section below.
 :::
 
@@ -1493,8 +1527,20 @@ files: allocation, ancova, averaged, covariance,
 covariance-ar1, design, power, replicated, variance),
 `tinytest` (testing harness), and `rmarkdown` plus
 `bookdown` for the manuscript build. Mathematica symbolic
-derivations supporting the Woodbury-based variance formulas
-are at `analysis/scripts/`.
+derivations are at `analysis/scripts/`
+(`woodbury_variance.m`); this file covers exactly the
+$J_0 = 0$ (no run-in) and $J_0 = 1$ (one run-in observation)
+cases. It does not extend to $J_0 = 2$ or the general
+$(J_0, J_1, J_2)$ case reported in this manuscript's General
+Formula sections; those results are established via the
+package's numerical Woodbury routine
+(`var_gamma_matrix()`, see `R/variance.R`) and validated
+against a direct GLS computation and a Monte Carlo benchmark
+in the Numerical Examples section below, not via an
+independent hand (symbolic) derivation beyond $J_0 = 1$. A
+symbolic derivation trail for $J_0 = 2$ and the general case
+does not currently exist in this repository; see the
+Limitations paragraph below.
 :::
 
 ::: {.orig data-latex=""}

@@ -1,6 +1,6 @@
 ---
 title: |
-  GLS versus Averaged Change-Score Estimators for
+  GLS, ANCOVA, and Averaged Change-Score Estimators for
   Clinical Trials with Run-In Observations
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
@@ -1183,7 +1183,9 @@ The `runinpower` R package implementing the GLS, ANCOVA, and
 averaged-change-score estimators (`ancova.R`, `averaged.R`),
 the simulation drivers, and the shared bibliography across the
 four-paper compendium are openly available in the project
-repository. Specific paths are listed in the Reproducibility
+repository at
+[https://github.com/rgt47/runinpower](https://github.com/rgt47/runinpower).
+Specific paths are listed in the Reproducibility
 section below.
 :::
 
