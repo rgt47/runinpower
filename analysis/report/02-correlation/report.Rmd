@@ -89,7 +89,6 @@ library(runinpower)
 
 # Introduction
 
-::: {.orig data-latex=""}
 The efficiency of run-in designs depends on the
 correlation structure of the repeated measurements. We
 begin with compound symmetry, under which the
@@ -100,9 +99,7 @@ mechanism. Under AR(1), on the other hand, the
 correlation decays with temporal separation, so the
 information content of a run-in observation depends on
 how far it falls from the treatment period.
-:::
 
-::: {.orig data-latex=""}
 Paper 1 [@frost2008] assumed $R = \sigma^2(I_J +
 \mathbf{1}_J\mathbf{1}_J')$, which arises from the
 change-score parameterization under independent errors.
@@ -111,9 +108,7 @@ linear mixed models but retained the compound symmetry
 assumption. Here we extend the framework to AR(1)
 residual correlation, where $\Corr(e_{ij}, e_{ij'}) =
 \rho^{|j-j'|}$ for $0 < \rho < 1$.
-:::
 
-::: {.orig data-latex=""}
 @winkens2007 studied optimal designs for autocorrelated
 longitudinal data but did not consider the run-in
 setting. @diggle2002 and @verbeke2000 provide general
@@ -129,9 +124,7 @@ binary choice between them. @chambless1993 addressed the
 effect of intra-individual variation on change-score
 analyses, a concern that is amplified under AR(1)
 correlation.
-:::
 
-::: {.orig data-latex=""}
 The `longpower` R package [@iddi2022] is the CRAN
 reference implementation for longitudinal-trial power
 calculations. Its `power.mmrm.ar1()` routine implements
@@ -148,7 +141,6 @@ AR(1) change-score covariance collapses to the
 compound-symmetric structure of Paper 1, so we see that
 the present formulas contain the Paper 1 results as a
 special case.
-:::
 
 # Correlation structures for longitudinal trials
 
@@ -237,13 +229,11 @@ The change-score residual covariance becomes:
 \end{equation}
 for $j, l \ne 0$.
 
-::: {.orig data-latex=""}
 This $R$ no longer has the rank-one-plus-identity
 structure, so the Sherman-Morrison formula does not
 apply. The Woodbury identity, however, still reduces
 $\Sigma^{-1}$ to a scalar inversion, because $G$ remains
 scalar.
-:::
 
 ## Woodbury computation
 
@@ -253,12 +243,10 @@ The computation proceeds identically to Paper 1:
     (G^{-1} + Z'R^{-1}Z)^{-1} Z'R^{-1}
 \end{equation}
 
-::: {.orig data-latex=""}
 with $H = (G^{-1} + Z'R^{-1}Z)^{-1}$ still scalar. The
 difference from Paper 1 is that $R^{-1}$ must now be
 computed numerically (or via the AR(1) tridiagonal
 inverse) rather than by Sherman-Morrison.
-:::
 
 ```{r ar1-variance}
 a <- 1.0
@@ -309,7 +297,6 @@ knitr::kable(
 
 ## Cross-covariance between phase means
 
-::: {.orig data-latex=""}
 An alternative to the GLS approach computes the
 variance of the pre-post test statistic directly from
 the moments of the phase means. This route follows the
@@ -319,7 +306,6 @@ $\bar{X}_0 = \frac{1}{J_0}\sum_{i=1}^{J_0} Y_{i,\text{run-in}}$
 and
 $\bar{X}_K = \frac{1}{J_1}\sum_{j=1}^{J_1} Y_{j,\text{trt}}$
 denote the run-in and treatment-period means.
-:::
 
 Under AR(1) with parameter $c = \rho$, the
 cross-covariance is:
@@ -394,16 +380,13 @@ cat('  (Different estimands; see next section.)\n')
 
 # Relationship between the two approaches
 
-::: {.orig data-latex=""}
 We note at the outset that the GLS approach (Section 3)
 and the moment-based approach (Section 4) compute
 different quantities. The GLS variance is the
 minimum-variance bound under the assumed model, whereas
 the moment-based variance is the variance of the simple
 averaged change-score estimator $\bar{d}_1 - \bar{d}_0$.
-:::
 
-::: {.orig data-latex=""}
 It is worth emphasizing that the two approaches do not
 coincide even when $\sigma_b^2 = 0$. At that boundary the
 GLS estimator still weights the change scores through the
@@ -416,9 +399,7 @@ $\sigma_b^2 = 0$, the GLS variance is 0.636 while the
 moment-based variance is 1.219. When $\sigma_b^2 > 0$ the
 GLS estimator additionally exploits the random-slope
 structure of $\Sigma = R + ZGZ'$.
-:::
 
-::: {.orig data-latex=""}
 The practical value of the moment-based computation is
 that it requires no specification of $\sigma_b^2$ and
 gives the exact variance of the simple pre-post
@@ -431,7 +412,6 @@ quantities are variances of different estimands, their
 ratio describes the cost of abandoning the mixed model
 rather than an efficiency ordering within it. We take up
 the relative-efficiency question in Paper 4.
-:::
 
 # Robustness to correlation misspecification
 
@@ -551,7 +531,6 @@ legend('topright', legend = paste('J_0 =', r_values),
 
 # Discussion
 
-::: {.orig data-latex=""}
 The central practical question is when the
 compound-symmetry formulas of Paper 1 can be used in
 place of the AR(1) formulas derived here. The numerical
@@ -566,9 +545,7 @@ compound-symmetric $R$ is largely immaterial. When the
 ratio is small, on the other hand, the residual term
 dominates and the correlation structure becomes the
 leading determinant of efficiency.
-:::
 
-::: {.orig data-latex=""}
 The direction of the error matters for trial design. When
 the two structures are matched at a common nominal
 $\rho$, positive serial correlation reduces the residual
@@ -590,9 +567,7 @@ We emphasize that both statements are specific to the
 common-nominal-$\rho$ matching convention; matching the
 structures on, for example, a common lag-one change-score
 correlation would alter the comparison.
-:::
 
-::: {.orig data-latex=""}
 For applied use, we recommend the following. First, at a
 matched nominal $\rho$, the compound-symmetry formula of
 Paper 1 is conservative for most designs and can serve as
@@ -609,9 +584,7 @@ resulting variance yields a safe sample size. Finally, we
 note that the moment-based computation of Section 4
 addresses the simple pre-post estimator and is not a
 bound on the GLS variance.
-:::
 
-::: {.orig data-latex=""}
 **Scope: balanced designs only.** All results above assume
 that every participant contributes the same number of
 run-in ($J_0$) and common close ($J_2$) observations. When
@@ -628,7 +601,6 @@ Section 4 directly, but it has not been derived or
 numerically verified here for either correlation
 structure, and we do not claim it in the results above.
 Unbalanced-visit designs are left to future work.
-:::
 
 # Conflict of interest
 
@@ -640,7 +612,6 @@ This work received no specific funding.
 
 # Data availability statement
 
-::: {.orig data-latex=""}
 The `runinpower` R package implementing the AR(1)
 variance formulas (`covariance-ar1.R`), the validation
 tests, and the shared bibliography across the four-paper
@@ -649,34 +620,27 @@ at
 [https://github.com/rgt47/runinpower](https://github.com/rgt47/runinpower).
 Specific paths are listed in the Reproducibility section
 below.
-:::
 
 # Reproducibility
 
-::: {.orig data-latex=""}
 This manuscript was rendered with R 4.4.x. The principal
 packages used are the in-package `runinpower` source (the
 AR(1) machinery is in `covariance-ar1.R`), `tinytest`
 (testing harness), and `rmarkdown` plus `bookdown` for the
 manuscript build.
-:::
 
-::: {.orig data-latex=""}
 **Random-number generator.** The AR(1) variance formulas
 are deterministic given fixed input parameters. No
 random-number generation is used anywhere in this
 manuscript, so re-running the code chunks reproduces
 every table and figure exactly.
-:::
 
-::: {.orig data-latex=""}
 **Data and code availability.** The R package source is
 at `R/`. The companion manuscripts (Papers 1, 3, 4) are at
 `analysis/report/{01,03,04}-*/`. The manuscript source and
 the shared bibliography (`references.bib`, a symlink to
 `../../references.bib`) are at
 `analysis/report/02-correlation/`.
-:::
 
 # References
 

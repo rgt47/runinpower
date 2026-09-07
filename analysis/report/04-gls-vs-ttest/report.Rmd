@@ -109,7 +109,6 @@ library(runinpower)
 
 # Introduction
 
-::: {.orig data-latex=""}
 The GLS estimator $\hat\gamma_{\text{GLS}} =
 (X'\Sigma^{-1}X)^{-1}X'\Sigma^{-1}\mathbf{c}$ is the
 best linear unbiased estimator (minimum variance among
@@ -120,7 +119,6 @@ accuracy of that estimation. With small sample sizes or
 short follow-up, variance component estimates can be
 unstable, and this instability may erode the
 theoretical advantage of GLS.
-:::
 
 The averaged change-score approach, by contrast,
 sidesteps variance component estimation entirely. For a
@@ -147,7 +145,6 @@ $J_1 = k$ (treatment period), and $J_2 = f$ (common
 close). The prose and table headers, on the other hand,
 use $(J_0, J_1, J_2)$.
 
-::: {.orig data-latex=""}
 The debate between change-score and ANCOVA analyses has
 a long history [@senn2006; @vanbreukelen2006;
 @crager1987]. @yang2001 provided a formal efficiency
@@ -185,9 +182,7 @@ established the foundational comparison of
 pretest-posttest designs. @coffman2016 addressed
 conditioning on baseline in longitudinal RCTs. @wang2019
 proposed the two-period approach for run-in trials.
-:::
 
-::: {.orig data-latex=""}
 We note that the averaged change-score estimator
 studied here is distinct from (and less efficient than)
 the constrained longitudinal data analysis (cLDA)
@@ -202,9 +197,7 @@ and post-treatment measurements with equal baseline
 assumptions. A full comparison including cLDA is beyond
 the scope of this paper, but it represents a natural
 extension of the present work.
-:::
 
-::: {.orig data-latex=""}
 The `longpower` R package [@iddi2022] provides the
 CRAN reference implementation of power calculations for
 the GLS / REML-based slope-comparison estimator,
@@ -223,19 +216,16 @@ it orders the three candidate estimators under correct
 specification, and (ii) it quantifies the efficiency
 margin that GLS retains under the misspecifications of
 $G$ and $R$ studied below.
-:::
 
 # Three estimators
 
 ## GLS under the mixed model
 
-::: {.orig data-latex=""}
 We begin with the GLS estimator. From @frost2008, the
 per-pair variance is the $(\gamma, \gamma)$ element of
 $(X'\Sigma^{-1}X)^{-1}$ with $\Sigma = R + ZGZ'$
 [@laird1982; @verbeke2000], computed via the Woodbury
 identity.
-:::
 
 For the Frost conventional design ($J_0 = 0$, $J_1 = 2$):
 \begin{equation}
@@ -301,7 +291,6 @@ The variance of $\hat\gamma$ under this model is
     \,(1 - \rho_{\text{pre,post}}^2)
 \end{equation}
 
-::: {.orig data-latex=""}
 where $\rho_{\text{pre,post}}$ is the marginal
 correlation between the run-in and post-randomization
 means. When $J_0 = 0$, there is no covariate, and
@@ -309,16 +298,13 @@ ANCOVA reduces to the averaged estimator. When
 $\rho_{\text{pre,post}}$ is large, that is, when
 $\sigma_b^2$ dominates $\sigma^2$, the $(1-\rho^2)$
 factor produces a substantial reduction in variance.
-:::
 
-::: {.orig data-latex=""}
 The key advantage of ANCOVA over GLS is that $\phi$ is
 estimated from the data rather than derived from
 assumed variance components [@senn2006; @borm2007]. Its
 key advantage over the averaged estimator, on the other
 hand, is that it exploits the predictive value of the
 run-in observations [@vanbreukelen2006; @vickers2001].
-:::
 
 ```{r ancova_demo, echo=TRUE}
 c220 <- cfac(2, 2, 0, tt)
@@ -360,7 +346,6 @@ only, and we flag it as future work in the Discussion.
 
 ## BLUP as theoretical benchmark
 
-::: {.orig data-latex=""}
 The three estimators above are linear functions of the
 observed change scores, and we can compare them to a
 common benchmark: the best linear unbiased predictor
@@ -376,9 +361,7 @@ subject-specific random slope $b_i$ given the data is
 \end{equation}
 where $\hat{\boldsymbol{\beta}}$ is the GLS estimator of the
 fixed effects [@henderson1975; @robinson1991].
-:::
 
-::: {.orig data-latex=""}
 The group-specific slope estimators derived from the fixed
 effects share the same variance as
 $(\hat{\boldsymbol{\beta}})_\gamma$, and the GLS estimator
@@ -387,7 +370,6 @@ linear unbiased estimators of $\gamma$ when $V_i$ is
 correctly specified. We regard the averaged and ANCOVA
 estimators as specific linear approximations to this
 benchmark:
-:::
 
 - **Averaged change-score** replaces $V_i^{-1}$ with an
   unweighted sum; this is optimal only when $V_i \propto I$,
@@ -399,7 +381,6 @@ benchmark:
   sufficient statistic for the subject-specific intercept
   plus average slope.
 
-::: {.orig data-latex=""}
 Section 4 examines whether model misspecification erodes
 the nominal optimality of GLS relative to these
 approximations, which depend on fewer variance
@@ -408,7 +389,6 @@ there, the GLS variance increases but remains below
 that of the averaged estimator. Whether feasible GLS
 with estimated components loses its advantage in small
 samples is a question we do not take up here.
-:::
 
 # Relative efficiency under correct specification
 
@@ -611,7 +591,6 @@ second family (`r n_hi_avg` of `r n_cells` cells).
 
 ## Misspecified $G$
 
-::: {.orig data-latex=""}
 When $\sigma_b^2$ is misestimated, whether too large
 or too small, the GLS analysis that assumes it is no
 longer optimal. Its sampling variance is then the
@@ -632,7 +611,6 @@ never exceeds 5.30, which remains below the
 averaged-estimator variance of 8.89 on the $\gamma$
 scale. That is, the studied misspecification erodes but
 does not overturn the GLS advantage.
-:::
 
 ```{r misspec_G, fig.cap="Effect of misspecifying $\\sigma_b^2$ on GLS variance. True $\\sigma_b^2 = 1$. The GLS estimator uses an assumed value on the x-axis. The averaged estimator's definition does not use $\\sigma_b^2$, so its $\\gamma$-scale variance (horizontal line) does not depend on the assumed value. The misspecified GLS variance remains below the averaged variance throughout."}
 b_true <- 1.0
@@ -712,7 +690,6 @@ legend('topright',
 
 ## Misspecified $R$
 
-::: {.orig data-latex=""}
 When the residual correlation structure is wrong, for
 example when compound symmetry is assumed but AR(1) is
 true, both the GLS variance formula and the Woodbury
@@ -724,7 +701,6 @@ figure). The GLS sandwich variance ranges from 0.74 to
 2.16 over the same sweep. That is, the studied $R$
 misspecification leaves GLS four to eleven times more
 efficient than the averaged estimator throughout.
-:::
 
 ```{r misspec_R, fig.cap="Effect of analyzing under compound symmetry when the true correlation is AR(1). Sandwich variance of GLS (solid) vs averaged change-score on the $\\gamma$ scale (dashed) as a function of $\\rho$. The averaged estimator's definition does not use the assumed correlation, but its variance varies with the true $R$; GLS remains at least fourfold more efficient at every $\\rho$."}
 rho_grid <- seq(0, 0.9, by = 0.05)
@@ -813,10 +789,8 @@ legend('topleft',
 
 ## Design
 
-::: {.orig data-latex=""}
 To complement the analytical results, we simulate
 trials under the following factorial design:
-:::
 
 - $m \in \{50, 100\}$ per group
 - $(J_0, J_1, J_2) \in \{(0,2,0), (2,2,0), (2,2,2)\}$
@@ -827,7 +801,6 @@ trials under the following factorial design:
 - Analysis: GLS (correctly specified), GLS
   (misspecified), averaged change-score
 
-::: {.orig data-latex=""}
 For each configuration, we simulate 1000 trials. The
 outcomes are the empirical standard deviation of
 $\hat\gamma$ and the empirical power. We do not assess
@@ -838,7 +811,6 @@ AR(1) truth arm, and 5000 replicates remains future
 work. Test statistics use standard normal critical
 values rather than $t$, a distinction that is immaterial
 at $m \ge 50$ per group.
-:::
 
 ```{r simulation}
 simulate_trial <- function(m, r, k, f, sigma2,
@@ -938,7 +910,6 @@ analyze_avg <- function(trial) {
 
 ## Results
 
-::: {.orig data-latex=""}
 We simulate the factorial design described above under
 compound symmetry, comparing the correctly specified GLS
 estimator, a GLS estimator that misstates the random-slope
@@ -950,7 +921,6 @@ standard deviation of $\hat\gamma$ and the empirical power
 from 1000 replicates. The Monte Carlo standard error of a
 tabulated power estimate is at most
 $\sqrt{0.25/1000} \approx 0.016$.
-:::
 
 ```{r simulation-study}
 nsim <- 1000  # extension to 5000 replicates is future work
@@ -1114,7 +1084,6 @@ designs with $J_1 \ge 2$ and high $\sigma_b/\sigma$.
 
 # Discussion
 
-::: {.orig data-latex=""}
 The estimator comparison yields a graded recommendation
 rather than a single winner. Under correct specification,
 GLS is efficient and dominates both ANCOVA and the
@@ -1125,9 +1094,7 @@ is a large-sample statement: it presumes the covariance
 components are known or well estimated. With
 moderate-to-large samples and a credible covariance
 model, GLS is the appropriate default.
-:::
 
-::: {.orig data-latex=""}
 The misspecification analysis qualifies the case for GLS
 less than might be expected. Because GLS weights the
 data by an assumed inverse covariance, errors in the
@@ -1148,9 +1115,7 @@ fixed inputs. The open and practically important
 question, which we do not answer here, is whether
 feasible GLS, with components estimated by REML from
 small samples, keeps its advantage.
-:::
 
-::: {.orig data-latex=""}
 The practical importance of the estimator choice depends
 on the design. As the numbers of run-in and treatment
 observations grow, the phase means approach sufficiency
@@ -1166,9 +1131,7 @@ instability erodes the feasible-GLS advantage enough to
 change the ranking in small studies is a question that
 the planned feasible-GLS simulation must answer; the
 known-components results presented here cannot.
-:::
 
-::: {.orig data-latex=""}
 Two estimators not fully developed here would round out
 the comparison. The seemingly unrelated regression
 formulation of Section 2.4 treats the run-in and
@@ -1185,7 +1148,6 @@ simulation in which the variance components are
 estimated rather than assumed. That is precisely the
 setting in which the robustness distinctions drawn here
 become decisive.
-:::
 
 # Conflict of interest
 
@@ -1197,7 +1159,6 @@ This work received no specific funding.
 
 # Data availability statement
 
-::: {.orig data-latex=""}
 The `runinpower` R package implementing the GLS, ANCOVA,
 and averaged-change-score estimators (`ancova.R`,
 `averaged.R`), the simulation drivers, and the shared
@@ -1206,11 +1167,9 @@ openly available in the project repository at
 [https://github.com/rgt47/runinpower](https://github.com/rgt47/runinpower).
 Specific paths are listed in the Reproducibility section
 below.
-:::
 
 # Reproducibility
 
-::: {.orig data-latex=""}
 We rendered this manuscript with R 4.4.x. The principal
 packages used are the in-package `runinpower` source,
 `tinytest` (testing harness), and `rmarkdown` plus
@@ -1218,18 +1177,14 @@ packages used are the in-package `runinpower` source,
 in the simulation is implemented directly in the
 manuscript source (`analyze_gls` in the simulation
 chunk); we use no external mixed model fitter.
-:::
 
-::: {.orig data-latex=""}
 **Random-number generator.** The Monte Carlo simulation
 comparing the three estimators sets `set.seed(20260418)`
 once, immediately before the replicate loop. We perform
 no per-replicate reseeding, so the full replicate
 stream, and hence the tabulated results, follow
 deterministically from that single seed.
-:::
 
-::: {.orig data-latex=""}
 **Data and code availability.** The R package source is at
 `R/`. Simulation drivers are at `analysis/scripts/`. The
 companion manuscripts (Papers 1, 2, 3) are at
@@ -1237,7 +1192,6 @@ companion manuscripts (Papers 1, 2, 3) are at
 shared bibliography (`references.bib`, a symlink to
 `../../references.bib`) are at
 `analysis/report/04-gls-vs-ttest/`.
-:::
 
 # References
 

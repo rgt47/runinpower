@@ -183,8 +183,8 @@
   \renewcommand{\headrulewidth}{0pt}%
   \renewcommand{\footrulewidth}{0.4pt}}
 \renewcommand{\stampsource}{\textasciitilde{}/\allowbreak{}prj/\allowbreak{}res/\allowbreak{}04-runin-power-analysis/\allowbreak{}runinpower/\allowbreak{}analysis/\allowbreak{}report/\allowbreak{}03-allocation/\allowbreak{}report.Rmd}
-\renewcommand{\stamptime}{2026-08-15 16:32 PDT}
-\renewcommand{\stampversion}{\detokenize{455c889-wip}}
+\renewcommand{\stamptime}{2026-09-07 12:45 PDT}
+\renewcommand{\stampversion}{\detokenize{4edc432-wip}}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{booktabs}
@@ -212,49 +212,49 @@
 Treatment, and Common Close Phases in Longitudinal
 Clinical Trials}
 \author{Ronald G. Thomas, Ph.D.\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}}
-\date{August 15, 2026}
+\date{September 07, 2026}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-\textbf{Background.} Trial designers planning a longitudinal
+\textbf{Background.} Trial designers who plan a longitudinal
 study with a fixed total observation budget face an
-allocation question: how should observations be distributed
+allocation question. How should observations be distributed
 across run-in (\(J_0\)), treatment (\(J_1\)), and common close
 (\(J_2\)) phases to minimize the variance of the
-treatment-effect estimator? Existing guidance is heuristic;
-the optimum has not been characterized for the three-phase
-run-in setting.
+treatment-effect estimator? Existing guidance is heuristic,
+and the optimum has not been characterized for the
+three-phase run-in setting.
 \textbf{Methods.} We formulate the allocation question as a
 discrete optimization problem over the Woodbury-based
-variance formula derived in Paper 1 of this compendium and
+variance formula derived in Paper 1 of this compendium. We
 solve it by exhaustive enumeration of all feasible phase
-splits. The behavior of the optimum is described as a
+splits. We describe the behavior of the optimum as a
 function of the signal-to-noise ratio \(\sigma_b / \sigma\).
 Extensions cover replicated endpoint observations (closely
 spaced measurements at the end of treatment that average
 out measurement error on the final assessment, analogous to
-run-in averaging applied at the post-treatment end) and
+run-in averaging applied at the post-treatment end), and
 pattern-mixture handling of monotone dropout following the
 Frost-Kenward-Fox (2008) framework.
-\textbf{Results.} Under a fixed total budget the optimal design
-places zero observations in the run-in phase in every
-configuration examined; the budget is split between the
-treatment and common close phases. This reconciles with the
-run-in efficiency gains of Paper 1: run-in observations help
-when they are additional visits appended to a fixed
-treatment phase, but when visits are fungible the run-in
-phase is never chosen, because it introduces the
-pre-randomization slope parameter without contributing to
-the treatment contrast. The common close phase enters the
-optimal design once \(\sigma_b / \sigma\) exceeds a
-budget-dependent crossover, which falls from 0.81 at \(J=3\)
-to 0.30 at \(J=8\); at high ratios roughly half the budget
-goes to the common close. Replicating the final endpoint
-reduces the treatment-effect variance by up to 31\% at
-\(\sigma_b / \sigma = 0.5\) (five replicates) but by at most
-5\% at \(\sigma_b / \sigma = 2\).
-\textbf{Conclusions.} The numerical allocation results give
+\textbf{Results.} We find that under a fixed total budget, the
+optimal design places zero observations in the run-in phase
+in every configuration examined. The budget instead splits
+between the treatment and common close phases. This finding
+reconciles with the run-in efficiency gains of Paper 1. That
+is, run-in observations help when they are additional visits
+appended to a fixed treatment phase. However, when visits
+are fungible, the run-in phase is never chosen, because it
+introduces the pre-randomization slope parameter without
+contributing to the treatment contrast. The common close
+phase enters the optimal design once \(\sigma_b / \sigma\)
+exceeds a budget-dependent crossover, which falls from 0.81
+at \(J=3\) to 0.30 at \(J=8\). At high ratios, roughly half the
+budget goes to the common close. Replicating the final
+endpoint reduces the treatment-effect variance by up to 31\%
+at \(\sigma_b / \sigma = 0.5\) (five replicates), but by at
+most 5\% at \(\sigma_b / \sigma = 2\).
+\textbf{Conclusions.} These numerical allocation results give
 trial designers a simple decision procedure driven by the
 signal-to-noise ratio and the visit budget. The procedure
 extends to replicated-endpoint and dropout-adjusted designs
@@ -268,31 +268,24 @@ within the same variance framework.
 \setstretch{1.1}
 \section{Introduction}\label{introduction}
 
-\begin{orig}
-The relative efficiency surface in Paper 1 (Figure 1)
-demonstrates diminishing returns from additional
-run-in observations appended to a fixed treatment
-phase: most of the attainable variance reduction is
-recovered by the first two run-in observations, and
-the marginal value falls quickly thereafter (Section
-3 examines the marginal pattern, including a penalty
-specific to a single run-in observation).
-Similarly, common close observations improve efficiency
-but at a rate that depends on the number of treatment
-observations \(J_1\).
+We begin with the relative efficiency surface in Paper 1
+(Figure 1), which shows diminishing returns from
+additional run-in observations appended to a fixed
+treatment phase. Most of the attainable variance
+reduction is recovered by the first two run-in
+observations, and the marginal value falls off quickly
+thereafter; Section 3 examines this marginal pattern,
+including a penalty specific to a single run-in
+observation. Common close observations improve
+efficiency in a similar way, but at a rate that depends
+on the number of treatment observations \(J_1\).
 
-\end{orig}
-
-\begin{orig}
 These observations raise a design question that Paper 1
-does not address: given operational constraints on the
-total number of visits or total trial duration, what is
-the optimal distribution of observations across the
-three phases?
+does not address. Given operational constraints on the
+total number of visits or the total trial duration, what
+is the optimal distribution of observations across the
+three phases? That is the question we take up here.
 
-\end{orig}
-
-\begin{orig}
 \textsuperscript{\citeproc{ref-winkens2005}{1}} calculated optimal time-point positions
 for linearly divergent treatment effects under compound
 symmetry, but did not consider the run-in setting.\textsuperscript{\citeproc{ref-yi2002}{2}} derived sample sizes for trends across repeated
@@ -302,8 +295,9 @@ analyzed via ANCOVA.\textsuperscript{\citeproc{ref-overall1994}{4}} provided sam
 formulas for repeated measurement designs.\textsuperscript{\citeproc{ref-galbraith2002}{5}} developed general guidelines for the
 design of clinical trials with longitudinal outcomes.
 
-The question posed here is a design-optimization problem
-and belongs to a well-developed tradition. The general
+We note that the question posed here is a
+design-optimization problem and belongs to a
+well-developed tradition. The general
 theory of optimum experimental design, in which a design
 is chosen to optimize a functional of the Fisher
 information matrix, is set out by\textsuperscript{\citeproc{ref-atkinson1992}{6}} and\textsuperscript{\citeproc{ref-fedorov1997}{7}}.\textsuperscript{\citeproc{ref-mentre1997}{8}} extended the theory to
@@ -336,13 +330,10 @@ R package\textsuperscript{\citeproc{ref-iddi2022}{11}} implement power calculati
 for slope-comparison trials but do not optimize the
 allocation of observations across phases.
 
-\end{orig}
-
 \section{Problem formulation}\label{problem-formulation}
 
 \subsection{Fixed total visits}\label{fixed-total-visits}
 
-\begin{orig}
 Given \(J\) total observations (excluding baseline),
 choose \((J_0^*, J_1^*, J_2^*)\) to minimize
 \(\mathop{\mathrm{Var}}_1(\hat\gamma)\) subject to \(J_0 + J_1 + J_2 = J\),
@@ -352,23 +343,18 @@ The objective function is
 \(V(J_0, J_1, J_2) = [(X'\Sigma^{-1}X)^{-1}]_{\gamma\gamma}\)
 computed via the Woodbury identity from Paper 1.
 
-\end{orig}
-
 Throughout, the phase counts \((J_0, J_1, J_2)\) correspond
 to the arguments \((r, k, f)\) of the \texttt{runinpower} package
 routines used in the code chunks and tables.
 
 \subsection{Fixed total duration}\label{fixed-total-duration}
 
-\begin{orig}
 Alternatively, fix the trial duration
 \(T = (J_0 + J_1 + J_2) \cdot t\) and minimize
 \(\mathop{\mathrm{Var}}_1(\hat\gamma)\) subject to
 \(J_0 + J_1 + J_2 = T/t\), or more generally allow
 non-equally-spaced observations within each phase
 and minimize over the observation times as well.
-
-\end{orig}
 
 \section{Diminishing returns from run-in observations}\label{diminishing-returns-from-run-in-observations}
 
@@ -403,27 +389,23 @@ $J_0$ & $\Delta V_{J_0}$\\
 
 \subsection{\texorpdfstring{The \(J_0=1\) anomaly}{The J\_0=1 anomaly}}\label{the-j_01-anomaly}
 
-\begin{orig}
-A non-monotonicity is visible in the table:
+A non-monotonicity is visible in the table: we see that
 \(\Delta V_1 < \Delta V_2\) at the displayed parameter
-setting (\(\sigma_b / \sigma = 1\)). The first run-in
-observation is less valuable than the second. This
-occurs because adding a single run-in observation
-forces the model from 2 parameters (\(\beta, \gamma\))
-to 3 parameters (\(\delta, \beta, \gamma\)), consuming a
+setting (\(\sigma_b / \sigma = 1\)). That is, the first
+run-in observation is less valuable than the second.
+This occurs because adding a single run-in observation
+forces the model from 2 parameters (\(\beta, \gamma\)) to
+3 parameters (\(\delta, \beta, \gamma\)), consuming a
 degree of freedom. The second run-in observation does
-not increase the parameter count and provides pure
-information gain. The reversal is not universal: a
-numerical scan (Table \ref{tab:anomaly-boundary})
-shows that, for \(J_1 = 2\), \(J_2 = 0\), and
-\(\sigma = t = 1\), the inequality
+not increase the parameter count and so provides pure
+information gain. The reversal is not universal,
+however. A numerical scan (Table
+\ref{tab:anomaly-boundary}) shows that, for \(J_1 = 2\),
+\(J_2 = 0\), and \(\sigma = t = 1\), the inequality
 \(\Delta V_1 < \Delta V_2\) holds only for
-\(\sigma_b / \sigma\) in an intermediate band,
-approximately \((0.53, 1.51)\); at lower and higher
-ratios the first run-in observation is the more
-valuable one.
-
-\end{orig}
+\(\sigma_b / \sigma\) in an intermediate band, roughly
+\((0.53, 1.51)\). At lower and higher ratios the first
+run-in observation is the more valuable one.
 
 \begin{table}
 
@@ -445,18 +427,17 @@ $\sigma_b/\sigma$ & $\Delta V_1$ & $\Delta V_2$ & $\Delta V_1 < \Delta V_2$\\
 \end{tabular}
 \end{table}
 
-\begin{orig}
-This effect is loosely analogous to\textsuperscript{\citeproc{ref-frison1992}{3}}'s finding
-that a single pre-treatment measurement used as an ANCOVA
-covariate can reduce power when the pre-post correlation
-is low. The practical implication is regime-specific:
-\textbf{within the intermediate signal-to-noise band of Table
+This effect is loosely analogous to\textsuperscript{\citeproc{ref-frison1992}{3}}'s
+finding that a single pre-treatment measurement used as
+an ANCOVA covariate can reduce power when the pre-post
+correlation is low. The practical implication is
+regime-specific: \textbf{within the intermediate
+signal-to-noise band of Table
 \ref{tab:anomaly-boundary}, a trial designer who adds
 run-in observations should plan at least two, not one.}
-Outside that band the first run-in observation carries
-the larger marginal value and no special caution applies.
-
-\end{orig}
+Outside that band, the first run-in observation carries
+the larger marginal value, and no special caution
+applies.
 
 \subsection{Correlation structure governs diminishing returns}\label{correlation-structure-governs-diminishing-returns}
 
@@ -469,14 +450,12 @@ symmetry:
     {2\sigma^2 + \sigma_b^2 t^2}
 \end{equation}
 
-\begin{orig}
-which is constant in \(J_0\). The diminishing returns
-(for \(J_0 \ge 2\)) arise from the information matrix
-structure, not from declining correlation. Under AR(1)\textsuperscript{\citeproc{ref-winkens2007}{12}}, the correlation does decline with
-temporal distance, producing faster diminishing
-returns from distant run-in observations.
-
-\end{orig}
+which is constant in \(J_0\). We note that the diminishing
+returns for \(J_0 \ge 2\) arise from the information
+matrix structure, not from declining correlation. Under
+AR(1)\textsuperscript{\citeproc{ref-winkens2007}{12}}, on the other hand, the correlation
+does decline with temporal distance, producing faster
+diminishing returns from distant run-in observations.
 
 \section{\texorpdfstring{Optimal allocation for fixed \(J\)}{Optimal allocation for fixed J}}\label{optimal-allocation-for-fixed-j}
 
@@ -499,10 +478,9 @@ $J$ & Low ($\sigma_b/\sigma=0.32$) & Med ($\sigma_b/\sigma=1.0$) & High ($\sigma
 \end{tabular}
 \end{table}
 
-\begin{orig}
 The dominant feature of Table \ref{tab:optimal-grid} is
-that the optimal run-in count is zero in every cell:
-across all budgets \(J = 3, \ldots, 8\) and all four
+that the optimal run-in count is zero in every cell. That
+is, across all budgets \(J = 3, \ldots, 8\) and all four
 signal-to-noise settings, including the Alzheimer's
 neuroimaging regime, the optimizer splits the budget
 between the treatment and common close phases and never
@@ -511,38 +489,34 @@ degree-of-freedom cost. Any positive run-in count forces
 the model to estimate the pre-randomization slope
 \(\delta\) in addition to \((\beta, \gamma)\), and run-in
 observations inform the treatment contrast only
-indirectly, through the random slope; a visit placed in
+indirectly, through the random slope. A visit placed in
 the treatment or common close phase buys the same slope
 information without the extra parameter. This finding
 does not contradict the efficiency gains of Paper 1.
 There, run-in observations are additional visits appended
 to a design whose treatment phase is held fixed, and the
 comparison is against the shorter design without them.
-Here visits are fungible under a fixed total budget, and
-a run-in visit always has a better use. The two framings
-answer different design questions, and the distinction is
-the central practical message of this paper.
-
-\end{orig}
+Here, visits are fungible under a fixed total budget, and
+a run-in visit always has a better use elsewhere. The two
+framings answer different design questions, and that
+distinction is the central practical message of this
+paper.
 
 \section{When is the common close phase beneficial?}\label{when-is-the-common-close-phase-beneficial}
 
-\begin{orig}
 The common close phase contributes information about
 the random slope \(b_i\) without contributing to the
 treatment comparison directly. When a common close
 observation is added to an otherwise fixed design, it
 reduced \(\mathop{\mathrm{Var}}(\hat\gamma)\) in every configuration we
 examined (\(J_1 = 1, \ldots, 4\) with two run-in
-observations, and \(\sigma_b/\sigma\) down to \(10^{-3}\)):
-a free observation is always at least weakly helpful.
-The design-relevant question is therefore not whether
-the common close helps in isolation, but whether a
-visit taken from a fixed budget is better spent on the
-common close than on the treatment phase. That
-trade-off is quantified next.
-
-\end{orig}
+observations, and \(\sigma_b/\sigma\) down to \(10^{-3}\)).
+That is, a free observation is always at least weakly
+helpful. The design-relevant question is therefore not
+whether the common close helps in isolation, but whether
+a visit taken from a fixed budget is better spent on the
+common close than on the treatment phase. We quantify
+that trade-off next.
 
 \begin{table}
 
@@ -565,43 +539,39 @@ $J$ & Crossover $\sigma_b/\sigma$\\
 
 \subsection{\texorpdfstring{Crossover as a function of the budget \(J\)}{Crossover as a function of the budget J}}\label{crossover-as-a-function-of-the-budget-j}
 
-\begin{orig}
 Table \ref{tab:common-close-crossover} shows the
 crossover ratio at which the reallocation of a single
 budgeted visit from the treatment phase to the common
 close becomes favorable. The crossover falls
 monotonically with the budget, from
 \(\sigma_b/\sigma \approx 0.81\) at \(J = 3\) to
-\(\approx 0.30\) at \(J = 8\): larger trials should commit
-visits to the common close at progressively lower
-signal-to-noise ratios. Above the crossover the full
+\(\approx 0.30\) at \(J = 8\). That is, larger trials should
+commit visits to the common close at progressively lower
+signal-to-noise ratios. Above the crossover, the full
 optimizer (Table \ref{tab:optimal-grid}) assigns an
-increasing share of the budget to the close phase; at
-\(J = 8\) the optimum is an even split \((0, 4, 4)\) at
-every ratio examined from \(0.6\) upward, and even at
+increasing share of the budget to the close phase. At
+\(J = 8\) the optimum is an even split \((0, 4, 4)\) at every
+ratio examined from \(0.6\) upward, and even at
 \(\sigma_b/\sigma = 0.32\) the optimum is \((0, 5, 3)\).
 These values are numerical results from exhaustive
 enumeration; an analytical characterization of the
 crossover remains open.
 
-\end{orig}
-
 \section{Non-equally-spaced designs}\label{non-equally-spaced-designs}
 
 \subsection{General time points}\label{general-time-points}
 
-The display in this section comes from a Mathematica
-notebook derivation for a \emph{different} model than the one
-used elsewhere in this paper: a raw-outcome
+We note that the display in this section comes from a
+Mathematica notebook derivation for a \emph{different} model
+than the one used elsewhere in this paper: a raw-outcome
 random-slope-only model with centered observation times
 (\(\sum t_i = 0\)) and independent residuals
 \(R = \sigma^2 I\), rather than the change-score model
 with shared baseline error
 \(R = \sigma^2 (I + \mathbf{1}\mathbf{1}')\) that
-underlies all preceding sections. Under that
-raw-outcome model, with the normalization
-\(\sum t_i^2 = 1\), the notebook gives for two time
-points \(t_1, t_2\):
+underlies all preceding sections. Under that raw-outcome
+model, with the normalization \(\sum t_i^2 = 1\), the
+notebook gives for two time points \(t_1, t_2\):
 \begin{equation}
   \mathop{\mathrm{Var}}(\hat\gamma) = \frac{3\sigma^2}{1 - t_1 t_2}
     + 2\sigma_b^2
@@ -611,74 +581,64 @@ verified within the change-score framework of this
 paper, and reconciling the two formulations remains
 open.
 
-\begin{orig}
 Within the raw-outcome model above, the expression is
 minimized when \(t_1 t_2\) is minimized (most negative),
-i.e., when the two time points are maximally separated.
-This is consistent with the known result that
-observations at the extremes of the follow-up period
-are optimal for slope estimation. Whether and how this
+that is, when the two time points are maximally
+separated. This is consistent with the known result that
+observations at the extremes of the follow-up period are
+optimal for slope estimation. Whether and how this
 carries over to the change-score model of the preceding
 sections has not been established here.
 
-\end{orig}
-
-\subsection{Optimization over observation times within phases}\label{optimization-over-observation-times-within-phases}
+\textbf{Scope.} The general \((J_0, J_1, J_2)\) optimization in
+which observation times within each phase are also free
+parameters, rather than fixed and equally spaced, is not
+addressed in this paper. It connects to the optimal
+time-point positioning literature (e.g., Winkens et al.
+2005) and we leave it as future work rather than develop
+it here.
 
 \section{Replicated endpoint observations}\label{replicated-endpoint-observations}
 
 \subsection{Motivation}\label{motivation}
 
-\begin{orig}
 The run-in mechanism averages multiple pre-randomization
 observations to reduce the contribution of measurement
 error \(\sigma^2\) to the estimated baseline slope\textsuperscript{\citeproc{ref-frison1992}{3},\citeproc{ref-frost2008}{13}}.\textsuperscript{\citeproc{ref-goulet2019}{14}} showed that
-replicated measures increase power but with diminishing
+replicated measures increase power, but with diminishing
 returns past 20-50 replications. The same logic applies
-at the end of the treatment period:
-if the final scheduled visit is replaced by (or augmented
-with) two or three closely-spaced measurements, all
-under the same treatment condition, the measurement
-error on the endpoint assessment is reduced by
-averaging.
+at the end of the treatment period. If the final
+scheduled visit is replaced by (or augmented with) two or
+three closely spaced measurements, all under the same
+treatment condition, the measurement error on the
+endpoint assessment is reduced by averaging.
 
-\end{orig}
-
-\begin{orig}
-Concretely, if the last visit at time \(J_1 t\) is replicated
-\(n_{\text{rep}}\) times over a short interval (days to
-weeks, negligible relative to \(t\)), the effective
-residual variance for the averaged endpoint becomes
-\(\sigma^2 / n_{\text{rep}}\) while the random slope
-contribution \(\sigma_b^2 t^2\) is essentially unchanged.
-Similarly, the baseline visit at \(j = 0\) can be
-replicated to reduce \(\sigma^2\) in the change-score
+Concretely, if the last visit at time \(J_1 t\) is
+replicated \(n_{\text{rep}}\) times over a short interval
+(days to weeks, negligible relative to \(t\)), the
+effective residual variance for the averaged endpoint
+becomes \(\sigma^2 / n_{\text{rep}}\), while the random
+slope contribution \(\sigma_b^2 t^2\) is essentially
+unchanged. Similarly, the baseline visit at \(j = 0\) can
+be replicated to reduce \(\sigma^2\) in the change-score
 covariance.
 
-\end{orig}
-
-\begin{orig}
-This is distinct from the common close design (Section
-5): common close observations are at \emph{new} time
-points after treatment stops, providing information
-about the off-treatment slope. Replicated endpoints are
-at the \emph{same} time point as the last treatment
-visit, providing only measurement-error reduction.
-
-\end{orig}
+We note that this is distinct from the common close
+design of Section 5. Common close observations are at
+\emph{new} time points after treatment stops, providing
+information about the off-treatment slope. Replicated
+endpoints, on the other hand, are at the \emph{same} time
+point as the last treatment visit, providing only
+measurement-error reduction.
 
 \subsection{Variance formula with replication}\label{variance-formula-with-replication}
 
-\begin{orig}
 The residual covariance matrix \(R\) is modified so that
-the diagonal element corresponding to a replicated
-visit uses \(\sigma^2 / n_{\text{rep}}\) instead of
-\(\sigma^2\), and the off-diagonal elements reflecting
-the shared baseline error use
-\(\sigma^2 / n_{\text{rep,pre}}\). The Woodbury
-computation proceeds identically.
-
-\end{orig}
+the diagonal element corresponding to a replicated visit
+uses \(\sigma^2 / n_{\text{rep}}\) instead of \(\sigma^2\),
+and the off-diagonal elements reflecting the shared
+baseline error use \(\sigma^2 / n_{\text{rep,pre}}\). The
+Woodbury computation then proceeds identically.
 
 \begin{table}
 
@@ -696,27 +656,21 @@ $n_{\text{rep}}$ & $\sigma_b/\sigma=0.5$ & $\sigma_b/\sigma=1$ & $\sigma_b/\sigm
 \end{tabular}
 \end{table}
 
-\begin{orig}
 The table confirms that endpoint replication is most
 beneficial when measurement error dominates
 (\(\sigma_b / \sigma\) small). When between-subject slope
-variability is large (\(\sigma_b / \sigma > 2\)), the
-gain from replication is modest because the variance
-is dominated by \(\sigma_b^2 t^2\), which replication
-cannot reduce.
-
-\end{orig}
+variability is large (\(\sigma_b / \sigma > 2\)), the gain
+from replication is modest, because the variance is then
+dominated by \(\sigma_b^2 t^2\), which replication cannot
+reduce.
 
 \subsection{Replication vs additional run-in observations}\label{replication-vs-additional-run-in-observations}
 
-\begin{orig}
 A natural question is whether a fixed budget of
-additional measurements should be spent on run-in
-observations (at distinct time points, separated by
-\(t\)) or on endpoint replicates (closely spaced,
-measurement-error reduction only).
-
-\end{orig}
+additional measurements is better spent on run-in
+observations, at distinct time points separated by \(t\),
+or on endpoint replicates, which are closely spaced and
+offer measurement-error reduction only.
 
 \begin{figure}
 \centering
@@ -724,33 +678,28 @@ measurement-error reduction only).
 \caption{(\#fig:rep\_vs\_runin)Variance as a function of additional measurements allocated either to run-in (new time points) or endpoint replication (same time point). Baseline: \(J_0=0\), \(J_1=2\), \(\sigma^2=1\), \(\sigma_b^2=1\).}
 \end{figure}
 
-\begin{orig}
-At \(\sigma_b / \sigma = 1\) (the setting of the figure),
+At \(\sigma_b / \sigma = 1\), the setting of the figure,
 the comparison depends on how many extra measurements
 are available. With a single extra measurement, the
 endpoint replicate is the better use (variance 2.73
-versus 2.82 for one run-in observation): the lone
-run-in observation pays the degree-of-freedom penalty
-of Section 3. From the second extra measurement onward,
-run-in observations at new time points win (2.16 versus
-2.63 at two extras, 1.64 versus 2.57 at three), because
-they provide information about the individual slope
-\(b_i\), not just measurement-error reduction. When
-\(\sigma_b / \sigma < 1\), endpoint replication is
-stronger still: at \(\sigma_b / \sigma = 0.5\) it beat
-run-in at every budget we examined (one to four extra
-measurements), since measurement error is then the
-dominant source of variance.
-
-\end{orig}
+versus 2.82 for one run-in observation), because the
+lone run-in observation pays the degree-of-freedom
+penalty of Section 3. From the second extra measurement
+onward, however, run-in observations at new time points
+win (2.16 versus 2.63 at two extras, 1.64 versus 2.57 at
+three), because they provide information about the
+individual slope \(b_i\), not just measurement-error
+reduction. When \(\sigma_b / \sigma < 1\), endpoint
+replication is stronger still: at \(\sigma_b / \sigma =
+0.5\) it beat run-in at every budget we examined (one to
+four extra measurements), since measurement error is
+then the dominant source of variance.
 
 \subsection{Combined replication at both ends}\label{combined-replication-at-both-ends}
 
-\begin{orig}
 Replicating both the baseline and endpoint visits
-provides symmetric measurement-error reduction.
-
-\end{orig}
+provides symmetric measurement-error reduction, as we
+show next.
 
 \begin{table}
 
@@ -771,41 +720,35 @@ $n_{\text{pre}}$ & $n_{\text{post}}=1$ & $n_{\text{post}}=2$ & $n_{\text{post}}=
 
 \subsection{Pattern-mixture approach}\label{pattern-mixture-approach}
 
-\begin{orig}
-Following\textsuperscript{\citeproc{ref-frost2008}{13}} (Section 2.3), dropout
-is handled via a pattern-mixture model\textsuperscript{\citeproc{ref-dawson1993}{15},\citeproc{ref-lu2008}{16}}. Participants
-are stratified by their observed visit pattern, and
-the overall variance is a weighted average:
-
-\end{orig}
-
+Following\textsuperscript{\citeproc{ref-frost2008}{13}} (Section 2.3), we handle dropout
+via a pattern-mixture model\textsuperscript{\citeproc{ref-dawson1993}{15},\citeproc{ref-lu2008}{16}}.
+Participants are stratified by their observed visit
+pattern, and the overall variance is a weighted average:
 \begin{equation}
   N = \frac{1}{\sum_{s} p_s / N_s}
 \end{equation}
 
-\begin{orig}
-where \(p_s\) is the proportion with pattern \(s\) and
-\(N_s\) is the sample size that would be needed if all
+where \(p_s\) is the proportion with pattern \(s\) and \(N_s\)
+is the sample size that would be needed if all
 participants had pattern \(s\). Under monotone dropout,
 the pattern for a participant who leaves after
 post-baseline visit \(j\) is the truncated design that
 retains the run-in and baseline visits plus the first
-\(j\) post-baseline observations; a participant with no
-post-baseline visit contributes no information about
-the treatment contrast, so that stratum enters with
-\(N_s = \infty\). Dropout during the pre-randomization
-run-in is ignored here, since run-in dropouts are
+\(j\) post-baseline observations. A participant with no
+post-baseline visit contributes no information about the
+treatment contrast, so that stratum enters with
+\(N_s = \infty\). We ignore dropout during the
+pre-randomization run-in here, since run-in dropouts are
 typically replaced before randomization. This
-approximation treats each stratum independently.\textsuperscript{\citeproc{ref-hu2021}{17}} derive exact variance formulas under monotone
-dropout for the three-component random coefficient
-regression model (\(\sigma^2, \sigma_a^2, \sigma_b^2\)),
-accounting for the effect of dropout on the
-estimability of the random slope variance. Their
-approach is more rigorous than the pattern-mixture
-approximation used here, which is conservative when
-dropout is informative about the random slope.
-
-\end{orig}
+approximation treats each stratum independently.\textsuperscript{\citeproc{ref-hu2021}{17}}
+derive exact variance formulas under monotone dropout
+for the three-component random coefficient regression
+model (\(\sigma^2, \sigma_a^2, \sigma_b^2\)), accounting
+for the effect of dropout on the estimability of the
+random slope variance. Their approach is more rigorous
+than the pattern-mixture approximation used here, which
+is conservative when dropout is informative about the
+random slope.
 
 \begin{table}
 
@@ -827,13 +770,10 @@ Annual dropout & $N$ (no dropout) & $N$ (with dropout)\\
 
 \subsection{AD neuroimaging trial}\label{ad-neuroimaging-trial}
 
-\begin{orig}
 Using MIRIAD parameters (\(\sigma^2 = 0.3363\),
-\(\sigma_b^2 = 0.9745\), \(t = 1\) year), compare the
-optimal allocation for \(J = 4, 5, 6\) total
-observations with and without dropout.
-
-\end{orig}
+\(\sigma_b^2 = 0.9745\), \(t = 1\) year), we compare the
+optimal allocation for \(J = 4, 5, 6\) total observations
+with and without dropout.
 
 \begin{table}
 
@@ -860,152 +800,128 @@ $(J_0, J_1, J_2)$ & $\mathop{\mathrm{Var}}_1(\hat\gamma)$ & $N$ per group\\
 
 \section{Discussion}\label{discussion}
 
-\begin{orig}
 The central allocation result is negative and, we believe,
-useful: under a fixed total visit budget, the optimal design
-places no observations in the run-in phase in any
+useful. Under a fixed total visit budget, the optimal
+design places no observations in the run-in phase in any
 configuration examined, including the Alzheimer's
 neuroimaging regime (Table \ref{tab:optimal-grid}). The
-budget splits between the treatment and common close phases.
-The mechanism is the degree-of-freedom cost identified in
-Section 3: any positive run-in count adds the
-pre-randomization slope parameter \(\delta\), while run-in
-observations inform the treatment contrast only indirectly.
-This does not contradict the efficiency gains reported for
-run-in designs in Paper 1 and the prior literature; those
-gains arise when run-in visits are additional measurements
-appended to a fixed treatment phase. When visits are
-fungible, as under a per-participant visit budget, the same
-visit buys more information in the treatment or common close
-phase. Trial designers should therefore ask which question
-their operational constraint poses: extra visits (run-in can
-help) or reallocated visits (run-in never helps in the
-settings examined here).
+budget instead splits between the treatment and common
+close phases. The mechanism is the degree-of-freedom cost
+identified in Section 3: any positive run-in count adds
+the pre-randomization slope parameter \(\delta\), while
+run-in observations inform the treatment contrast only
+indirectly. This does not contradict the efficiency gains
+reported for run-in designs in Paper 1 and the prior
+literature; those gains arise when run-in visits are
+additional measurements appended to a fixed treatment
+phase. When visits are fungible, as under a
+per-participant visit budget, the same visit buys more
+information in the treatment or common close phase. Trial
+designers should therefore ask which question their
+operational constraint poses: extra visits, where run-in
+can help, or reallocated visits, where run-in never helps
+in the settings examined here.
 
-\end{orig}
-
-\begin{orig}
 The common close allocation is governed jointly by the
 signal-to-noise ratio and the budget. A free common close
-observation always helped in the configurations we examined
-(Section 5), so the operative question is the budgeted
-trade-off: moving one visit from the treatment phase to the
-common close reduces the variance once \(\sigma_b / \sigma\)
-exceeds a crossover that falls with the budget, from about
-0.81 at \(J = 3\) to 0.30 at \(J = 8\)
+observation always helped in the configurations we
+examined (Section 5), so the operative question is the
+budgeted trade-off: moving one visit from the treatment
+phase to the common close reduces the variance once
+\(\sigma_b / \sigma\) exceeds a crossover that falls with
+the budget, from about 0.81 at \(J = 3\) to 0.30 at \(J = 8\)
 (Table \ref{tab:common-close-crossover}). Above the
-crossover the optimizer assigns the close phase a growing
+crossover, the optimizer assigns the close phase a growing
 share of the budget, up to an even split at \(J = 8\) in the
-settings examined. In practice, high slope-to-noise outcomes
-such as neuroimaging endpoints sit well above the crossover
-at realistic budgets, so a substantial common close phase is
-warranted there, while low slope-to-noise outcomes justify a
-common close only at larger budgets. Estimating
-\(\sigma_b / \sigma\) from pilot data is the prerequisite
-design step.
+settings examined. In practice, high slope-to-noise
+outcomes such as neuroimaging endpoints sit well above the
+crossover at realistic budgets, so a substantial common
+close phase is warranted there. Low slope-to-noise
+outcomes, on the other hand, justify a common close only
+at larger budgets. Estimating \(\sigma_b / \sigma\) from
+pilot data is therefore the prerequisite design step.
 
-\end{orig}
-
-\begin{orig}
 Two refinements operate within a fixed phase allocation.
 First, when observation times within a phase are free, the
 two-point raw-outcome special case of Section 6 indicates
-that spacing observations toward the extremes of the window
-minimizes the slope-estimation variance; the corresponding
-optimization in the change-score model of this paper remains
-open. Second, replicating the baseline or endpoint visit
-reduces the measurement-error contribution to the change
-score without adding new time points; this is most valuable
-at low slope-to-noise ratios (up to a 31 percent variance
-reduction at \(\sigma_b / \sigma = 0.5\) with five replicates)
-and offers little when slope variability dominates (at most
-5 percent at \(\sigma_b / \sigma = 2\)). The comparison of
-Section 7 clarifies the choice between spending an
-additional measurement on a new run-in time point versus an
-endpoint replicate: at \(\sigma_b / \sigma = 1\) the replicate
-wins when only one extra measurement is available, because a
-lone run-in observation pays the degree-of-freedom penalty,
-while run-in observations win from the second extra
-measurement onward by contributing slope information; below
-\(\sigma_b / \sigma = 1\) replication won at every budget
-examined.
+that spacing observations toward the extremes of the
+window minimizes the slope-estimation variance; the
+corresponding optimization in the change-score model of
+this paper remains open. Second, replicating the baseline
+or endpoint visit reduces the measurement-error
+contribution to the change score without adding new time
+points. This is most valuable at low slope-to-noise ratios
+(up to a 31 percent variance reduction at
+\(\sigma_b / \sigma = 0.5\) with five replicates) and offers
+little when slope variability dominates (at most 5 percent
+at \(\sigma_b / \sigma = 2\)). The comparison of Section 7
+clarifies the choice between spending an additional
+measurement on a new run-in time point versus an endpoint
+replicate. At \(\sigma_b / \sigma = 1\) the replicate wins
+when only one extra measurement is available, because a
+lone run-in observation pays the degree-of-freedom
+penalty, while run-in observations win from the second
+extra measurement onward by contributing slope
+information. Below \(\sigma_b / \sigma = 1\), replication
+won at every budget we examined.
 
-\end{orig}
-
-\begin{orig}
-Several assumptions bound the scope of these recommendations.
-The allocation optima are computed under equally spaced
-observations, linear individual trajectories, and a
-compound-symmetric residual structure; the AR(1) analysis of
-Paper 2 implies that under decaying correlation the optimum
-shifts toward fewer and more closely spaced run-in
-observations, since distant ones lose informativeness. The
-allocation results themselves are numerical, obtained by
-exhaustive enumeration of the feasible phase splits; an
-analytical characterization of the optimum, for example by
-signing the marginal value of a close-phase visit, remains
-open. Dropout is accommodated through the pattern-mixture
-approximation of Section 8, applied to monotone truncation
-strata, which the exact monotone-dropout treatment of\textsuperscript{\citeproc{ref-hu2021}{17}} would refine. Extending the allocation optimization
-jointly over phase counts, within-phase timing, and the
-correlation structure remains the natural next step.
-
-\end{orig}
+Several assumptions bound the scope of these
+recommendations. The allocation optima are computed under
+equally spaced observations, linear individual
+trajectories, and a compound-symmetric residual structure;
+the AR(1) analysis of Paper 2 implies that under decaying
+correlation the optimum shifts toward fewer and more
+closely spaced run-in observations, since distant ones
+lose informativeness. The allocation results themselves
+are numerical, obtained by exhaustive enumeration of the
+feasible phase splits; an analytical characterization of
+the optimum, for example by signing the marginal value of
+a close-phase visit, remains open. Dropout is accommodated
+through the pattern-mixture approximation of Section 8,
+applied to monotone truncation strata, which the exact
+monotone-dropout treatment of\textsuperscript{\citeproc{ref-hu2021}{17}} would refine.
+Extending the allocation optimization jointly over phase
+counts, within-phase timing, and the correlation structure
+remains, in our view, the natural next step.
 
 \section{Conflict of interest}\label{conflict-of-interest}
 
-\begin{orig}
 The author declares no conflicts of interest.
-
-\end{orig}
 
 \section{Funding}\label{funding}
 
-\begin{orig}
 This work received no specific funding.
-
-\end{orig}
 
 \section{Data availability statement}\label{data-availability-statement}
 
-\begin{orig}
 The \texttt{runinpower} R package implementing the
 optimal-allocation routines (\texttt{allocation.R} and
-\texttt{replicated.R}, with the design matrices they rely on built
-in \texttt{design.R}), validation tests, and the shared
+\texttt{replicated.R}, with the design matrices they rely on
+built in \texttt{design.R}), the validation tests, and the shared
 bibliography across the four-paper compendium are openly
-available in the project repository. Specific paths are
-listed in the Reproducibility section below.
-
-\end{orig}
+available in the project repository at
+\url{https://github.com/rgt47/runinpower}.
+We list specific paths in the Reproducibility section
+below.
 
 \section{Reproducibility}\label{reproducibility}
 
-\begin{orig}
-This manuscript was rendered with R 4.4.x. Principal packages
-used are the in-package \texttt{runinpower} source, \texttt{tinytest}
-(testing harness), and \texttt{rmarkdown} plus \texttt{bookdown} for the
-manuscript build.
+We rendered this manuscript with R 4.4.x. The principal
+packages used are the in-package \texttt{runinpower} source,
+\texttt{tinytest} (testing harness), and \texttt{rmarkdown} plus
+\texttt{bookdown} for the manuscript build.
 
-\end{orig}
+\textbf{Random-number generator.} All results in this
+manuscript are deterministic evaluations of the variance
+formulas given fixed input parameters. No Monte Carlo
+simulation is used, and no random seed is required.
 
-\begin{orig}
-\textbf{Random-number generator.} All results in this manuscript
-are deterministic evaluations of the variance formulas given
-fixed input parameters; no Monte Carlo simulation is used
-and no random seed is required.
-
-\end{orig}
-
-\begin{orig}
 \textbf{Data and code availability.} The R package source is at
 \texttt{R/}. The companion manuscripts (Papers 1, 2, 4) are at
 \texttt{analysis/report/\{01,02,04\}-*/}. The manuscript source and
 shared bibliography (\texttt{references.bib}, a symlink to
 \texttt{../../references.bib}) are at
 \texttt{analysis/report/03-allocation/}.
-
-\end{orig}
 
 \section{References}\label{references}
 
