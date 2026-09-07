@@ -88,35 +88,37 @@ knitr::opts_chunk$set(
 ::: {.orig data-latex=""}
 The run-in period has served multiple purposes in clinical trial
 design, from identifying compliant participants to washing out
-prior treatments [@packer2017]. A distinct and
-methodologically important use has emerged in trials where the
-primary outcome is a rate of change: estimating individual
-baseline trajectories that, when incorporated into the analysis
-model, substantially increase statistical power.
+prior treatments [@packer2017]. A distinct and methodologically
+important use has since emerged in trials where the primary
+outcome is a rate of change. There, pre-randomization
+observations estimate each participant's baseline trajectory,
+and incorporating that estimate into the analysis model
+substantially increases statistical power.
 :::
 
 ::: {.orig data-latex=""}
 @frost2008 established the theoretical
 foundation for this approach within the linear mixed effects
-framework. Their key insight was that when between-subject
-variability in rates of change is large relative to measurement
-error, pre-randomization observations provide valuable
-information about each participant's underlying trajectory,
-reducing the residual variance of the treatment effect
-estimator. Working with neuroimaging outcomes in Alzheimer's
-disease trials, where the ratio of slope variability to
-measurement error is particularly favorable, they demonstrated
-sample size reductions of 30--45%.
+framework. Their key insight was straightforward: when
+between-subject variability in rates of change is large
+relative to measurement error, pre-randomization observations
+carry valuable information about each participant's underlying
+trajectory. That information reduces the residual variance of
+the treatment effect estimator. Working with neuroimaging
+outcomes in Alzheimer's disease trials, where the ratio of
+slope variability to measurement error is particularly
+favorable, they demonstrated sample size reductions of
+30--45%.
 :::
 
 ::: {.orig data-latex=""}
 @wang2019 extended this framework by proposing
 two-period linear mixed effects models that jointly model
-run-in and post-randomization data rather than using run-in
+run-in and post-randomization data, rather than treating run-in
 observations merely as covariates. Their approach yields
 additional power gains of up to 15% and enables unequal
-randomization ratios without power loss, since run-in
-observations effectively contribute placebo-equivalent
+randomization ratios without power loss. This follows because
+run-in observations effectively contribute placebo-equivalent
 information for all participants.
 :::
 
@@ -138,17 +140,17 @@ visit schedule, and serve as the baseline case that we extend here.
 
 ::: {.orig data-latex=""}
 The CRAN reference implementation of the $J_0=0$ formulae is
-the `longpower` package [@iddi2022], which provides the
-routines `edland.linear.power()`, `diggle.linear.power()`, and
+the `longpower` package [@iddi2022]. It provides the routines
+`edland.linear.power()`, `diggle.linear.power()`, and
 `liu.liang.linear.power()` for slope-comparison trials with
 random intercepts and slopes [@ard2011; @diggle2002; @liuliang1997].
 A complementary implementation is the Stata package `slopepower`
 [@nash2021], which obtains power for slope-comparison trials by
 simulating from a fitted mixed model rather than by evaluating a
-closed form; it addresses the same design question but does not
-cover run-in or common close phases, and its simulation route
-does not expose the variance as an explicit function of the
-design counts.
+closed form. It addresses the same design question, but it does
+not cover run-in or common close phases, and its simulation
+route does not expose the variance as an explicit function of
+the design counts.
 We show in Section 3.3 that the closed-form result derived below
 reduces to the Ard-Edland slope-variance formula implemented in
 `edland.linear.power()` at the boundary $J_0 = J_2 = 0$, and
@@ -170,26 +172,26 @@ additional information about individual trajectories at no
 cost to the treatment comparison. Post-treatment observation
 periods appear in delayed-start and randomized withdrawal
 designs aimed at distinguishing symptomatic from
-disease-modifying effects [@sperling2014],
-but the contribution of the common close to statistical
-efficiency within the GLS framework has not been formally
-characterized. The delayed-start design [@liuseifert2015]
-is the closest relative: it also observes participants after
-the initial randomized period, but it does so in order to
-test whether an early-treatment group retains an advantage
-over a late-start group, so the post-randomization phase
-carries its own treatment contrast and its own estimand. The
-common close considered here serves the different purpose of
-sharpening the estimate of each participant's underlying
-slope, with all participants off treatment and no contrast
-attached to the phase itself. A formal comparison of the two
-estimands, and of the assumptions each requires about
-post-cessation trajectories, is beyond the scope of this
-paper. The common close construction's own assumption (a
-frozen, non-decaying treatment offset carried through the
-common close phase) is stated explicitly where the change
-score is defined below, in the "General formula with common
-close" subsection ("Carryover assumption" paragraph).
+disease-modifying effects [@sperling2014]. However, the
+contribution of the common close to statistical efficiency
+within the GLS framework has not been formally characterized.
+The delayed-start design [@liuseifert2015] is the closest
+relative. It also observes participants after the initial
+randomized period, but it does so to test whether an
+early-treatment group retains an advantage over a late-start
+group. That is, the post-randomization phase carries its own
+treatment contrast and its own estimand. The common close
+considered here serves the different purpose of sharpening the
+estimate of each participant's underlying slope, with all
+participants off treatment and no contrast attached to the
+phase itself. A formal comparison of the two estimands, and of
+the assumptions each requires about post-cessation
+trajectories, is beyond the scope of this paper. The common
+close construction's own assumption (a frozen, non-decaying
+treatment offset carried through the common close phase) is
+stated explicitly where the change score is defined below, in
+the 'General formula with common close' subsection
+('Carryover assumption' paragraph).
 :::
 
 ::: {.orig data-latex=""}
@@ -214,7 +216,7 @@ neuroimaging studies.
 ## General formulation
 
 ::: {.orig data-latex=""}
-Consider a two-arm longitudinal clinical trial in which $N$
+We consider a two-arm longitudinal clinical trial in which $N$
 participants are observed at equally spaced time points across
 three phases: a run-in period (pre-randomization), a treatment
 period (post-randomization), and an optional common close
@@ -269,10 +271,10 @@ within-visit residual, with
 
 ::: {.orig data-latex=""}
 The two within-visit components are separately identifiable
-only when a visit carries replicate scans; for the
-single-scan designs treated here only their sum $\sigma^2$
-enters the variance of the treatment-effect estimator. The
-phase indicator is
+only when a visit carries replicate scans. For the single-scan
+designs treated here, only their sum $\sigma^2$ enters the
+variance of the treatment-effect estimator. The phase indicator
+is
 :::
 $$
   h_j =
@@ -324,7 +326,7 @@ change scores relative to the randomization visit:
 This eliminates the intercept $\alpha$ and the random
 intercept $a_i$. We note that the change-score approach
 is algebraically equivalent to constrained longitudinal
-data analysis (cLDA) under compound symmetry, where the
+data analysis (cLDA) under compound symmetry. There, the
 baseline is included in the response vector with a
 common-mean constraint across treatment groups
 [@laird1982;
@@ -338,7 +340,7 @@ three ($\sigma^2, \sigma_a^2, \sigma_b^2$) required
 by the raw-outcome model. @zhao2022 show that
 ignoring the intercept-slope correlation in the
 three-component model can produce anticonservative
-sample sizes; the change-score approach avoids this
+sample sizes. The change-score approach avoids this
 issue by construction, at the cost of discarding
 information about $\sigma_a^2$.
 :::
@@ -377,15 +379,15 @@ The residual covariance has the structure
 \end{equation}
 
 ::: {.orig data-latex=""}
-since $w_{ij} = u_{ij} + \varepsilon_{ij}$ are independent
-across visits with common variance
-$\sigma^2 = \sigma_u^2 + \sigma_\varepsilon^2$, and the
-shared baseline residual $w_{i0}$ induces positive
-correlation among all change scores. Thus
+This follows because $w_{ij} = u_{ij} + \varepsilon_{ij}$
+are independent across visits with common variance
+$\sigma^2 = \sigma_u^2 + \sigma_\varepsilon^2$. The shared
+baseline residual $w_{i0}$ induces positive correlation among
+all change scores. Thus
 $R = \sigma^2(\mathbf{I}_J + \mathbf{1}_J \mathbf{1}_J')$.
 Both within-visit components enter $R$ identically because
 $u_{i0}$ and $\varepsilon_{i0}$ are differenced out of every
-change score in the same way; this is why only their sum
+change score in the same way. This is why only their sum
 $\sigma^2$ is identified from single-scan designs.
 :::
 
@@ -480,13 +482,13 @@ the GLS information matrix is
 ::: {.orig data-latex=""}
 and the total information is $X' \Sigma^{-1} X = \sum_i
 X_i' \Sigma_i^{-1} X_i$, with $\Var(\hat{\boldsymbol{\beta}})
-= (X' \Sigma^{-1} X)^{-1}$. Two features of this form are
-used later: (i) under a single random slope, $\mathcal{J}_i$
-is a scalar so (\ref{eq:perpt_info}) is a rank-one correction
-of the OLS-style information $X_i' R_i^{-1} X_i$; (ii) because
+= (X' \Sigma^{-1} X)^{-1}$. Two features of this form are used
+later. First, under a single random slope, $\mathcal{J}_i$ is
+a scalar, so (\ref{eq:perpt_info}) is a rank-one correction of
+the OLS-style information $X_i' R_i^{-1} X_i$. Second, because
 per-participant contributions add, heterogeneous designs
-(varying $J_0$, $J_2$, or dropout patterns) are accommodated
-by summing (\ref{eq:perpt_info}) over the relevant strata.
+(varying $J_0$, $J_2$, or dropout patterns) are accommodated by
+summing (\ref{eq:perpt_info}) over the relevant strata.
 :::
 
 ## Case 1: Standard design, no run-in ($J_0=0$, $J_1=2$, $J_2=0$)
@@ -918,12 +920,11 @@ $X'\Sigma^{-1}X = X'R^{-1}X - W$.
 
 ::: {.orig data-latex=""}
 The variance $\Var(\hat{\gamma})$ for general $J_0$ and $J_1$
-does not admit a simple closed-form expression. The
-formula depends on $\sigma^2$ and $\sigma_b^2$ in a
-ratio involving $S_{J_0}$, $S_{J_1}$, $D_{J_0}$, $D_{J_1}$, and $J$,
-and the interaction between the Woodbury correction and the
-information matrix produces algebraically complex
-expressions.
+does not admit a simple closed-form expression. The formula
+depends on $\sigma^2$ and $\sigma_b^2$ in a ratio involving
+$S_{J_0}$, $S_{J_1}$, $D_{J_0}$, $D_{J_1}$, and $J$. Moreover,
+the interaction between the Woodbury correction and the
+information matrix produces algebraically complex expressions.
 :::
 
 ::: {.orig data-latex=""}
@@ -941,9 +942,9 @@ At $J_0 = 0$, the $\delta$ column of $X$ is empty and the
 information matrix reduces to a $2 \times 2$ block on
 $(\beta, \gamma)$. Carrying the Woodbury algebra through, the
 Sherman-Morrison cancellations collapse the Woodbury correction
-against the $(2,1; 1,1)$ structure of $X'R^{-1}X$, and the
-variance of the treatment effect estimator for $n$ participants
-per arm becomes
+against the $(2,1; 1,1)$ structure of $X'R^{-1}X$. The variance
+of the treatment effect estimator for $n$ participants per arm
+then becomes
 :::
 \begin{equation}
   \Var(\hat{\gamma})\big|_{J_0=0,J_2=0}
@@ -965,8 +966,8 @@ used by `longpower::diggle.linear.power()`. The Frost formula
 (\ref{eq:var_edland}), since $S_{xx} = 2t^2$ at that setting.
 The general-$(J_0, J_1, J_2)$ result derived in the next
 subsection therefore embeds both `longpower` closed-form
-routines as strict boundary cases, with the efficiency gains
-quantified in Section 5 accruing entirely from the information
+routines as strict boundary cases. The efficiency gains
+quantified in Section 5 accrue entirely from the information
 contributed by $J_0 > 0$ or $J_2 > 0$.
 :::
 
@@ -995,23 +996,23 @@ column in the design matrix has the value $J_1 t$ for all common
 close observations in the treatment group.
 
 **Carryover assumption.** This encodes an explicit modeling
-choice: the between-group offset acquired during treatment is
+choice. The between-group offset acquired during treatment is
 held constant (frozen) through the common close phase, neither
 growing nor decaying once treatment stops. Equivalently, the
 common close slope is assumed equal between arms, so the two
-groups' trajectories run parallel after treatment ends and the
+groups' trajectories run parallel after treatment ends, and the
 gap opened during the treatment period is carried forward
 unchanged. This is the same assumption distinguished from the
 delayed-start estimand in the Introduction's discussion of
-@liuseifert2015 above; it is not derived from a biological
+@liuseifert2015 above. It is not derived from a biological
 mechanism and should be treated as a design simplification
 rather than an empirical finding. If post-cessation trajectories
-converge (loss of
-treatment benefit) or diverge (continued divergence after
-cessation), the variance and power expressions below remain
-correct algebraically but the estimand they target -- the
-end-of-common-close group difference under a frozen offset --
-would no longer match the quantity of clinical interest.
+converge (loss of treatment benefit) or diverge (continued
+divergence after cessation), the variance and power expressions
+below remain correct algebraically. However, the estimand they
+target (the end-of-common-close group difference under a frozen
+offset) would no longer match the quantity of clinical
+interest.
 :::
 
 The fixed effects design matrix becomes:
@@ -1091,30 +1092,29 @@ Values greater than 1 indicate that the run-in/common close
 design requires fewer participants.
 
 ::: {.orig data-latex=""}
-A practical caveat: adding a single run-in observation
-($J_0=1$) introduces the run-in slope parameter $\delta$
-into the model, increasing the fixed-effect dimension from
-2 to 3. This additional parameter absorbs part of the
-information contributed by the run-in observation.
-Numerical evaluation over a wide grid of configurations
-($J_1 = 2, \ldots, 6$; $\sigma_b^2/\sigma^2$ from $10^{-4}$
-to $10^{3}$; $t$ from $0.25$ to $4$) shows that
-$\Var(\hat\gamma)|_{J_0=1}$ never exceeds
-$\Var(\hat\gamma)|_{J_0=0}$, but the improvement can be
-negligible: at some parameter values the information from
-the single run-in observation is almost exactly offset by
-the cost of estimating $\delta$. A single run-in
-observation is therefore never harmful to the precision of
-$\hat\gamma$, although the gain it provides should be
+A practical caveat is in order here. Adding a single run-in
+observation ($J_0=1$) introduces the run-in slope parameter
+$\delta$ into the model, increasing the fixed-effect dimension
+from 2 to 3. This additional parameter absorbs part of the
+information contributed by the run-in observation. Numerical
+evaluation over a wide grid of configurations ($J_1 = 2,
+\ldots, 6$; $\sigma_b^2/\sigma^2$ from $10^{-4}$ to $10^{3}$;
+$t$ from $0.25$ to $4$) shows that $\Var(\hat\gamma)|_{J_0=1}$
+never exceeds $\Var(\hat\gamma)|_{J_0=0}$. That said, the
+improvement can be negligible: at some parameter values the
+information from the single run-in observation is almost
+exactly offset by the cost of estimating $\delta$. A single
+run-in observation is therefore never harmful to the precision
+of $\hat\gamma$, although the gain it provides should be
 quantified with the formulas above before committing to a
 longer trial. This is an instance of the general design
-principle set out by @galbraith2002, that the value of an
+principle set out by @galbraith2002: the value of an
 additional measurement occasion in a longitudinal trial
 depends jointly on the variance components and on the
-parameters the enlarged model must estimate, so that the
-number and placement of visits should be chosen by direct
-evaluation of the resulting precision rather than by a
-fixed rule.
+parameters the enlarged model must estimate. The number and
+placement of visits should accordingly be chosen by direct
+evaluation of the resulting precision rather than by a fixed
+rule.
 :::
 
 # Numerical Examples
@@ -1126,11 +1126,11 @@ library(runinpower)
 ## Verification of closed-form results
 
 ::: {.orig data-latex=""}
-We verify that the closed-form expressions agree with
-the matrix computation. The Frost et al. (2008) result
+We begin with a check that the closed-form expressions agree
+with the matrix computation. The Frost et al. (2008) result
 corresponds to the standard design with $J_0=0$, $J_1=2$
-(two post-baseline visits at times $t$ and $2t$), which
-under the two-parameter model yields
+(two post-baseline visits at times $t$ and $2t$), which under
+the two-parameter model yields
 $\Var(\hat{\gamma}) = (\sigma^2 + 2\sigma_b^2 t^2)/t^2$.
 The $J_0=2$, $J_1=1$ case uses the three-parameter model.
 :::
@@ -1171,12 +1171,12 @@ for (rr in 0:4) {
 The closed-form checkpoints above both have $J_2 = 0$, so
 they do not exercise the common-close path. We therefore
 validate the general routine in two ways. First, we compare
-the Woodbury computation with a direct GLS evaluation in
+the Woodbury computation with a direct GLS evaluation, in
 which $\Sigma = R + \sigma_b^2 Z Z'$ is assembled and
 inverted without the Woodbury identity, over a grid of
 designs that includes configurations with $J_2 > 0$.
 Second, we run a seeded Monte Carlo benchmark at
-$(J_0, J_1, J_2) = (2, 2, 2)$: change-score vectors are
+$(J_0, J_1, J_2) = (2, 2, 2)$. Change-score vectors are
 simulated from the generative model, $\hat\gamma$ is
 computed by GLS in each replicate, and the empirical
 variance is compared with the analytic value.
@@ -1348,7 +1348,7 @@ filled.contour(
 ## Application: Alzheimer's disease imaging trial
 
 ::: {.orig data-latex=""}
-Using variance parameters estimated from the MIRIAD dataset
+We use variance parameters estimated from the MIRIAD dataset
 [@frost2008]: $\sigma_b^2 = 0.9745$
 (between-subject slope variance) and a combined within-visit
 residual
@@ -1360,11 +1360,11 @@ measurement error ($\sigma_\varepsilon^2 = 0.0025$) of
 Frost's Table II. We take observation interval $t = 1$ year
 and treatment effect $\Delta = 0.25$ (25% reduction in
 atrophy rate relative to placebo rate of approximately 1.0%
-brain volume loss per year). Using the combined residual,
-the conventional design reproduces Frost's reported sample
-sizes (Table III); using only the $0.0025$ measurement-error
-term, as in earlier drafts, understates the residual by two
-orders of magnitude and yields degenerate sample sizes.
+brain volume loss per year). Using the combined residual, the
+conventional design reproduces Frost's reported sample sizes
+(Table III). Using only the $0.0025$ measurement-error term,
+as in earlier drafts, understates the residual by two orders
+of magnitude and yields degenerate sample sizes.
 :::
 
 ```{r ad-example}
@@ -1434,19 +1434,20 @@ The results presented here formalize and extend the framework
 of @frost2008 by providing explicit
 variance formulas for the treatment effect estimator under
 designs that incorporate run-in and common close observations.
-Three points merit discussion.
+Three points warrant discussion.
 :::
 
 ::: {.orig data-latex=""}
 **When run-in observations are most beneficial.** The
 efficiency gain from run-in observations depends on the ratio
 $\sigma_b^2 t^2 / \sigma^2$. When between-subject slope
-variability is large relative to residual variance (as in
-neuroimaging outcomes), even one or two run-in observations
-yield substantial sample size reductions. For cognitive
-outcomes, where this ratio is typically less favorable, the
-gains are more modest and the cost of extended study duration
-must be weighed against the sample size reduction.
+variability is large relative to residual variance, as in
+neuroimaging outcomes, even one or two run-in observations
+yield substantial sample size reductions. On the other hand,
+for cognitive outcomes, where this ratio is typically less
+favorable, the gains are more modest, and the cost of extended
+study duration must be weighed against the sample size
+reduction.
 :::
 
 ::: {.orig data-latex=""}
@@ -1454,13 +1455,13 @@ must be weighed against the sample size reduction.
 close phase provides information about individual trajectories
 without requiring participants to remain on treatment. Since
 treatment has ceased, both groups contribute to estimation of
-the underlying slope variability, effectively tightening the
-precision of the treatment effect estimator. The marginal
-benefit of each additional common close observation diminishes
-(as with run-in observations), but the first one or two common
-close visits typically provide meaningful sample size
-reductions, particularly when $\sigma_b^2 t^2 / \sigma^2$ is
-large.
+the underlying slope variability, which effectively tightens
+the precision of the treatment effect estimator. As with
+run-in observations, the marginal benefit of each additional
+common close observation diminishes. Nevertheless, the first
+one or two common close visits typically provide meaningful
+sample size reductions, particularly when $\sigma_b^2 t^2 /
+\sigma^2$ is large.
 :::
 
 ::: {.orig data-latex=""}
@@ -1470,9 +1471,10 @@ effects model of @wang2019. Their Scenario 1
 (common slope across periods) corresponds to setting
 $\delta = \beta$ in our model, while their Scenario 2
 (different slopes) corresponds to the general case. The
-advantage of our formulation is the explicit separation of
-run-in, treatment, and common close phases, enabling direct
-optimization of the number of observations in each phase.
+advantage of our formulation lies in the explicit separation
+of run-in, treatment, and common close phases, which enables
+direct optimization of the number of observations in each
+phase.
 :::
 
 ::: {.orig data-latex=""}
@@ -1481,19 +1483,19 @@ observations, linear trajectories, and a random intercept
 plus random slope covariance structure. Extensions to unequal
 spacing, nonlinear progression, and more complex random
 effects structures (e.g., random intercept-slope correlation)
-are possible within the same Woodbury identity framework but
-yield more complex expressions that may not admit simple
+are possible within the same Woodbury identity framework, but
+they yield more complex expressions that may not admit simple
 closed forms. The general $(J_0, J_1, J_2)$ result, and the
 $J_0 = 2$ case, are established via the package's numerical
 Woodbury routine, validated against a direct GLS computation
 and a Monte Carlo benchmark, rather than via an independent
-symbolic derivation; the Mathematica symbolic trail in this
+symbolic derivation. The Mathematica symbolic trail in this
 repository (`analysis/scripts/woodbury_variance.m`) covers
 only $J_0 \in \{0, 1\}$. Extending the symbolic derivation to
-$J_0 = 2$ and the general case is future work and is not
+$J_0 = 2$ and the general case remains future work and is not
 required for the numerical results reported here, which do
 not depend on the symbolic route. The formulas also assume no
-dropout; in practice, the Dawson-Lagakos pattern-mixture
+dropout. In practice, the Dawson-Lagakos pattern-mixture
 approach [@frost2008] can be applied to adjust
 for anticipated attrition.
 :::
@@ -1514,8 +1516,8 @@ of this compendium, the Mathematica symbolic-derivation scripts,
 and the shared bibliography are openly available in the
 project repository at
 [https://github.com/rgt47/runinpower](https://github.com/rgt47/runinpower).
-Specific paths are listed in the
-Reproducibility section below.
+We list the specific paths in the Reproducibility section
+below.
 :::
 
 # Reproducibility
@@ -1528,12 +1530,12 @@ covariance-ar1, design, power, replicated, variance),
 `tinytest` (testing harness), and `rmarkdown` plus
 `bookdown` for the manuscript build. Mathematica symbolic
 derivations are at `analysis/scripts/`
-(`woodbury_variance.m`); this file covers exactly the
+(`woodbury_variance.m`). This file covers exactly the
 $J_0 = 0$ (no run-in) and $J_0 = 1$ (one run-in observation)
-cases. It does not extend to $J_0 = 2$ or the general
+cases; it does not extend to $J_0 = 2$ or the general
 $(J_0, J_1, J_2)$ case reported in this manuscript's General
-Formula sections; those results are established via the
-package's numerical Woodbury routine
+Formula sections. Those results are established instead via
+the package's numerical Woodbury routine
 (`var_gamma_matrix()`, see `R/variance.R`) and validated
 against a direct GLS computation and a Monte Carlo benchmark
 in the Numerical Examples section below, not via an
@@ -1545,7 +1547,7 @@ Limitations paragraph below.
 
 ::: {.orig data-latex=""}
 **Random-number generator.** The variance formulas are
-deterministic given fixed input parameters; no RNG is
+deterministic given fixed input parameters, so no RNG is
 exercised in their evaluation. The validation chunk in the
 Numerical Examples section first compares the Woodbury
 routine with a direct GLS computation, in which $\Sigma$ is
