@@ -8,41 +8,41 @@ abstract: |
   **Background.** The companion Paper 1 of this compendium
   derived closed-form power formulas for run-in and common
   close observations under compound symmetry. Compound
-  symmetry assumes all pairs of observations are equally
-  correlated regardless of temporal separation, an assumption
-  that is empirically rejected in most longitudinal-trial data.
-  AR(1), $\Corr(Y_{ijk}, Y_{ijk'}) = \rho^{|k-k'|}$, is the
-  natural alternative.
+  symmetry assumes that all pairs of observations are equally
+  correlated, regardless of temporal separation. However, this
+  assumption is empirically rejected in most longitudinal-trial
+  data. AR(1), $\Corr(Y_{ijk}, Y_{ijk'}) = \rho^{|k-k'|}$,
+  offers the natural alternative.
   **Methods.** We derive the variance of the treatment-effect
-  estimator under AR(1) via two routes: (i) the Woodbury
-  identity applied to the AR(1) marginal covariance, and (ii)
-  a moment-based approach using the cross-covariance between
-  run-in and treatment-period means. The two routes target
-  different estimands: the GLS variance of the slope-difference
-  effect and the variance of the simple phase-mean difference.
-  The GLS derivation accommodates arbitrary $J_0$ run-in
-  observations and arbitrary $J_2$ common close observations.
-  **Results.** A taxonomy of five correlation cases is
-  presented, and change-score correlations are derived in
-  closed form under compound symmetry and AR(1). Numerical
-  comparisons using parameters from Alzheimer's disease
-  neuroimaging trials show that, when the two structures are
-  matched at a common nominal correlation parameter $\rho$,
-  the AR(1) sample-size estimate is smaller than the
-  compound-symmetric estimate (by 4-36\% at $\rho = 0.5$),
-  with the deviation growing as $\rho$ increases. A narrow
-  anticonservative regime exists at large $J_0$ and small
-  $\rho$, where compound symmetry understates the variance
-  by at most about 6\%.
+  estimator under AR(1) via two routes. The first route applies
+  the Woodbury identity to the AR(1) marginal covariance. The
+  second route uses a moment-based approach based on the
+  cross-covariance between run-in and treatment-period means.
+  The two routes target different estimands: the GLS variance
+  of the slope-difference effect, and the variance of the
+  simple phase-mean difference. The GLS derivation accommodates
+  arbitrary $J_0$ run-in observations and arbitrary $J_2$
+  common close observations.
+  **Results.** We present a taxonomy of five correlation cases
+  and derive change-score correlations in closed form under
+  compound symmetry and AR(1). We compare the two structures
+  numerically, using parameters from Alzheimer's disease
+  neuroimaging trials. When the structures are matched at a
+  common nominal correlation parameter $\rho$, the AR(1)
+  sample-size estimate is smaller than the compound-symmetric
+  estimate, by 4-36\% at $\rho = 0.5$. This deviation grows as
+  $\rho$ increases. However, a narrow anticonservative regime
+  exists at large $J_0$ and small $\rho$, where compound
+  symmetry understates the variance by at most about 6\%.
   **Conclusions.** At a matched nominal $\rho$, the
   compound-symmetry assumption underlying Paper 1 is generally
-  conservative: it overstates the required sample size, and
-  increasingly so as the autocorrelation grows. The exception
-  is a narrow regime with many run-in observations and low
-  autocorrelation, where it is anticonservative by at most
-  about 6\%. The AR(1) formulas derived here quantify both
-  effects and should be used directly when serial correlation
-  is expected; this conclusion is specific to the
+  conservative. That is, it overstates the required sample
+  size, increasingly so as the autocorrelation grows. The
+  exception is a narrow regime with many run-in observations
+  and low autocorrelation, where it is anticonservative by at
+  most about 6\%. The AR(1) formulas derived here quantify both
+  effects, and we recommend using them directly when serial
+  correlation is expected. This conclusion is specific to the
   common-nominal-$\rho$ matching convention stated in the
   text.
 output:

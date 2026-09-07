@@ -5,19 +5,19 @@ title: |
 author: "Ronald G. Thomas, Ph.D.\\thanks{Wertheim School of Public Health, UCSD; ORCID: 0000-0003-1686-4965}"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 abstract: |
-  **Background.** Three estimators of the treatment effect in
-  longitudinal trials with run-in observations are in routine
-  use: the GLS estimator under the linear mixed model, which
-  exploits the full covariance structure to extract maximum
-  information from all observations; the ANCOVA estimator,
-  which regresses post-randomization means on the run-in mean
-  as a covariate without specifying the random-effects
-  covariance; and the averaged change-score estimator, which
-  computes a simple difference of phase means and applies a
-  $t$-test, requiring no variance-component estimation. The
-  relative efficiency of these estimators under correct and
-  misspecified models has not been comprehensively
-  characterized.
+  **Background.** Three estimators of the treatment effect
+  are in routine use for longitudinal trials with run-in
+  observations. The GLS estimator, under the linear mixed
+  model, exploits the full covariance structure to extract
+  maximum information from all observations. The ANCOVA
+  estimator regresses post-randomization means on the run-in
+  mean as a covariate, without specifying the random-effects
+  covariance. The averaged change-score estimator computes a
+  simple difference of phase means and applies a $t$-test,
+  requiring no variance-component estimation. To the best of
+  our knowledge, the relative efficiency of these estimators
+  under correct and misspecified models has not been
+  comprehensively characterized.
   **Methods.** We derive the variance of the three
   estimators as a function of the trial design
   $(J_0, J_1, J_2)$ and the variance parameters
@@ -25,44 +25,47 @@ abstract: |
   Woodbury-based variance formulas of Paper 1 in this
   compendium, plus closed-form expressions for the ANCOVA
   and averaged-change-score variances under the same
-  random-slopes model. Robustness to misspecification of the
-  within-subject covariance ($R$) and the random-effects
-  covariance ($G$) is assessed analytically through sandwich
-  variances, and a Monte Carlo simulation under compound
-  symmetry evaluates the estimators alongside a GLS analysis
-  that misstates the random-slope variance.
-  **Results.** All comparisons are made on the common
-  estimand scale, with the averaged and ANCOVA contrasts
-  rescaled to unbiasedness for the treatment effect
-  $\gamma$. Under correct specification, GLS $\le$ ANCOVA
-  $\le$ averaged in variance, with no violations over a
-  115-cell grid of designs and signal-to-noise ratios. The
-  efficiency penalty of the simpler estimators is
-  substantial in run-in designs with multiple
-  treatment-period visits: at
-  $(J_0, J_1, J_2) = (2, 2, 0)$ the relative efficiency of
-  ANCOVA versus GLS is 0.64 to 0.81 across signal-to-noise
-  ratios, an efficiency loss of 19\% to 36\%. Relative
-  efficiency above 0.95 occurs only in single-post-visit
-  run-in designs ($J_1 = 1$, $J_2 = 0$) and in designs
-  without run-in or common close ($J_0 = 0$, $J_2 = 0$) at
-  high signal-to-noise. In the MIRIAD-based example the
-  ANCOVA sample size exceeds the GLS sample size by up to
-  a factor of roughly 2.6 among run-in designs, and the
-  averaged sample size by up to a factor of roughly 45.
-  Under the $G$ and $R$ misspecifications studied, GLS
-  never loses its advantage over the simpler estimators:
-  the misspecified-GLS sandwich variance peaks at 5.3
-  against an averaged-estimator variance of 8.9 at the
-  reference design.
-  **Conclusions.** GLS is the efficient estimator under
-  correct specification, and its advantage survives the
-  covariance misspecifications examined here. The averaged
-  change-score estimator remains useful as a fully
-  prespecified robust benchmark and a teaching tool. The
-  open robustness question, not studied here, is whether
-  feasible GLS with variance components estimated from
-  small samples retains this advantage.
+  random-slopes model. We assess robustness to
+  misspecification of the within-subject covariance ($R$)
+  and the random-effects covariance ($G$) analytically,
+  through sandwich variances. We also run a Monte Carlo
+  simulation under compound symmetry that evaluates the
+  estimators alongside a GLS analysis that misstates the
+  random-slope variance.
+  **Results.** We make all comparisons on the common
+  estimand scale, rescaling the averaged and ANCOVA
+  contrasts to unbiasedness for the treatment effect
+  $\gamma$. Under correct specification, we find GLS
+  $\le$ ANCOVA $\le$ averaged in variance, with no
+  violations over a 115-cell grid of designs and
+  signal-to-noise ratios. The efficiency penalty of the
+  simpler estimators is substantial in run-in designs with
+  multiple treatment-period visits. At
+  $(J_0, J_1, J_2) = (2, 2, 0)$, the relative efficiency of
+  ANCOVA versus GLS ranges from 0.64 to 0.81 across
+  signal-to-noise ratios, an efficiency loss of 19\% to
+  36\%. Relative efficiency above 0.95 occurs only in
+  single-post-visit run-in designs ($J_1 = 1$, $J_2 = 0$),
+  and in designs without run-in or common close
+  ($J_0 = 0$, $J_2 = 0$) at high signal-to-noise. In the
+  MIRIAD-based example, the ANCOVA sample size exceeds the
+  GLS sample size by up to a factor of roughly 2.6 among
+  run-in designs, and the averaged sample size by up to a
+  factor of roughly 45. Under the $G$ and $R$
+  misspecifications studied, GLS never loses its advantage
+  over the simpler estimators. That is, the misspecified-GLS
+  sandwich variance peaks at 5.3, against an
+  averaged-estimator variance of 8.9 at the reference
+  design.
+  **Conclusions.** We conclude that GLS is the efficient
+  estimator under correct specification, and that its
+  advantage survives the covariance misspecifications
+  examined here. The averaged change-score estimator
+  remains useful as a fully prespecified robust benchmark
+  and a teaching tool. One open robustness question, which
+  we do not study here, is whether feasible GLS with
+  variance components estimated from small samples retains
+  this advantage.
 output:
   bookdown::pdf_document2:
     latex_engine: xelatex

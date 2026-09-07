@@ -10,37 +10,37 @@ abstract: |
   (common close) observations to improve estimator efficiency.
   Closed-form power and sample-size formulas for these
   augmented designs under linear mixed-effects models with
-  random slopes have remained scattered across the literature
-  and partially specified, making applied sample-size
-  calculation cumbersome.
+  random slopes have remained scattered across the literature.
+  They are also only partially specified, so applied
+  sample-size calculation becomes cumbersome.
   **Methods.** We derive closed-form power and sample-size
   formulas for three nested cases: (i) two run-in observations,
   (ii) an arbitrary number $J_0$ of run-in observations, and
   (iii) $J_0$ run-in plus $J_2$ common close observations. All
   derivations proceed via the Woodbury matrix identity applied
   to the GLS estimator under change-score parameterization.
-  The formulas are expressed in terms of the residual variance
+  We express the formulas in terms of the residual variance
   $\sigma^2$, the random-slope variance $\sigma_b^2$, and the
-  observation spacing $t$, enabling direct computation of
+  observation spacing $t$, which enables direct computation of
   required sample sizes.
-  **Results.** In a numerical example using parameters from
-  Alzheimer's disease neuroimaging trials, for which the
+  **Results.** We use parameters from Alzheimer's disease
+  neuroimaging trials for a numerical example, where the
   signal-to-noise ratio $\sigma_b / \sigma \approx 1.7$ is
-  favorable, two run-in observations reduce the required
+  favorable. Two run-in observations reduce the required
   sample size by 62\% (from 385 to 145 per group), and adding
   two common close observations raises the reduction to 82\%.
-  The magnitude of the gain is governed by $\sigma_b / \sigma$:
-  across a representative range of slope variability the
+  The magnitude of the gain depends on $\sigma_b / \sigma$.
+  Across a representative range of slope variability, the
   reduction from two run-in observations spans roughly 14\% at
   low ratios to 76\% at high ratios. The closed-form
-  expressions allow this sensitivity analysis with respect to
-  $\sigma_b / \sigma$ without re-running simulation.
-  **Conclusions.** The Woodbury-based formulas give
-  closed-form expressions for the variance of the
+  expressions let us run this sensitivity analysis with
+  respect to $\sigma_b / \sigma$ without re-running simulation.
+  **Conclusions.** We report closed-form expressions, derived
+  via the Woodbury identity, for the variance of the
   treatment-effect estimator under random-slopes
   longitudinal-trial designs with run-in and common close
-  observations. They serve as a foundation for the AR(1)
-  extension (Paper 2), the optimal-allocation problem
+  observations. These results serve as a foundation for the
+  AR(1) extension (Paper 2), the optimal-allocation problem
   (Paper 3), and the GLS-versus-ANCOVA-versus-averaged
   estimator comparison (Paper 4) in this compendium.
 output:
